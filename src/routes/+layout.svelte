@@ -6,6 +6,7 @@
 	import Login from '$lib/modules/Login.svelte';
 	import { initHandlers, destroyHandlers } from '$lib/utils/keyboardHandler';
 	let open = false;
+	import { locale, locales } from 'svelte-i18n';
 
 	function openDialog() {
 		open = true;
@@ -13,6 +14,13 @@
 
 	onMount(() => {
 		initHandlers;
+		const settedLocale = localStorage.getItem('userLang');
+		if (settedLocale) locale.set(settedLocale);
+
+		locale.subscribe((lang) => {
+			document.querySelector('html').lang = lang;
+			localStorage.setItem('userLang', lang);
+		});
 	});
 
 	onDestroy(() => {
@@ -30,4 +38,9 @@
 	<SecondaryPanel />
 	<button on:click={openDialog}>Open</button>
 	<Login bind:open />
+	<select bind:value={$locale}>
+		{#each $locales as locale}
+			<option value={locale}>{locale}</option>
+		{/each}
+	</select>
 </div>

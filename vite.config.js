@@ -11,8 +11,8 @@ export default defineConfig({
 	},
 	resolve: {
 		alias: {
-			'@': fileURLToPath(new URL('./src', import.meta.url)),
-		},
+			'@': fileURLToPath(new URL('./src', import.meta.url))
+		}
 	},
 	server: {
 		proxy: {
@@ -20,7 +20,7 @@ export default defineConfig({
 				target: env.VITE_BFF_BASE_URL,
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, '')
-			},
+			}
 		}
 	}
 });

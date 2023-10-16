@@ -3,4 +3,4 @@
 	const { user } = data;
 </script>
 
-<h1>Hello, { user.name }</h1>
+<h1>Hello, {user.name}</h1>

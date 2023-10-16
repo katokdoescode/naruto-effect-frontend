@@ -23,26 +23,18 @@
 	 *
 	 * @param {Event & { currentTarget: EventTarget & HTMLInputElement; }} event
 	 */
-	function  handleInput(event) {
-		const { currentTarget }  = event;
+	function handleInput(event) {
+		const { currentTarget } = event;
 
-    value = type.match(/^(number|range)$/)
-      ? currentTarget.value
-      : currentTarget.value;
-  };
+		value = type.match(/^(number|range)$/) ? currentTarget.value : currentTarget.value;
+	}
 </script>
 
 <label class="input">
-	<input
-		class="real-input"
-		type={type}
-		{placeholder}
-		{name}
-		on:input={handleInput}
-	/>
+	<input class="real-input" {type} {placeholder} {name} on:input={handleInput} />
 
 	<span class="label">
-		<slot name="label">{ name }</slot>
+		<slot name="label">{name}</slot>
 	</span>
 
 	<span class="error">
@@ -51,21 +43,21 @@
 </label>
 
 <style scoped>
-.input {
-	display: grid;
-	grid-template-columns: 1fr;
-	grid-template-rows: max-content 1fr max-content;
-}
+	.input {
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: max-content 1fr max-content;
+	}
 
-.label {
-	order: 1;
-}
+	.label {
+		order: 1;
+	}
 
-.real-input {
-	order: 2;
-}
+	.real-input {
+		order: 2;
+	}
 
-.error {
-	order: 3;
-}
+	.error {
+		order: 3;
+	}
 </style>
