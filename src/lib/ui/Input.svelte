@@ -18,6 +18,10 @@
 	 * @type {string}
 	 */
 	export let value = '';
+	/**
+	 * @type {string}
+	 */
+	export let autocomplete = 'off';
 
 	/**
 	 *
@@ -26,12 +30,21 @@
 	function handleInput(event) {
 		const { currentTarget } = event;
 
-		value = type.match(/^(number|range)$/) ? currentTarget.value : currentTarget.value;
+		value = type.match(/^(number|range)$/)
+			? currentTarget.value
+			: currentTarget.value;
 	}
 </script>
 
 <label class="input">
-	<input class="real-input" {type} {placeholder} {name} on:input={handleInput} />
+	<input
+		class="real-input"
+		{type}
+		{placeholder}
+		{name}
+		{autocomplete}
+		on:input={handleInput}
+	/>
 
 	<span class="label">
 		<slot name="label">{name}</slot>

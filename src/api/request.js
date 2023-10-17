@@ -39,7 +39,7 @@ export async function request(
 			: Object.create(null))
 	};
 
-	const url = `${config.baseURL}/${path}`;
+	const url = `${path}`;
 
 	// Use the provided fetch function here
 	return await fetch(url, conf).then((res) => res.json());

@@ -1,3 +1,3 @@
 <header>
-	<a href="#">CV</a>
+	<a href="/">CV</a>
 </header>

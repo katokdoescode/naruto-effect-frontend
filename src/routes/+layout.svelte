@@ -5,11 +5,32 @@
 	import SecondaryPanel from '$lib/modules/SecondaryPanel.svelte';
 	import Login from '$lib/modules/Login.svelte';
 	import { initHandlers, destroyHandlers } from '$lib/utils/keyboardHandler';
-	let open = false;
 	import { locale } from 'svelte-i18n';
+	import { enhance } from '$app/forms';
+
+	let open = false;
+
+	/**
+	 * @type {{ authorized: boolean; }}
+	 */
+	export let data;
+
+	let authorized = data?.authorized;
 
 	function openDialog() {
 		open = true;
+	}
+
+	function signOut() {
+		return async ({ result }) => {
+			if (result.success) {
+				authorized = false;
+			}
+		};
+	}
+
+	function authorize() {
+		authorized = true;
 	}
 
 	onMount(() => {
@@ -36,6 +57,12 @@
 	</Content>
 
 	<SecondaryPanel />
-	<button on:click={openDialog}>Open</button>
-	<Login bind:open />
+	{#if authorized}
+		<form method="POST" action="/api/signOut" use:enhance={signOut}>
+			<button type="submit">Sign Out</button>
+		</form>
+	{:else}
+		<button on:click={openDialog}>Sign In</button>
+	{/if}
+	<Login bind:open on:success={authorize} />
 </div>
