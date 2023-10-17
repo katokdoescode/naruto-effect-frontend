@@ -1,5 +1,5 @@
 :root {
-    color-scheme: var(--color-scheme);
+	color-scheme: var(--color-scheme);
 }
 
 h1,
@@ -92,23 +92,23 @@ abbr::after,
 time::after,
 hr::after,
 address::after {
-    outline-offset: 1px;
-    transition: color linear .1s;
+	outline-offset: 1px;
+	transition: color linear 0.1s;
 }
 
 body {
-    position: relative;
-    transition: background-color linear .5s;
-    background-color: var(--color-bg-main);
-    color: var(--color-main);
+	position: relative;
+	transition: background-color linear 0.5s;
+	background-color: var(--color-bg-main);
+	color: var(--color-main);
 }
 
 .vh {
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
+	clip: rect(0 0 0 0);
+	clip-path: inset(50%);
+	height: 1px;
+	overflow: hidden;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
 }
