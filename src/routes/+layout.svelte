@@ -6,7 +6,7 @@
 	import Login from '$lib/modules/Login.svelte';
 	import { initHandlers, destroyHandlers } from '$lib/utils/keyboardHandler';
 	let open = false;
-	import { locale, locales } from 'svelte-i18n';
+	import { locale } from 'svelte-i18n';
 
 	function openDialog() {
 		open = true;
@@ -38,9 +38,4 @@
 	<SecondaryPanel />
 	<button on:click={openDialog}>Open</button>
 	<Login bind:open />
-	<select bind:value={$locale}>
-		{#each $locales as locale}
-			<option value={locale}>{locale}</option>
-		{/each}
-	</select>
 </div>

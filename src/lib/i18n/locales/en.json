@@ -3,5 +3,14 @@
 	"password": "Password",
 	"signIn": "Sign In",
 	"signingIn": "Signing In",
-	"close": "Close"
+	"close": "Close",
+	"copyright": "All material on the site is the intellectual property of Naruto Effect members and may only be used with prior approval",
+	"legend": "Theme",
+	"btnLight": "Light",
+	"btnAuto": "Auto",
+	"btnDark": "Dark",
+	"scheme.auto": "Auto",
+	"scheme.dark": "Night",
+	"scheme.light": "Day",
+	"changeColorScheme": "Change color scheme"
 }

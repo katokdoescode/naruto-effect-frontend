@@ -1,0 +1,114 @@
+:root {
+    color-scheme: var(--color-scheme);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+blockquote,
+ol,
+ul,
+li,
+img,
+figure,
+figcaption,
+table,
+th,
+td,
+tr,
+thead,
+tbody,
+tfoot,
+code,
+pre,
+em,
+strong,
+abbr,
+time,
+hr,
+address,
+h1::before,
+h2::before,
+h3::before,
+h4::before,
+h5::before,
+h6::before,
+p::before,
+a::before,
+blockquote::before,
+ol::before,
+ul::before,
+li::before,
+img::before,
+figure::before,
+figcaption::before,
+table::before,
+th::before,
+td::before,
+tr::before,
+thead::before,
+tbody::before,
+tfoot::before,
+code::before,
+pre::before,
+em::before,
+strong::before,
+abbr::before,
+time::before,
+hr::before,
+address::before,
+h1::after,
+h2::after,
+h3::after,
+h4::after,
+h5::after,
+h6::after,
+p::after,
+a::after,
+blockquote::after,
+ol::after,
+ul::after,
+li::after,
+img::after,
+figure::after,
+figcaption::after,
+table::after,
+th::after,
+td::after,
+tr::after,
+thead::after,
+tbody::after,
+tfoot::after,
+code::after,
+pre::after,
+em::after,
+strong::after,
+abbr::after,
+time::after,
+hr::after,
+address::after {
+    outline-offset: 1px;
+    transition: color linear .1s;
+}
+
+body {
+    position: relative;
+    transition: background-color linear .5s;
+    background-color: var(--color-bg-main);
+    color: var(--color-main);
+}
+
+.vh {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
