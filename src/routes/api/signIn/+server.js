@@ -1,35 +1,31 @@
 import { json } from '@sveltejs/kit';
-import { auth } from '@/api/auth.js';
 import { VITE_BFF_BASE_URL } from '$env/static/private';
+import { Routes, AppError } from '@/lib/constants/index.js';
+import { validateUserData } from '@/lib/utils/validate.js';
+import { FetchData } from '@/lib/utils/fetchData.js';
 
-export async function POST({ cookies, request, fetch }) {
+export async function POST({ cookies, request }) {
 	const data = await request.formData();
 
 	const userData = {
-		email: data.get('email'),
-		password: data.get('password')
+		email: data.get('email') || '',
+		password: data.get('password') || ''
 	};
 
-	function validate() {
-		return Object.values(userData).every((field) => field);
-	}
-
-	if (!validate()) {
+	if (!validateUserData(userData))
 		return json({
 			success: false,
 			errorMessage: 'Fill the fields'
 		});
-	}
 
-	const { authToken } = await auth(userData, fetch, VITE_BFF_BASE_URL);
+	const url = VITE_BFF_BASE_URL + Routes.LOGIN;
+	// @ts-ignore
+	const { authToken } = await fetch(url, new FetchData({ data: userData }));
 
 	if (authToken) {
 		cookies.set('authToken', authToken, { path: '/' });
 		return json({ success: true });
 	} else {
-		return json({
-			success: false,
-			errorMessage: 'Email or password is not correct.'
-		});
+		return json(new AppError(false, 'Email or password is not correct.'));
 	}
 }
