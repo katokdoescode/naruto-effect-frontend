@@ -4,33 +4,32 @@ export class FetchData {
 	 * @param {{
 	 *  data?: object | unknown | undefined | any,
 	 *  token?: string | undefined,
-	 *  method?: string | undefined
+	 *  initMethod?: "GET" | "PUT" | "POST" | "PATCH" | "DELETE" | undefined
 	 * }} params
 	 */
-	constructor({ data, token, method }) {
+	constructor({ data, token, initMethod }) {
 		this.data = data || Object.create(null);
 		this.token = token || null;
-		this.method = method || 'GET';
+		this.initMethod = initMethod || 'GET';
 
-		this.createData();
+		if (this.token) {
+			this.headers['Authorization'] = this.token;
+		}
+
+		if (this.data && this.method === 'GET') this.initMethod = 'POST';
 	}
-
-	createData() {
-		const config = Object.create(null);
-		config.headers = {
+	get headers() {
+		return {
 			'Content-Type': 'application/json',
 			Accept: 'application/json'
 		};
-		if (this.token) {
-			config.headers['Authorization'] = this.token;
-		}
+	}
 
-		if (this.data && this.method === 'GET') this.method = 'POST';
+	get method() {
+		return this.initMethod;
+	}
 
-		return {
-			headers: config.headers,
-			method: this.method,
-			body: JSON.stringify(this.data)
-		};
+	get body() {
+		return JSON.stringify(this.data);
 	}
 }
