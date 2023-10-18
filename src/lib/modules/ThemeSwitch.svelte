@@ -2,13 +2,15 @@
 	import { _ } from 'svelte-i18n';
 	import { onMount } from 'svelte';
 	import { ColorSchemes } from '$lib/constants';
+	import { browser } from '$app/environment';
 
-	let scheme = null;
+	let scheme;
+	let isMounted = false;
 
 	onMount(() => {
 		// Get the initial scheme from localStorage or default to auto
-		scheme = localStorage.getItem('color-scheme') || 'auto';
-
+		scheme = localStorage.getItem('color-scheme') || ColorSchemes.AUTO;
+		isMounted = true;
 		updateTheme();
 	});
 
@@ -23,13 +25,13 @@
 			'link[href="styles/themes/dark.css"]'
 		);
 
-		if (scheme === 'auto') {
+		if (scheme === ColorSchemes.AUTO) {
 			lightStylesheet.media = '(prefers-color-scheme: light)';
 			darkStylesheet.media = '(prefers-color-scheme: dark)';
-		} else if (scheme === 'light') {
+		} else if (scheme === ColorSchemes.LIGHT) {
 			lightStylesheet.media = 'all';
 			darkStylesheet.media = 'not all';
-		} else if (scheme === 'dark') {
+		} else if (scheme === ColorSchemes.DARK) {
 			lightStylesheet.media = 'not all';
 			darkStylesheet.media = 'all';
 		}
@@ -44,7 +46,7 @@
 		scheme = availableSchemes[0];
 	}
 
-	$: if (scheme) updateTheme();
+	$: if (scheme && browser && isMounted) updateTheme();
 </script>
 
 <fieldset class="vh">
@@ -56,7 +58,7 @@
 		value="light"
 		bind:group={scheme}
 	/>
-	<label for="light" aria-label={$_('btnLight')} title={$_('btnLight')}>
+	<label for="light" aria-label={$_('scheme.light')} title={$_('scheme.light')}>
 		🌕
 	</label>
 
@@ -67,7 +69,7 @@
 		value="auto"
 		bind:group={scheme}
 	/>
-	<label for="auto" aria-label={$_('btnAuto')} title={$_('btnAuto')}>
+	<label for="auto" aria-label={$_('scheme.auto')} title={$_('scheme.auto')}>
 		🌗
 	</label>
 
@@ -78,7 +80,7 @@
 		value="dark"
 		bind:group={scheme}
 	/>
-	<label for="dark" aria-label={$_('btnDark')} title={$_('btnDark')}>
+	<label for="dark" aria-label={$_('scheme.dark')} title={$_('scheme.dark')}>
 		🌑
 	</label>
 </fieldset>

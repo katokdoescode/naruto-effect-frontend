@@ -9,6 +9,8 @@
 	"btnLight": "Light",
 	"btnAuto": "Auto",
 	"btnDark": "Dark",
+	"scheme.undefined": "Auto",
+	"scheme.null": "Auto",
 	"scheme.auto": "Auto",
 	"scheme.dark": "Night",
 	"scheme.light": "Day",

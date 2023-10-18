@@ -1,47 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="color-scheme" content="light dark" />
-		<meta
-			name="theme-color"
-			media="(prefers-color-scheme: light)"
-			content="#fff"
-		/>
-		<meta
-			name="theme-color"
-			media="(prefers-color-scheme: dark)"
-			content="#000"
-		/>
-		<link
-			rel="stylesheet"
-			href="styles/themes/light.css"
-			media="(prefers-color-scheme: light)"
-		/>
-		<link
-			rel="stylesheet"
-			href="styles/themes/dark.css"
-			media="(prefers-color-scheme: dark)"
-		/>
-		<link rel="stylesheet" href="styles/themes/light.css" media="print" />
-		<link rel="stylesheet" href="styles/global.css" />
+<html lang="ru">
 
-		<script type="text/javascript">
-			// Fallback for old browsers
-			if (matchMedia('(prefers-color-scheme: dark)').media === 'not all') {
-				document.documentElement.style.display = 'none';
-				document.head.insertAdjacentHTML(
-					'beforeend',
-					"<link rel='stylesheet' href='styles / themes / light.css' onload='document.documentElement.style.display ='''' > "
-				);
-			}
-		</script>
-		%sveltekit.head%
-	</head>
+<head>
+	<meta charset="utf-8" />
+	<link rel="icon" href="%sveltekit.assets%/favicon.png" />
+	<meta name="viewport" content="width=device-width" />
+	<meta name="color-scheme" content="light dark" />
+	<meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
+	<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
+	<script src="scripts/colorSchemeFallback.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="styles/themes/light.css" media="(prefers-color-scheme: light)" />
+	<link rel="stylesheet" href="styles/themes/dark.css" media="(prefers-color-scheme: dark)" />
+	<script src="scripts/colorCheme.js" type="text/javascript"></script>
+	<link rel="stylesheet" href="styles/themes/light.css" media="print" />
+	<link rel="stylesheet" href="styles/global.css" />
+	%sveltekit.head%
+</head>
 
-	<body data-sveltekit-preload-data="hover">
-		<div style="display: contents">%sveltekit.body%</div>
-	</body>
+<body data-sveltekit-preload-data="hover">
+	<div style="display: contents">%sveltekit.body%</div>
+</body>
+
 </html>

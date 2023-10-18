@@ -9,6 +9,8 @@
 	"btnLight": "Светлая",
 	"btnAuto": "Авто",
 	"btnDark": "Темная",
+	"scheme.null": "Авто",
+	"scheme.undefined": "Авто",
 	"scheme.auto": "Авто",
 	"scheme.dark": "Ночь",
 	"scheme.light": "День",
