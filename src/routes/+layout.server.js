@@ -1,8 +1,13 @@
-export function load({ cookies }) {
+export async function load({ cookies, fetch }) {
 	const authToken = cookies.get('authToken');
+	const { data: practices } = await fetch('/api/practices').then((res) =>
+		res.json()
+	);
 
-	if (authToken)
-		return {
-			authorized: true
-		};
+	const data = {
+		authorized: !!authToken,
+		practices
+	};
+
+	return data;
 }

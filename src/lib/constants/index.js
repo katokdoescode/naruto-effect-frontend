@@ -6,7 +6,8 @@ export const ColorSchemes = {
 
 export const Routes = {
 	LOGIN: 'auth/login',
-	USER: 'auth/me'
+	USER: 'auth/me',
+	PRACTICES: 'practices/'
 };
 
 export class AppError {

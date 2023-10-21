@@ -101,6 +101,7 @@ body {
 	transition: background-color linear 0.5s;
 	background-color: var(--color-bg-main);
 	color: var(--color-main);
+	margin: 0;
 }
 
 .vh {

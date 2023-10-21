@@ -5,7 +5,7 @@ export class FetchData {
 	 *  data?: object | unknown | undefined | any,
 	 *  token?: string | undefined,
 	 *  initMethod?: "GET" | "PUT" | "POST" | "PATCH" | "DELETE" | undefined
-	 * }} params
+	 * }?} params
 	 */
 	constructor({ data, token, initMethod }) {
 		this.data = data || Object.create(null);

@@ -1,11 +1,13 @@
 <script>
-	import { _ } from 'svelte-i18n';
-	import { onMount } from 'svelte';
-	import { ColorSchemes } from '$lib/constants';
 	import { browser } from '$app/environment';
+	import { ColorSchemes } from '$lib/constants';
+	import { onMount } from 'svelte';
+	import { _ } from 'svelte-i18n';
 
 	let scheme;
 	let isMounted = false;
+	const availableSchemes = Object.values(ColorSchemes);
+	$: schemeId = availableSchemes.findIndex((s) => s === scheme);
 
 	onMount(() => {
 		// Get the initial scheme from localStorage or default to auto
@@ -40,10 +42,10 @@
 	}
 
 	function switchNextTheme() {
-		const availableSchemes = Object.values(ColorSchemes).filter(
-			(s) => s !== scheme
-		);
-		scheme = availableSchemes[0];
+		if (schemeId === -1) return;
+		const newSchemeId =
+			schemeId >= availableSchemes.length - 1 ? 0 : schemeId + 1;
+		scheme = availableSchemes[newSchemeId];
 	}
 
 	$: if (scheme && browser && isMounted) updateTheme();

@@ -1,21 +1,22 @@
 <script>
-	import { onMount, onDestroy } from 'svelte';
-	import MainPanel from '$lib/modules/MainPanel.svelte';
-	import Content from '$lib/modules/Content.svelte';
-	import SecondaryPanel from '$lib/modules/SecondaryPanel.svelte';
-	import Login from '$lib/modules/Login.svelte';
-	import { initHandlers, destroyHandlers } from '$lib/utils/keyboardHandler';
-	import { locale } from 'svelte-i18n';
 	import { enhance } from '$app/forms';
+	import Content from '$lib/modules/Content.svelte';
+	import Login from '$lib/modules/Login.svelte';
+	import MainPanel from '$lib/modules/MainPanel.svelte';
+	import SecondaryPanel from '$lib/modules/SecondaryPanel.svelte';
+	import { destroyHandlers, initHandlers } from '$lib/utils/keyboardHandler';
+	import { onDestroy, onMount } from 'svelte';
+	import { locale } from 'svelte-i18n';
 
 	let open = false;
 
 	/**
-	 * @type {{ authorized: boolean; }}
+	 * @type {{ authorized: boolean, practices: Array<object> }}
 	 */
 	export let data;
 
 	let authorized = data?.authorized;
+	let practices = data?.practices;
 
 	function openDialog() {
 		open = true;
@@ -50,7 +51,7 @@
 </script>
 
 <div class="screen home">
-	<MainPanel />
+	<MainPanel {practices} />
 
 	<Content>
 		<slot />

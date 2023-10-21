@@ -14,5 +14,9 @@
 	"scheme.auto": "Auto",
 	"scheme.dark": "Night",
 	"scheme.light": "Day",
-	"changeColorScheme": "Change color scheme"
+	"changeColorScheme": "Change color scheme",
+	"menu.open": "Open menu",
+	"menu.close": "Close menu",
+	"narutoEffect": "Naruto Effect",
+	"mainMenu.practices": "Practices"
 }

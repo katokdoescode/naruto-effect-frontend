@@ -14,5 +14,9 @@
 	"scheme.auto": "Авто",
 	"scheme.dark": "Ночь",
 	"scheme.light": "День",
-	"changeColorScheme": "Изменить цветовую схему"
+	"changeColorScheme": "Изменить цветовую схему",
+	"menu.open": "Открыть меню",
+	"menu.close": "Закрыть меню",
+	"narutoEffect": "Эффект Наруто",
+	"mainMenu.practices": "Практики"
 }
