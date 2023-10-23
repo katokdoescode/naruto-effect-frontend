@@ -2,8 +2,148 @@
 	{
 		"name": {
 			"ru": "Авторисунок",
-			"en": "Autodrawing"
+			"en": "Autopicture"
 		},
 		"slug": "avtorisunok"
+	},
+	{
+		"name": {
+			"ru": "Движенческие каракули",
+			"en": "Движенческие каракули"
+		},
+		"slug": "dvizh-karakuli"
+	},
+	{
+		"name": {
+			"ru": "Едим лапшу",
+			"en": "Едим лапшу"
+		},
+		"slug": "edim-lapshu"
+	},
+	{
+		"name": {
+			"ru": "Едим торт",
+			"en": "Едим торт"
+		},
+		"slug": "edim-tort"
+	},
+	{
+		"name": {
+			"ru": "Закрашивание",
+			"en": "Закрашивание"
+		},
+		"slug": "zakrashivanie"
+	},
+	{
+		"name": {
+			"ru": "Игра без названия",
+			"en": "Игра без названия"
+		},
+		"slug": "igra-bez-nazvaniya"
+	},
+	{
+		"name": {
+			"ru": "Квартирник",
+			"en": "Квартирник"
+		},
+		"slug": "kvartirnik"
+	},
+	{
+		"name": {
+			"ru": "Лежание на диване",
+			"en": "Лежание на диване"
+		},
+		"slug": "lezhanie-na-divabe"
+	},
+	{
+		"name": {
+			"ru": "Молчание",
+			"en": "Молчание"
+		},
+		"slug": "molchanka"
+	},
+	{
+		"name": {
+			"ru": "Онтогенез в филогенезе",
+			"en": "Онтогенез в филогенезе"
+		},
+		"slug": "ontoginez-v-filogineze"
+	},
+	{
+		"name": {
+			"ru": "От Ги Дебора до УУУ",
+			"en": "От Ги Дебора до УУУ"
+		},
+		"slug": "ot-gi-de-bora-do-uuu"
+	},
+	{
+		"name": {
+			"ru": "Представление",
+			"en": "Представление"
+		},
+		"slug": "predstavlenie"
+	},
+	{
+		"name": {
+			"ru": "Прогулка",
+			"en": "Прогулка"
+		},
+		"slug": "progulka"
+	},
+	{
+		"name": {
+			"ru": "Смена аватарки",
+			"en": "Смена аватарки"
+		},
+		"slug": "smena-avatarki"
+	},
+	{
+		"name": {
+			"ru": "Смотрим в окно",
+			"en": "Смотрим в окно"
+		},
+		"slug": "smotrim-v-okno"
+	},
+	{
+		"name": {
+			"ru": "Спим вместе",
+			"en": "Спим вместе"
+		},
+		"slug": "spim-vmeste"
+	},
+	{
+		"name": {
+			"ru": "Сплетни и рукоделие",
+			"en": "Сплетни и рукоделие"
+		},
+		"slug": "spletni-i-rukodelie"
+	},
+	{
+		"name": {
+			"ru": "Трек дня",
+			"en": "Трек дня"
+		},
+		"slug": "trek-dnya"
+	},
+	{
+		"name": {
+			"ru": "Уточнение границ",
+			"en": "Уточнение границ"
+		},
+		"slug": "utonchenie-granic"
+	},
+	{
+		"name": {
+			"ru": "Хот Комментс",
+			"en": "Хот Комментс"
+		},
+		"slug": "hot-komments"
+	},
+	{
+		"name": {
+			"ru": "Эльфинг",
+			"en": "Эльфинг"
+		},
+		"slug": "elfing"
 	}
 ]

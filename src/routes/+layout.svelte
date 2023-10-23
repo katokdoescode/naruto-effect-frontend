@@ -11,12 +11,13 @@
 	let open = false;
 
 	/**
-	 * @type {{ authorized: boolean, practices: Array<object> }}
+	 * @type {{ authorized: boolean, practices: Array<object>, participants: Array<object> }}
 	 */
 	export let data;
 
 	let authorized = data?.authorized;
 	let practices = data?.practices;
+	let participants = data?.participants;
 
 	function openDialog() {
 		open = true;
@@ -35,7 +36,7 @@
 	}
 
 	onMount(() => {
-		initHandlers;
+		initHandlers(window);
 		const settedLocale = localStorage.getItem('userLang');
 		if (settedLocale) locale.set(settedLocale);
 
@@ -57,7 +58,7 @@
 		<slot />
 	</Content>
 
-	<SecondaryPanel />
+	<SecondaryPanel {participants} />
 	{#if authorized}
 		<form method="POST" action="/api/signOut" use:enhance={signOut}>
 			<button type="submit">Sign Out</button>

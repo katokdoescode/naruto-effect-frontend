@@ -4,9 +4,14 @@ export async function load({ cookies, fetch }) {
 		res.json()
 	);
 
+	const { data: participants } = await fetch('/api/participants').then((res) =>
+		res.json()
+	);
+
 	const data = {
 		authorized: !!authToken,
-		practices
+		practices,
+		participants
 	};
 
 	return data;
