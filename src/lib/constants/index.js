@@ -7,7 +7,9 @@ export const ColorSchemes = {
 export const Routes = {
 	LOGIN: 'auth/login',
 	USER: 'auth/me',
-	PRACTICES: 'practices/'
+	PRACTICES: 'practice',
+	PARTICIPANTS: 'participant',
+	DOCUMENTS: 'document'
 };
 
 export class AppError {

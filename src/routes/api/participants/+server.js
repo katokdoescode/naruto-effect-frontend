@@ -1,20 +1,12 @@
-import { NODE_ENV, VITE_BFF_BASE_URL } from '$env/static/private';
+import { VITE_BFF_BASE_URL } from '$env/static/private';
 import { AppError, Routes } from '@/lib/constants/index.js';
 import { json } from '@sveltejs/kit';
-import participantsMock from './mock.json';
 
 export async function GET() {
-	/**
-	 * @type {any[] | Response}
-	 */
-	let participants = [];
+	const url = VITE_BFF_BASE_URL + Routes.PARTICIPANTS;
 
-	if (NODE_ENV === 'development') {
-		participants = participantsMock;
-	} else {
-		const url = VITE_BFF_BASE_URL + Routes.participants;
-		participants = await fetch(url);
-	}
+	/** @type {Participants} */
+	const participants = await fetch(url).then((res) => res.json());
 
 	if (participants) {
 		return json({ success: true, data: participants });

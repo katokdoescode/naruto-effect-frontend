@@ -14,7 +14,9 @@
 		<ul class="links-list">
 			{#each practices as menuItem}
 				<li>
-					<a href={`practices/${menuItem.slug}`}>{menuItem.name[lang]}</a>
+					<a href={`practices/${menuItem.slug[lang]}`} hreflang={lang}>
+						{menuItem.name[lang]}
+					</a>
 				</li>
 			{/each}
 		</ul>
