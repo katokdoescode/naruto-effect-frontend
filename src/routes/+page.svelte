@@ -1,4 +1,13 @@
-<h1>Welcome to SvelteKit</h1>
-<p>
-	Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation
-</p>
+<script>
+	/* eslint-disable svelte/no-at-html-tags */
+	/** @type {import('./$types').PageData} */
+	export let data;
+
+	/** @type {MainPageData} */
+	const pageData = data.pageData;
+</script>
+
+<h1>{pageData.title}</h1>
+<article>
+	{@html pageData.text}
+</article>

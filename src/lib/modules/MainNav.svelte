@@ -1,5 +1,7 @@
 <script>
 	import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
+	import LangSwitch from './LangSwitch.svelte';
+
 	import { _, locale } from 'svelte-i18n';
 	export let isMenuOpened = false;
 	export let practices = [];
@@ -21,6 +23,14 @@
 			{/each}
 		</ul>
 	</ShadowWrapper>
+
+	<section class="contacts" aria-label="Контакты">
+		<a href="https://www.youtube.com/@narutoeffect" target="_blank"
+			>YouTube ЭН</a
+		>
+		<LangSwitch id="change-lang" />
+		<a href="https://t.me/narutoeffect" target="_blank">Телеграм ЭН</a>
+	</section>
 </nav>
 
 <style>
@@ -70,5 +80,26 @@
 
 	.main-nav .links-list li a {
 		text-wrap: balance;
+	}
+
+	.contacts {
+		box-sizing: border-box;
+		padding: 35px 0;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+	}
+
+	@media (width <=1018px) {
+		.contacts {
+			transition: var(--appear-transition);
+			height: 90px;
+			bottom: 0;
+		}
+	}
+
+	.contacts a {
+		font-size: var(--font-second-menu-size);
+		text-decoration: none;
 	}
 </style>

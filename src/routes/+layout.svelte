@@ -10,9 +10,7 @@
 
 	let open = false;
 
-	/**
-	 * @type {{ authorized: boolean, practices: Array<object>, participants: Array<object> }}
-	 */
+	/** @type {{ authorized: boolean, practices: Array<object>, participants: Array<object> }} */
 	export let data;
 
 	let authorized = data?.authorized;
@@ -56,15 +54,17 @@
 
 	<Content>
 		<slot />
+		<svelte:fragment slot="login">
+			{#if authorized}
+				<form method="POST" action="/api/signOut" use:enhance={signOut}>
+					<button type="submit">Sign Out</button>
+				</form>
+			{:else}
+				<button on:click={openDialog}>Sign In</button>
+			{/if}
+			<Login bind:open on:success={authorize} />
+		</svelte:fragment>
 	</Content>
 
 	<SecondaryPanel {participants} />
-	{#if authorized}
-		<form method="POST" action="/api/signOut" use:enhance={signOut}>
-			<button type="submit">Sign Out</button>
-		</form>
-	{:else}
-		<button on:click={openDialog}>Sign In</button>
-	{/if}
-	<Login bind:open on:success={authorize} />
 </div>

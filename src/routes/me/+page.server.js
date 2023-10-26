@@ -1,7 +1,7 @@
-import { error } from '@sveltejs/kit';
-import { FetchData } from '@/lib/utils/fetchData.js';
-import { Routes } from '@/lib/constants/index.js';
 import { VITE_BFF_BASE_URL } from '$env/static/private';
+import { Routes } from '$lib/constants/index.js';
+import { FetchData } from '$lib/utils/fetchData.js';
+import { error } from '@sveltejs/kit';
 
 export async function load({ cookies }) {
 	const url = VITE_BFF_BASE_URL + Routes.USER;

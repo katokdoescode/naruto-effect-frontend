@@ -9,7 +9,8 @@ export const Routes = {
 	USER: 'auth/me',
 	PRACTICES: 'practice',
 	PARTICIPANTS: 'participant',
-	DOCUMENTS: 'document'
+	DOCUMENTS: 'document',
+	MAIN_PAGE: 'mainpage'
 };
 
 export class AppError {
@@ -17,10 +18,17 @@ export class AppError {
 		this.createError(success, errorMessage);
 	}
 
+	/**
+	 *
+	 * @param {boolean} success
+	 * @param {string} errorMessage
+	 * @returns {AppErrorType}
+	 */
 	createError(success, errorMessage) {
 		return {
 			success,
-			errorMessage
+			errorMessage,
+			data: undefined
 		};
 	}
 }

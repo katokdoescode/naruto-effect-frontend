@@ -1,3 +1,6 @@
+@import 'fonts.css';
+@import 'vars.vss';
+
 :root {
 	color-scheme: var(--color-scheme);
 }
@@ -94,14 +97,33 @@ hr::after,
 address::after {
 	outline-offset: 1px;
 	transition: color linear 0.1s;
+	font-family: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong,
+b {
+	font-weight: 800;
 }
 
 body {
+	font-family: 'Gilroy', 'sans-serif';
+	font-weight: 300;
 	position: relative;
 	transition: background-color linear 0.5s;
 	background-color: var(--color-bg-main);
 	color: var(--color-main);
 	margin: 0;
+}
+
+a {
+	text-decoration: none;
+	color: var(--color-main);
 }
 
 .vh {

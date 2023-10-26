@@ -1,5 +1,5 @@
 import { VITE_BFF_BASE_URL } from '$env/static/private';
-import { AppError, Routes } from '@/lib/constants/index.js';
+import { AppError, Routes } from '$lib/constants/index.js';
 import { json } from '@sveltejs/kit';
 
 export async function GET() {

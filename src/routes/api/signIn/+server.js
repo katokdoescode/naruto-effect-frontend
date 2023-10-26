@@ -1,8 +1,8 @@
-import { json } from '@sveltejs/kit';
 import { VITE_BFF_BASE_URL } from '$env/static/private';
-import { Routes, AppError } from '@/lib/constants/index.js';
-import { validateUserData } from '@/lib/utils/validate.js';
-import { FetchData } from '@/lib/utils/fetchData.js';
+import { AppError, Routes } from '$lib/constants/index.js';
+import { FetchData } from '$lib/utils/fetchData.js';
+import { validateUserData } from '$lib/utils/validate.js';
+import { json } from '@sveltejs/kit';
 
 export async function POST({ cookies, request }) {
 	const data = await request.formData();

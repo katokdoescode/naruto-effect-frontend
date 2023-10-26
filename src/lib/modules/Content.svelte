@@ -9,4 +9,5 @@
 	<slot />
 </main>
 
+<slot name="login" />
 <Footer />

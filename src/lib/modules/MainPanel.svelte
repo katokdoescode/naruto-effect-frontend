@@ -2,8 +2,6 @@
 	import MainNav from '$lib/modules/MainNav.svelte';
 	import Burger from '$lib/ui/Burger.svelte';
 	import { _ } from 'svelte-i18n';
-	import LangSwitch from './LangSwitch.svelte';
-
 	export let practices;
 
 	$: isMenuOpened = false;
@@ -25,18 +23,11 @@
 	</div>
 
 	<MainNav {practices} {isMenuOpened} />
-
-	<section class="contacts" aria-label="Контакты">
-		<a href="https://www.youtube.com/@narutoeffect" target="_blank"
-			>YouTube ЭН</a
-		>
-		<LangSwitch id="change-lang" />
-		<a href="https://t.me/narutoeffect" target="_blank">Телеграм ЭН</a>
-	</section>
 </header>
 
 <style>
 	#panel-main {
+		--initial-padding-top: 50px;
 		--appear-delay: 0.13s;
 		--appear-timing: 0.3s;
 		--appear-transition: opacity var(--appear-timing) ease-in-out
@@ -54,6 +45,9 @@
 			background-color: var(--color-bg-main);
 			width: 100%;
 			position: fixed;
+			padding-left: 15px;
+			padding-right: 15px;
+			box-sizing: border-box;
 			transition: max-height var(--appear-timing) ease-in-out;
 		}
 
@@ -92,37 +86,20 @@
 		text-decoration: none;
 	}
 
-	#panel-main .contacts {
-		box-sizing: border-box;
-		padding: 35px 0;
-		display: flex;
-		justify-content: space-between;
-		flex-wrap: wrap;
-	}
-
-	@media (width <=1018px) {
-		#panel-main .contacts {
-			transition: var(--appear-transition);
-			height: 90px;
-			bottom: 0;
-		}
-	}
-
 	@media (width <= 1018px) {
-		#panel-main[data-menu-is-opened='false'] #panel-main .contacts,
-		#panel-main:has(.checkbox:not(:checked)) #panel-main .contacts {
+		:global(
+				#panel-main[data-menu-is-opened='false'] .main-nav .contacts,
+				#panel-main:has(.checkbox:not(:checked)) .main-nav .contacts
+			) {
 			visibility: hidden;
 			opacity: 0;
 		}
 
-		#panel-main[data-menu-is-opened='true'] #panel-main .contacts,
-		#panel-main:has(.checkbox:checked) #panel-main .contacts {
+		:global(
+				#panel-main[data-menu-is-opened='true'] .main-nav .contacts,
+				#panel-main:has(.checkbox:checked) .main-nav .contacts
+			) {
 			opacity: 1;
 		}
-	}
-
-	#panel-main .contacts a {
-		font-size: var(--font-second-menu-size);
-		text-decoration: none;
 	}
 </style>
