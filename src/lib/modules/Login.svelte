@@ -1,15 +1,15 @@
 <script>
 	import { enhance } from '$app/forms';
-	import Input from '$lib/ui/Input.svelte';
 	import Button from '$lib/ui/Button.svelte';
-	import { _ } from 'svelte-i18n';
+	import Input from '$lib/ui/Input.svelte';
 	import { createEventDispatcher } from 'svelte';
+	import { _ } from 'svelte-i18n';
 	const dispatch = createEventDispatcher();
 	/**
 	 * @type {boolean}
 	 */
 	export let open = false;
-
+	export let authorized = false;
 	let isLoading = false;
 	let errorMessage;
 
@@ -53,6 +53,9 @@
 		>
 		{#if !!errorMessage}
 			<span>{errorMessage}</span>
+		{/if}
+		{#if authorized}
+			<span>Already authorized</span>
 		{/if}
 	</form>
 	<form

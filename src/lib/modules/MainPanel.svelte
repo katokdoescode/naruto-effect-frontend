@@ -2,6 +2,7 @@
 	import Logo from '$lib/modules/Logo.svelte';
 	import MainNav from '$lib/modules/MainNav.svelte';
 	export let practices;
+	export let socialLinks;
 </script>
 
 <header
@@ -11,7 +12,9 @@
 		<Logo />
 	</div>
 
-	<MainNav {practices} />
+	<MainNav
+		{practices}
+		{socialLinks} />
 </header>
 
 <style>

@@ -1,5 +1,4 @@
 <script>
-	import { enhance } from '$app/forms';
 	import Content from '$lib/modules/Content.svelte';
 	import Login from '$lib/modules/Login.svelte';
 	import MainPanel from '$lib/modules/MainPanel.svelte';
@@ -8,8 +7,6 @@
 	import { destroyHandlers, initHandlers } from '$lib/utils/keyboardHandler';
 	import { onDestroy, onMount } from 'svelte';
 	import { locale } from 'svelte-i18n';
-
-	let open = false;
 
 	/** @type {{ authorized: boolean, practices: Array<object>, participants: Array<object>, pageData: MainPageData }} */
 	export let data;
@@ -20,17 +17,7 @@
 	let socialLinks = data?.pageData?.socialLinks;
 	let participateLink = data?.pageData?.participateLink;
 
-	function openDialog() {
-		open = true;
-	}
-
-	function signOut() {
-		return async ({ result }) => {
-			if (result.success) {
-				authorized = false;
-			}
-		};
-	}
+	let open = false;
 
 	function authorize() {
 		authorized = true;
@@ -53,7 +40,9 @@
 </script>
 
 <div class="screen main-layout">
-	<MainPanel {practices} />
+	<MainPanel
+		{practices}
+		{socialLinks} />
 	<MobileHeader
 		{participants}
 		{participateLink}
@@ -63,17 +52,8 @@
 	<Content>
 		<slot />
 		<svelte:fragment slot="login">
-			{#if authorized}
-				<form
-					action="/api/signOut"
-					method="POST"
-					use:enhance={signOut}>
-					<button type="submit">Sign Out</button>
-				</form>
-			{:else}
-				<button on:click={openDialog}>Sign In</button>
-			{/if}
 			<Login
+				{authorized}
 				bind:open
 				on:success={authorize} />
 		</svelte:fragment>

@@ -13,6 +13,7 @@ module.exports = {
 	},
 
 	rules: {
+		'no-console': ['error', { allow: ['warn', 'error'] }],
 		'no-trailing-spaces': 'off', // Don't need ESLint's no-trailing-spaces rule, so turn it off.
 		'svelte/no-trailing-spaces': ['error'],
 		'svelte/shorthand-directive': ['error'],

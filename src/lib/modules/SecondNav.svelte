@@ -31,7 +31,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 15px;
-		padding-top: clamp(60px, 12svh, 140px);
+		padding-top: clamp(60px, 17.5svh, 175px);
 	}
 
 	@media (width <=1018px) {
@@ -48,6 +48,9 @@
 	}
 
 	.second-nav .list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
 		display: flex;
 		flex-direction: column;
 		gap: 14px;
@@ -68,7 +71,7 @@
 		max-width: var(--max-panel-second-section-width);
 		width: 100%;
 		height: 114px;
-		bottom: 57px;
+		bottom: 94px;
 		background: linear-gradient(
 			to bottom,
 			rgba(255, 255, 255, 0) 0%,
@@ -80,5 +83,6 @@
 	.second-nav .list li {
 		margin: 0;
 		font-size: var(--font-panel-second-menu-size);
+		font-weight: var(--font-menu-weight);
 	}
 </style>

@@ -20,7 +20,7 @@
 	#panel-content {
 		background-color: rgba(100, 100, 200, 0.2);
 		display: grid;
-		grid-template-rows: minmax(0, 1fr) max-content;
+		grid-template-rows: max-content minmax(0, 1fr) max-content;
 	}
 	.main-page-content::-webkit-scrollbar {
 		display: none;

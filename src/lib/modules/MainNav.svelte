@@ -1,9 +1,9 @@
 <script>
 	import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
-	import LangSwitch from './LangSwitch.svelte';
 
 	import { _, locale } from 'svelte-i18n';
 	export let practices = [];
+	export let socialLinks = [];
 	let lang;
 
 	locale.subscribe((l) => (lang = l));
@@ -33,13 +33,17 @@
 <section
 	class="contacts no-mobile"
 	aria-label="Контакты">
-	<a
-		href="https://www.youtube.com/@narutoeffect"
-		target="_blank">YouTube ЭН</a>
-	<LangSwitch id="change-lang" />
-	<a
-		href="https://t.me/narutoeffect"
-		target="_blank">Телеграм ЭН</a>
+	{#if socialLinks}
+		{#each socialLinks as { link, name }}
+			<a
+				href={link}
+				referrerpolicy="no-referrer"
+				rel="me"
+				target="_blank">
+				{name[lang]}
+			</a>
+		{/each}
+	{/if}
 </section>
 
 <style scoped>
@@ -100,6 +104,7 @@
 		box-sizing: border-box;
 		padding: 40px 0;
 		flex-wrap: wrap;
+		font-weight: var(--font-menu-weight);
 	}
 	.contacts a {
 		font-size: var(--font-second-menu-size);

@@ -17,8 +17,6 @@ export async function load({ cookies, fetch }) {
 		errorMessage
 	} = await fetch('/api/mainPage').then((res) => res.json());
 
-	console.debug(pageData);
-
 	if (!success) error(500, errorMessage);
 
 	const data = {
