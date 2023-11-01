@@ -19,31 +19,8 @@
 
 <style>
 	#panel-second {
-		flex: 1 1 var(--min-right-section-width);
-		padding: 0 0 0 var(--sections-padding);
-		max-width: var(--max-right-section-width);
-		min-width: var(--min-right-section-width);
-
+		background-color: rgba(100, 100, 100, 0.2);
 		display: grid;
 		grid-template-rows: max-content minmax(0px, 1fr) max-content;
-		padding-top: calc(var(--initial-padding-top) + 10px);
-		padding-bottom: 38px;
-	}
-
-	@media (width <= 1018px) {
-		#panel-second {
-			padding-bottom: 66px;
-		}
-	}
-
-	.service-link {
-		font-size: var(--font-panel-second-menu-size);
-		text-decoration: none;
-	}
-
-	@media (width <=1018px) {
-		.service-link {
-			display: none;
-		}
 	}
 </style>

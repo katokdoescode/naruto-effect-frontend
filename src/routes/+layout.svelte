@@ -86,12 +86,9 @@
 			align-items: stretch;
 		}
 	}
-	:global(.panel) {
-		padding: 0 var(--sections-padding);
-	}
 
 	@media (width <= 1018px) {
-		:global(.main-section .panel) {
+		:global(.main-layout .panel) {
 			flex: 1 0 auto;
 			width: 100%;
 			padding: 0;
@@ -99,9 +96,5 @@
 			min-width: unset;
 			overflow: auto;
 		}
-	}
-
-	:global(html:has(.menu-btn input:checked)) {
-		overflow: hidden;
 	}
 </style>

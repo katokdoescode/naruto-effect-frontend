@@ -5,7 +5,6 @@
 <style scoped>
 	.content-header {
 		width: 100%;
-		background-color: var(--color-bg-main);
-		padding-top: calc(var(--initial-padding-top) + 10px);
+		background-color: rgba(255, 100, 100, 0.2);
 	}
 </style>

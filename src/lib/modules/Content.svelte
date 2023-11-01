@@ -16,37 +16,16 @@
 
 <style scoped>
 	#panel-content {
-		flex: 1 1 var(--min-center-section-width);
-		padding: 0 var(--sections-padding);
-		max-width: var(--max-center-section-width);
-		min-width: var(--min-center-section-width);
-	}
-
-	#panel-content {
+		background-color: rgba(100, 100, 200, 0.2);
 		display: grid;
 		grid-template-rows: minmax(0, 1fr) max-content;
 	}
-
-	@media (width <= 1018px) {
-		#panel-content {
-			padding-top: var(--left-section-span-height);
-		}
-	}
-
 	.main-page-content::-webkit-scrollbar {
 		display: none;
 	}
-
 	.main-page-content {
+		background-color: rgba(100, 200, 200, 0.2);
 		overflow: hidden auto;
-		padding-top: calc(var(--initial-padding-top) + 40px);
-		padding-bottom: 114px;
 		scrollbar-width: none;
-	}
-
-	@media (width <=1018px) {
-		.main-page-content {
-			padding-bottom: 0;
-		}
 	}
 </style>
