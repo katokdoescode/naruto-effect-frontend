@@ -38,11 +38,11 @@
 
 <label class="input">
 	<input
-		class="real-input"
-		{type}
-		{placeholder}
 		{name}
+		class="real-input"
 		{autocomplete}
+		{placeholder}
+		{type}
 		on:input={handleInput}
 	/>
 

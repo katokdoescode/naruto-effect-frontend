@@ -6,7 +6,9 @@
 	export let participants = [];
 </script>
 
-<aside id="panel-second" class="panel no-mobile">
+<aside
+	id="panel-second"
+	class="panel no-mobile">
 	<div class="service-link">
 		<LangSwitch id="change-lang-panel-second" />
 		<ThemeSwitch />
@@ -14,7 +16,9 @@
 
 	<SecondNav {participants} />
 
-	<a href="/" class="service-link">Принять участие</a>
+	<a
+		class="service-link"
+		href="/">Принять участие</a>
 </aside>
 
 <style>

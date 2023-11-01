@@ -36,17 +36,28 @@
 </script>
 
 <dialog {open}>
-	<form method="post" action="/api/signIn" use:enhance={signIn}>
-		<Input type="email" name="email" autocomplete="email" />
-		<Input type="password" name="password" autocomplete="password" />
+	<form
+		action="/api/signIn"
+		method="post"
+		use:enhance={signIn}>
+		<Input
+			name="email"
+			autocomplete="email"
+			type="email" />
+		<Input
+			name="password"
+			autocomplete="password"
+			type="password" />
 		<Button type="submit"
-			>{isLoading ? `${$_('signingIn')}...` : $_('signIn')}</Button
+		>{isLoading ? `${$_('signingIn')}...` : $_('signIn')}</Button
 		>
 		{#if !!errorMessage}
 			<span>{errorMessage}</span>
 		{/if}
 	</form>
-	<form method="dialog" on:submit={closeModal}>
+	<form
+		method="dialog"
+		on:submit={closeModal}>
 		<button type="submit">{$_('close')}</button>
 	</form>
 </dialog>

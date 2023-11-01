@@ -7,11 +7,14 @@
 	locale.subscribe((l) => (lang = l));
 </script>
 
-<nav id="second-menu" class="second-nav" {...$$restProps}>
+<nav
+	id="second-menu"
+	class="second-nav"
+	{...$$restProps}>
 	<h2 class="title">{$_('mainMenu.participants')}:</h2>
 	<ShadowWrapper
-		noTop={participants.length <= 2}
 		noBottom={participants.length <= 2}
+		noTop={participants.length <= 2}
 	>
 		<ul class="list">
 			{#each participants as menuItem}

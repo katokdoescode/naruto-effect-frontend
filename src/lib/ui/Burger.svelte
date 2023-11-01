@@ -11,13 +11,16 @@
 <label
 	id="control-burger-menu"
 	class={`menu-btn ${isOpened ? 'close' : ''}`}
-	title={$_('menu.open')}
-	aria-label={$_('menu.open')}
-	aria-expanded={isOpened}
 	aria-controls="burger-menu"
+	aria-expanded={isOpened}
+	aria-label={$_('menu.open')}
+	title={$_('menu.open')}
 	{...$$restProps}
 >
-	<input type="checkbox" class="checkbox vh" bind:checked={isOpened} />
+	<input
+		class="checkbox vh"
+		type="checkbox"
+		bind:checked={isOpened} />
 </label>
 
 <style scoped>

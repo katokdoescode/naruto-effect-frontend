@@ -3,7 +3,9 @@
 	export let id;
 </script>
 
-<select {id} bind:value={$locale}>
+<select
+	{id}
+	bind:value={$locale}>
 	{#each $locales as locale}
 		<option value={locale}>{locale}</option>
 	{/each}

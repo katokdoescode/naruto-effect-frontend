@@ -21,7 +21,12 @@
 	}
 </script>
 
-<button {id} {type} class={classes} {...$$restProps} on:click={click}>
+<button
+	{id}
+	class={classes}
+	{type}
+	{...$$restProps}
+	on:click={click}>
 	<slot />
 </button>
 

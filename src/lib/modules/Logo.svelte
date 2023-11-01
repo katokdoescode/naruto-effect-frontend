@@ -2,7 +2,9 @@
 	import { _ } from 'svelte-i18n';
 </script>
 
-<a class="logo" href="/">{$_('narutoEffect')}</a>
+<a
+	class="logo"
+	href="/">{$_('narutoEffect')}</a>
 
 <style scoped>
 	.logo {

@@ -56,38 +56,49 @@
 	<legend>{$_('legend')}</legend>
 	<input
 		id="light"
-		type="radio"
 		name="color-scheme"
+		type="radio"
 		value="light"
 		bind:group={scheme}
 	/>
-	<label for="light" aria-label={$_('scheme.light')} title={$_('scheme.light')}>
+	<label
+		aria-label={$_('scheme.light')}
+		for="light"
+		title={$_('scheme.light')}>
 		🌕
 	</label>
 
 	<input
 		id="auto"
-		type="radio"
 		name="color-scheme"
+		type="radio"
 		value="auto"
 		bind:group={scheme}
 	/>
-	<label for="auto" aria-label={$_('scheme.auto')} title={$_('scheme.auto')}>
+	<label
+		aria-label={$_('scheme.auto')}
+		for="auto"
+		title={$_('scheme.auto')}>
 		🌗
 	</label>
 
 	<input
 		id="dark"
-		type="radio"
 		name="color-scheme"
+		type="radio"
 		value="dark"
 		bind:group={scheme}
 	/>
-	<label for="dark" aria-label={$_('scheme.dark')} title={$_('scheme.dark')}>
+	<label
+		aria-label={$_('scheme.dark')}
+		for="dark"
+		title={$_('scheme.dark')}>
 		🌑
 	</label>
 </fieldset>
 
-<Button on:click={switchNextTheme} aria-label={$_('changeColorScheme')}>
+<Button
+	aria-label={$_('changeColorScheme')}
+	on:click={switchNextTheme}>
 	{$_(`scheme.${scheme}`)}
 </Button>

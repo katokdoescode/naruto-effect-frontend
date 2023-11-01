@@ -3,7 +3,9 @@
 	import Header from './Header.svelte';
 </script>
 
-<section id="panel-content" class="panel">
+<section
+	id="panel-content"
+	class="panel">
 	<Header />
 
 	<main class="main-page-content">

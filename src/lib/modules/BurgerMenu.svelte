@@ -13,12 +13,19 @@
 	export let participateLink = null;
 </script>
 
-<div id="burger-menu" class="burger-menu" {...$$props}>
+<div
+	id="burger-menu"
+	class="burger-menu"
+	{...$$props}>
 	{#if socialLinks}
 		<ul class="links-list">
 			{#each socialLinks as { link, name }}
 				<li>
-					<a target="_blank" referrerpolicy="no-referrer" rel="me" href={link}>
+					<a
+						href={link}
+						referrerpolicy="no-referrer"
+						rel="me"
+						target="_blank">
 						{name[lang]}
 					</a>
 				</li>

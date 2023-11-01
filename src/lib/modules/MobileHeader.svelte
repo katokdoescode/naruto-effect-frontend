@@ -48,7 +48,9 @@
 	}
 </script>
 
-<header class="mobile-header no-desktop" data-menu-is-opened={isAnyMenuOpened}>
+<header
+	class="mobile-header no-desktop"
+	data-menu-is-opened={isAnyMenuOpened}>
 	<div class="top">
 		<Logo />
 		<Burger bind:isOpened={isBurgerMenuOpened} />
@@ -57,9 +59,9 @@
 	<div class="bottom">
 		<Button
 			id="control-main-menu"
+			active={isMainMenuOpened}
 			aria-controls="main-menu"
 			aria-expanded={isMainMenuOpened}
-			active={isMainMenuOpened}
 			on:click={toggleMainMenu}
 		>
 			{$_('mainMenu.practices')}
@@ -69,9 +71,9 @@
 
 		<Button
 			id="control-second-menu"
+			active={isSecondaryMenuOpened}
 			aria-controls="second-menu"
 			aria-expanded={isSecondaryMenuOpened}
-			active={isSecondaryMenuOpened}
 			on:click={toggleSecondaryMenu}
 		>
 			{$_('mainMenu.participants')}
@@ -81,13 +83,20 @@
 	{#if isAnyMenuOpened}
 		<section class="shower">
 			{#if isMainMenuOpened}
-				<MainNav aria-hidden="false" {practices} />
+				<MainNav
+					aria-hidden="false"
+					{practices} />
 			{/if}
 			{#if isSecondaryMenuOpened}
-				<SecondNav aria-hidden="false" {participants} />
+				<SecondNav
+					aria-hidden="false"
+					{participants} />
 			{/if}
 			{#if isBurgerMenuOpened}
-				<BurgerMenu aria-hidden="false" {participateLink} {socialLinks} />
+				<BurgerMenu
+					aria-hidden="false"
+					{participateLink}
+					{socialLinks} />
 			{/if}
 		</section>
 	{/if}

@@ -4,7 +4,9 @@
 	export let practices;
 </script>
 
-<header id="panel-main" class="panel no-mobile">
+<header
+	id="panel-main"
+	class="panel no-mobile">
 	<div id="logo">
 		<Logo />
 	</div>

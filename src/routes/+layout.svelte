@@ -54,19 +54,28 @@
 
 <div class="screen main-layout">
 	<MainPanel {practices} />
-	<MobileHeader {participateLink} {socialLinks} {practices} {participants} />
+	<MobileHeader
+		{participants}
+		{participateLink}
+		{practices}
+		{socialLinks} />
 
 	<Content>
 		<slot />
 		<svelte:fragment slot="login">
 			{#if authorized}
-				<form method="POST" action="/api/signOut" use:enhance={signOut}>
+				<form
+					action="/api/signOut"
+					method="POST"
+					use:enhance={signOut}>
 					<button type="submit">Sign Out</button>
 				</form>
 			{:else}
 				<button on:click={openDialog}>Sign In</button>
 			{/if}
-			<Login bind:open on:success={authorize} />
+			<Login
+				bind:open
+				on:success={authorize} />
 		</svelte:fragment>
 	</Content>
 

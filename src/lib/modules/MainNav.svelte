@@ -9,13 +9,20 @@
 	locale.subscribe((l) => (lang = l));
 </script>
 
-<nav id="main-menu" class="main-nav" {...$$restProps}>
+<nav
+	id="main-menu"
+	class="main-nav"
+	{...$$restProps}>
 	<h2 class="title">{$_('mainMenu.practices')}:</h2>
-	<ShadowWrapper noTop={practices.length <= 2} noBottom={practices.length <= 2}>
+	<ShadowWrapper
+		noBottom={practices.length <= 2}
+		noTop={practices.length <= 2}>
 		<ul class="links-list">
 			{#each practices as menuItem}
 				<li>
-					<a href={`practices/${menuItem.slug[lang]}`} hreflang={lang}>
+					<a
+						href={`practices/${menuItem.slug[lang]}`}
+						hreflang={lang}>
 						{menuItem.name[lang]}
 					</a>
 				</li>
@@ -23,10 +30,16 @@
 		</ul>
 	</ShadowWrapper>
 </nav>
-<section class="contacts no-mobile" aria-label="Контакты">
-	<a href="https://www.youtube.com/@narutoeffect" target="_blank">YouTube ЭН</a>
+<section
+	class="contacts no-mobile"
+	aria-label="Контакты">
+	<a
+		href="https://www.youtube.com/@narutoeffect"
+		target="_blank">YouTube ЭН</a>
 	<LangSwitch id="change-lang" />
-	<a href="https://t.me/narutoeffect" target="_blank">Телеграм ЭН</a>
+	<a
+		href="https://t.me/narutoeffect"
+		target="_blank">Телеграм ЭН</a>
 </section>
 
 <style scoped>
