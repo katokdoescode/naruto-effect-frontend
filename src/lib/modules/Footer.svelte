@@ -19,14 +19,6 @@
 		height: 94px;
 	}
 
-	@media (width <=1018px) {
-		.copyright {
-			position: fixed;
-			bottom: 10px;
-			z-index: 1;
-		}
-	}
-
 	@media (width >= 1018px) {
 		.copyright::before {
 			content: '';
@@ -39,7 +31,7 @@
 				to bottom,
 				rgba(255, 255, 255, 0) 0%,
 				rgba(255, 255, 255, 0) 0.01%,
-				#ffffff 100%
+				var(--color-bg-main) 100%
 			);
 		}
 	}

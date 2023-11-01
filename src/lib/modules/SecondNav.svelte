@@ -7,7 +7,7 @@
 	locale.subscribe((l) => (lang = l));
 </script>
 
-<nav class="second-nav">
+<nav id="second-menu" class="second-nav" {...$$restProps}>
 	<h2 class="title">{$_('mainMenu.participants')}:</h2>
 	<ShadowWrapper
 		noTop={participants.length <= 2}
@@ -70,7 +70,7 @@
 			to bottom,
 			rgba(255, 255, 255, 0) 0%,
 			rgba(255, 255, 255, 0) 0.01%,
-			#ffffff 100%
+			var(--color-bg-main)
 		);
 	}
 

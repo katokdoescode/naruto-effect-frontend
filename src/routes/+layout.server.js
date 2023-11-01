@@ -1,19 +1,31 @@
+import { error } from '@sveltejs/kit';
 export async function load({ cookies, fetch }) {
 	const authToken = cookies.get('authToken');
-	/** @type { Practices } */
+	/** @type { {data: Practices} } */
 	const { data: practices } = await fetch('/api/practices').then((res) =>
 		res.json()
 	);
 
-	/** @type { Participants } */
+	/** @type { {data: Participants} } */
 	const { data: participants } = await fetch('/api/participants').then((res) =>
 		res.json()
 	);
 
+	const {
+		data: pageData,
+		success,
+		errorMessage
+	} = await fetch('/api/mainPage').then((res) => res.json());
+
+	console.debug(pageData);
+
+	if (!success) error(500, errorMessage);
+
 	const data = {
 		authorized: !!authToken,
 		practices,
-		participants
+		participants,
+		pageData
 	};
 
 	return data;

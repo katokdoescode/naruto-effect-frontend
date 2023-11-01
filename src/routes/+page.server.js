@@ -1,12 +1,6 @@
-import { error } from '@sveltejs/kit';
-
-export async function load({ fetch }) {
-	const {
-		data: pageData,
-		success,
-		errorMessage
-	} = await fetch('/api/mainPage').then((res) => res.json());
-
-	if (!success) error(500, errorMessage);
+export async function load({ parent }) {
+	const parentData = await parent();
+	/** @type{MainPageData} */
+	const pageData = parentData.pageData;
 	return { pageData };
 }

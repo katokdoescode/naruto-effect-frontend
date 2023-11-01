@@ -27,6 +27,9 @@
  * @property {number} id
  * @property {string} slug
  * @property {LocaleObject} name
+ * @property {SocialLink[]} socialLinks
+ * @property {LocaleObject} description
+ * @property {LocaleObject} title
  */
 
 /**
@@ -44,6 +47,22 @@
  */
 
 /**
+ * @exports SocialLinkLocale
+ * @typedef SocialLinkLocale
+ * @type {object}
+ * @property {LocaleObject} name
+ * @property {string} link
+ */
+
+/**
+ * @exports SocialLink
+ * @typedef SocialLink
+ * @type {object}
+ * @property {string} name
+ * @property {string} link
+ */
+
+/**
  * @exports MainPageData
  * @typedef MainPageData
  * @type {object}
@@ -51,6 +70,8 @@
  * @property {string} videoLink
  * @property {string} text
  * @property {SeoData} seo
+ * @property {SocialLinkLocale[]} socialLinks
+ * @property {string} participateLink
  */
 
 /**

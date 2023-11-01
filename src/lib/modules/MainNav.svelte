@@ -9,7 +9,7 @@
 	locale.subscribe((l) => (lang = l));
 </script>
 
-<nav class="main-nav">
+<nav id="main-menu" class="main-nav" {...$$restProps}>
 	<h2 class="title">{$_('mainMenu.practices')}:</h2>
 	<ShadowWrapper noTop={practices.length <= 2} noBottom={practices.length <= 2}>
 		<ul class="links-list">

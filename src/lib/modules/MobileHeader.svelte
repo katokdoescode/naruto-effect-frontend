@@ -5,9 +5,12 @@
 	import Burger from '$lib/ui/Burger.svelte';
 	import Button from '$lib/ui/Button.svelte';
 	import { _ } from 'svelte-i18n';
+	import BurgerMenu from './BurgerMenu.svelte';
 
 	export let practices;
 	export let participants;
+	export let participateLink;
+	export let socialLinks;
 
 	$: isBurgerMenuOpened = false;
 	$: isMainMenuOpened = false;
@@ -52,13 +55,25 @@
 	</div>
 
 	<div class="bottom">
-		<Button on:click={toggleMainMenu}>
+		<Button
+			id="control-main-menu"
+			aria-controls="main-menu"
+			aria-expanded={isMainMenuOpened}
+			active={isMainMenuOpened}
+			on:click={toggleMainMenu}
+		>
 			{$_('mainMenu.practices')}
 		</Button>
 
 		<a href="/cv">CV</a>
 
-		<Button on:click={toggleSecondaryMenu}>
+		<Button
+			id="control-second-menu"
+			aria-controls="second-menu"
+			aria-expanded={isSecondaryMenuOpened}
+			active={isSecondaryMenuOpened}
+			on:click={toggleSecondaryMenu}
+		>
 			{$_('mainMenu.participants')}
 		</Button>
 	</div>
@@ -66,10 +81,13 @@
 	{#if isAnyMenuOpened}
 		<section class="shower">
 			{#if isMainMenuOpened}
-				<MainNav {practices} />
+				<MainNav aria-hidden="false" {practices} />
 			{/if}
 			{#if isSecondaryMenuOpened}
-				<SecondNav {participants} />
+				<SecondNav aria-hidden="false" {participants} />
+			{/if}
+			{#if isBurgerMenuOpened}
+				<BurgerMenu aria-hidden="false" {participateLink} {socialLinks} />
 			{/if}
 		</section>
 	{/if}
@@ -81,6 +99,7 @@
 		flex-direction: column;
 		row-gap: 20px;
 		background-color: var(--color-bg-main);
+		box-sizing: border-box;
 	}
 
 	.mobile-header .top {
@@ -107,7 +126,7 @@
 		left: 0;
 		height: 100svh;
 		width: 100%;
-		z-index: 2;
+		z-index: 1;
 		padding-top: var(--initial-padding-top);
 	}
 

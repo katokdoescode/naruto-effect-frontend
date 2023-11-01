@@ -1,6 +1,7 @@
 <script>
 	import { browser } from '$app/environment';
 	import { ColorSchemes } from '$lib/constants';
+	import Button from '$lib/ui/Button.svelte';
 	import { onMount } from 'svelte';
 	import { _ } from 'svelte-i18n';
 
@@ -87,10 +88,6 @@
 	</label>
 </fieldset>
 
-<button
-	type="button"
-	on:click={switchNextTheme}
-	aria-label={$_('changeColorScheme')}
->
+<Button on:click={switchNextTheme} aria-label={$_('changeColorScheme')}>
 	{$_(`scheme.${scheme}`)}
-</button>
+</Button>

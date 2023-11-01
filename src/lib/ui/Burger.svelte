@@ -9,10 +9,13 @@
 </script>
 
 <label
+	id="control-burger-menu"
 	class={`menu-btn ${isOpened ? 'close' : ''}`}
 	title={$_('menu.open')}
 	aria-label={$_('menu.open')}
 	aria-expanded={isOpened}
+	aria-controls="burger-menu"
+	{...$$restProps}
 >
 	<input type="checkbox" class="checkbox vh" bind:checked={isOpened} />
 </label>

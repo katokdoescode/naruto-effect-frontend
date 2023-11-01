@@ -11,12 +11,14 @@
 
 	let open = false;
 
-	/** @type {{ authorized: boolean, practices: Array<object>, participants: Array<object> }} */
+	/** @type {{ authorized: boolean, practices: Array<object>, participants: Array<object>, pageData: MainPageData }} */
 	export let data;
 
 	let authorized = data?.authorized;
 	let practices = data?.practices;
 	let participants = data?.participants;
+	let socialLinks = data?.pageData?.socialLinks;
+	let participateLink = data?.pageData?.participateLink;
 
 	function openDialog() {
 		open = true;
@@ -52,7 +54,7 @@
 
 <div class="screen main-layout">
 	<MainPanel {practices} />
-	<MobileHeader {practices} {participants} />
+	<MobileHeader {participateLink} {socialLinks} {practices} {participants} />
 
 	<Content>
 		<slot />
