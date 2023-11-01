@@ -6,7 +6,7 @@
 	export let participants = [];
 </script>
 
-<aside id="panel-second" class="panel">
+<aside id="panel-second" class="panel no-mobile">
 	<div class="service-link">
 		<LangSwitch id="change-lang-panel-second" />
 		<ThemeSwitch />

@@ -115,6 +115,7 @@ html {
 	padding: 0;
 	margin: 0;
 }
+
 body {
 	font-family: 'Gilroy', 'sans-serif';
 	font-weight: 300;
@@ -140,4 +141,18 @@ a {
 	position: absolute;
 	white-space: nowrap;
 	width: 1px;
+}
+
+@media (width <= 1018px) {
+	.no-mobile {
+		display: none !important;
+		visibility: hidden !important;
+	}
+}
+
+@media (width > 1018px) {
+	.no-desktop {
+		display: none !important;
+		visibility: hidden !important;
+	}
 }

@@ -3,14 +3,13 @@
 	import LangSwitch from './LangSwitch.svelte';
 
 	import { _, locale } from 'svelte-i18n';
-	export let isMenuOpened = false;
 	export let practices = [];
 	let lang;
 
 	locale.subscribe((l) => (lang = l));
 </script>
 
-<nav class={`main-nav ${isMenuOpened ? '' : 'closed'}`}>
+<nav class="main-nav">
 	<h2 class="title">{$_('mainMenu.practices')}:</h2>
 	<ShadowWrapper noTop={practices.length <= 2} noBottom={practices.length <= 2}>
 		<ul class="links-list">
@@ -23,33 +22,24 @@
 			{/each}
 		</ul>
 	</ShadowWrapper>
-
-	<section class="contacts" aria-label="Контакты">
-		<a href="https://www.youtube.com/@narutoeffect" target="_blank"
-			>YouTube ЭН</a
-		>
-		<LangSwitch id="change-lang" />
-		<a href="https://t.me/narutoeffect" target="_blank">Телеграм ЭН</a>
-	</section>
 </nav>
+<section class="contacts no-mobile" aria-label="Контакты">
+	<a href="https://www.youtube.com/@narutoeffect" target="_blank">YouTube ЭН</a>
+	<LangSwitch id="change-lang" />
+	<a href="https://t.me/narutoeffect" target="_blank">Телеграм ЭН</a>
+</section>
 
-<style>
+<style scoped>
 	.main-nav {
 		display: grid;
 		grid-template-rows: max-content minmax(0, 1fr);
+		margin-top: 51px;
 	}
 
-	@media (width <=1018px) {
+	@media (width <= 1081px) {
 		.main-nav {
-			transition: var(--appear-transition);
-			opacity: 1;
-			visibility: visible;
-		}
-
-		.main-nav.closed {
-			visibility: hidden;
-			opacity: 0;
-			height: 0;
+			height: 100%;
+			margin-top: 25px;
 		}
 	}
 
@@ -67,37 +57,37 @@
 	.main-nav .links-list {
 		display: flex;
 		flex-direction: column;
-		height: auto;
 		overflow: auto;
 		scroll-behavior: smooth;
 		scrollbar-width: none;
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		row-gap: 15px;
+		min-height: 0;
+		height: 100%;
 	}
 
 	.main-nav .links-list::after {
 		content: '';
-		display: block;
+		display: list-item block;
+		height: 5em;
+		width: 100%;
+		flex-shrink: 0;
 	}
 
 	.main-nav .links-list li a {
 		text-wrap: balance;
+		font-weight: bold;
 	}
 
 	.contacts {
-		box-sizing: border-box;
-		padding: 35px 0;
 		display: flex;
 		justify-content: space-between;
+		box-sizing: border-box;
+		padding: 40px 0;
 		flex-wrap: wrap;
 	}
-
-	@media (width <=1018px) {
-		.contacts {
-			transition: var(--appear-transition);
-			height: 90px;
-			bottom: 0;
-		}
-	}
-
 	.contacts a {
 		font-size: var(--font-second-menu-size);
 		text-decoration: none;

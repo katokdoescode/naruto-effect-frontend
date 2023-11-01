@@ -3,21 +3,21 @@
 	/* SECTIONS */
 	--sections-padding: 25px;
 
-	/* LEFT SECTION */
+	/* MAIN SECTION */
 	--max-left-section-width: 279px;
 	--min-left-section-width: 215px;
 	--left-section-span-height: 56px;
 
-	/* CENTER SECTION */
+	/* CONTENT SECTION */
 	--max-center-section-width: 562px;
 	--min-center-section-width: 407px;
 
-	/* RIGHT SECTION */
+	/* SECONDARY SECTION */
 	--max-right-section-width: 225px;
 	--min-right-section-width: 154px;
 
 	/* MAIN PAGE SIZES */
-	--initial-padding-top: 35px;
+	--initial-padding-top: 51px;
 	--initial-padding-on-the-sides: 70px;
 	--body-padding: 0 var(--initial-padding-on-the-sides) 0;
 
@@ -38,7 +38,7 @@
 	--font-heading-weight: 800;
 	--font-heading-size: clamp(20px, 1.5vw, 25px);
 
-	/* MENUES */
+	/* MENUS */
 	--font-menu-weight: 800;
 	--font-menu-heading-weight: 300;
 

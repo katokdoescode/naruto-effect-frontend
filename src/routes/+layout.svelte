@@ -3,6 +3,7 @@
 	import Content from '$lib/modules/Content.svelte';
 	import Login from '$lib/modules/Login.svelte';
 	import MainPanel from '$lib/modules/MainPanel.svelte';
+	import MobileHeader from '$lib/modules/MobileHeader.svelte';
 	import SecondaryPanel from '$lib/modules/SecondaryPanel.svelte';
 	import { destroyHandlers, initHandlers } from '$lib/utils/keyboardHandler';
 	import { onDestroy, onMount } from 'svelte';
@@ -51,6 +52,7 @@
 
 <div class="screen main-layout">
 	<MainPanel {practices} />
+	<MobileHeader {practices} {participants} />
 
 	<Content>
 		<slot />
@@ -76,6 +78,7 @@
 		height: 100svh;
 		justify-content: space-between;
 		box-sizing: border-box;
+		padding-top: var(--initial-padding-top);
 	}
 
 	@media (width <= 1018px) {

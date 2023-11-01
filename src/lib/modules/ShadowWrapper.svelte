@@ -14,6 +14,8 @@
 <style scoped>
 	.shadow-wrapper {
 		margin-top: 8px;
+		padding-top: 8px;
+		min-height: 0;
 	}
 	.shadow-wrapper,
 	.shadow-wrapper.no-top {
