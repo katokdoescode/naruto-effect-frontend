@@ -49,7 +49,7 @@
 	});
 </script>
 
-<div class="screen home">
+<div class="screen main-layout">
 	<MainPanel {practices} />
 
 	<Content>
@@ -68,3 +68,40 @@
 
 	<SecondaryPanel {participants} />
 </div>
+
+<style>
+	.main-layout {
+		container: main / inline-size;
+		display: flex;
+		height: 100svh;
+		justify-content: space-between;
+		box-sizing: border-box;
+	}
+
+	@media (width <= 1018px) {
+		.main-layout {
+			height: auto;
+			flex-direction: column;
+			justify-content: start;
+			align-items: stretch;
+		}
+	}
+	:global(.panel) {
+		padding: 0 var(--sections-padding);
+	}
+
+	@media (width <= 1018px) {
+		:global(.main-section .panel) {
+			flex: 1 0 auto;
+			width: 100%;
+			padding: 0;
+			max-width: unset;
+			min-width: unset;
+			overflow: auto;
+		}
+	}
+
+	:global(html:has(.menu-btn input:checked)) {
+		overflow: hidden;
+	}
+</style>

@@ -6,7 +6,7 @@
 	export let participants = [];
 </script>
 
-<aside id="panel-second">
+<aside id="panel-second" class="panel">
 	<div class="service-link">
 		<LangSwitch id="change-lang-panel-second" />
 		<ThemeSwitch />
@@ -19,6 +19,11 @@
 
 <style>
 	#panel-second {
+		flex: 1 1 var(--min-right-section-width);
+		padding: 0 0 0 var(--sections-padding);
+		max-width: var(--max-right-section-width);
+		min-width: var(--min-right-section-width);
+
 		display: grid;
 		grid-template-rows: max-content minmax(0px, 1fr) max-content;
 		padding-top: calc(var(--initial-padding-top) + 10px);

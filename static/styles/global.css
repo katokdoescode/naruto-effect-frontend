@@ -1,5 +1,5 @@
 @import 'fonts.css';
-@import 'vars.vss';
+@import 'vars.css';
 
 :root {
 	color-scheme: var(--color-scheme);
@@ -111,6 +111,10 @@ b {
 	font-weight: 800;
 }
 
+html {
+	padding: 0;
+	margin: 0;
+}
 body {
 	font-family: 'Gilroy', 'sans-serif';
 	font-weight: 300;
@@ -118,7 +122,9 @@ body {
 	transition: background-color linear 0.5s;
 	background-color: var(--color-bg-main);
 	color: var(--color-main);
-	margin: 0;
+	padding: var(--body-padding);
+	max-width: var(--max-content-width);
+	margin: 0 auto;
 }
 
 a {

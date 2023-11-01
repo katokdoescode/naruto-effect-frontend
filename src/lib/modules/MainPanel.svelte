@@ -12,11 +12,7 @@
 	}
 </script>
 
-<header
-	id="panel-main"
-	class="main-section__item main-section__left"
-	data-menu-is-opened={isMenuOpened}
->
+<header id="panel-main" class="panel" data-menu-is-opened={isMenuOpened}>
 	<div id="logo">
 		<a href="/">{$_('narutoEffect')}</a>
 		<Burger on:change={updateMenuState} />
@@ -33,9 +29,13 @@
 		--appear-transition: opacity var(--appear-timing) ease-in-out
 			var(--appear-delay);
 
+		flex: 1 1 var(--min-left-section-width);
+		padding: var(--initial-padding-top) var(--sections-padding) 0 0;
+		max-width: var(--max-left-section-width);
+		min-width: var(--min-left-section-width);
+
 		display: grid;
 		grid-template-rows: max-content minmax(0, 1fr) max-content;
-		padding-top: var(--initial-padding-top);
 		max-height: calc(100svh - var(--initial-padding-top));
 		z-index: 1;
 	}
