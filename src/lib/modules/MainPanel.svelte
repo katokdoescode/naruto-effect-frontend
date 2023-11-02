@@ -19,7 +19,6 @@
 
 <style>
 	#panel-main {
-		background-color: rgba(100, 255, 100, 0.2);
 		display: grid;
 		grid-template-rows: max-content minmax(0, 1fr) max-content;
 		min-width: var(--min-left-section-width);

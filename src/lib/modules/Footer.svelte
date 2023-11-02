@@ -9,7 +9,6 @@
 
 <style scoped>
 	.copyright {
-		background-color: rgba(250, 150, 100, 0.2);
 		display: flex;
 		place-items: center;
 		position: relative;

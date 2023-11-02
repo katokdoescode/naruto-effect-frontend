@@ -27,7 +27,6 @@
 
 <style>
 	#panel-second {
-		background-color: rgba(100, 100, 100, 0.2);
 		display: grid;
 		grid-template-rows: max-content minmax(0px, 1fr) max-content;
 

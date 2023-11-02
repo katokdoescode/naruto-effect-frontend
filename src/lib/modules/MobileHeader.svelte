@@ -129,7 +129,6 @@
 	}
 
 	.mobile-header[data-menu-is-opened='true'] {
-		background-color: tomato;
 		position: fixed;
 		top: 0;
 		left: 0;

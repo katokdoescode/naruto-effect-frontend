@@ -18,7 +18,6 @@
 
 <style scoped>
 	#panel-content {
-		background-color: rgba(100, 100, 200, 0.2);
 		display: grid;
 		grid-template-rows: max-content minmax(0, 1fr) max-content;
 
@@ -30,7 +29,6 @@
 		display: none;
 	}
 	.main-page-content {
-		background-color: rgba(100, 200, 200, 0.2);
 		overflow: hidden auto;
 		scrollbar-width: none;
 	}
