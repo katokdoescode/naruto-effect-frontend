@@ -2,12 +2,12 @@
 const savedScheme = localStorage.getItem('color-scheme');
 /** @type {HTMLLinkElement} */
 const lightStylesheet = document.querySelector(
-	'link[href="styles/themes/light.css"]'
+	'link[href="/styles/themes/light.css"]'
 );
 
 /** @type {HTMLLinkElement} */
 const darkStylesheet = document.querySelector(
-	'link[href="styles/themes/dark.css"]'
+	'link[href="/styles/themes/dark.css"]'
 );
 
 if (savedScheme === 'auto') {
