@@ -6,15 +6,6 @@
  */
 
 /**
- * @exports  Practice
- * @typedef Practice
- * @type {object}
- * @property {number} id
- * @property {LocaleObject} slug
- * @property {LocaleObject} name
- */
-
-/**
  * @exports Practices
  * @typedef Practices
  * @type {Array<Practice>}
@@ -25,11 +16,11 @@
  * @typedef Participant
  * @type {object}
  * @property {number} id
- * @property {string} slug
  * @property {LocaleObject} name
- * @property {SocialLink[]} socialLinks
- * @property {LocaleObject} description
+ * @property {string} slug
  * @property {LocaleObject} title
+ * @property {LocaleObject} description
+ * @property {SocialLink[]} socialLinks
  */
 
 /**
@@ -44,6 +35,7 @@
  * @type {object}
  * @property {string} title
  * @property {string} description
+ * @property {string} keywords
  */
 
 /**
@@ -66,9 +58,9 @@
  * @exports MainPageData
  * @typedef MainPageData
  * @type {object}
- * @property {string} title
+ * @property {LocaleObject} title
  * @property {string} videoLink
- * @property {string} text
+ * @property {LocaleObject} text
  * @property {SeoData} seo
  * @property {SocialLinkLocale[]} socialLinks
  * @property {string} participateLink
@@ -81,4 +73,27 @@
  * @property {boolean} success
  * @property {string} errorMessage
  * @property {undefined} data
+ */
+
+/**
+ * @exports PracticeRecord
+ * @typedef PracticeRecord
+ * @type {object}
+ * @property {LocaleObject} name
+ * @property {string} link
+ */
+
+/**
+ * @exports Practice
+ * @typedef Practice
+ * @type {object}
+ * @property {number} id
+ * @property {LocaleObject} name
+ * @property {LocaleObject} slug
+ * @property {LocaleObject} title
+ * @property {LocaleObject} subtitle
+ * @property {string} videoLink
+ * @property {LocaleObject} description
+ * @property {PracticeRecord[]} records
+ * @property {number[]} participantId
  */
