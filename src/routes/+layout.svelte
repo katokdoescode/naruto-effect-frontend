@@ -14,7 +14,8 @@
 
 	let authorized = data?.authorized;
 	let practices = data?.practices;
-	let participants = data?.participants || $page.data?.practice.participants;
+	let participants =
+		$page.data?.participants || $page.data?.practice.participants;
 	let socialLinks = data?.pageData?.socialLinks;
 	let participateLink = data?.pageData?.participateLink;
 

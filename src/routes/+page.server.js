@@ -1,4 +1,4 @@
-export async function load({ parent }) {
+export async function load({ parent, fetch }) {
 	const parentData = await parent();
 	/** @type{MainPageData} */
 	const pageData = parentData.pageData;
@@ -7,5 +7,6 @@ export async function load({ parent }) {
 	const { data: participants } = await fetch('/api/participants').then((res) =>
 		res.json()
 	);
+
 	return { pageData, participants };
 }
