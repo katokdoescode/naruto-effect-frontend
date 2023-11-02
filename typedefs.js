@@ -95,5 +95,5 @@
  * @property {string} videoLink
  * @property {LocaleObject} description
  * @property {PracticeRecord[]} records
- * @property {number[]} participantId
+ * @property {Participants} participants
  */

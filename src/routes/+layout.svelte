@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/stores';
 	import Content from '$lib/modules/Content.svelte';
 	import Login from '$lib/modules/Login.svelte';
 	import MainPanel from '$lib/modules/MainPanel.svelte';
@@ -13,7 +14,7 @@
 
 	let authorized = data?.authorized;
 	let practices = data?.practices;
-	let participants = data?.participants;
+	let participants = data?.participants || $page.data?.practice.participants;
 	let socialLinks = data?.pageData?.socialLinks;
 	let participateLink = data?.pageData?.participateLink;
 

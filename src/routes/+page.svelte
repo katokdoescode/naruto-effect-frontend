@@ -20,9 +20,3 @@
 <article class="main-article">
 	{@html pageData.text[lang]}
 </article>
-
-<style scoped>
-	.main-header {
-		margin-top: 62px;
-	}
-</style>

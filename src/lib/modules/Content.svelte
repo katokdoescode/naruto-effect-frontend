@@ -29,6 +29,7 @@
 		display: none;
 	}
 	.main-page-content {
+		margin-top: 62px;
 		overflow: hidden auto;
 		scrollbar-width: none;
 	}

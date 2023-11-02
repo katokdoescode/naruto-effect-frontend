@@ -14,12 +14,14 @@
 	$: src = getLink(link);
 </script>
 
-<iframe
-	allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-	allowfullscreen
-	frameborder="0"
-	height="317"
-	{src}
-	title="YouTube video player"
-	width="100%"
-/>
+{#if src}
+	<iframe
+		allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+		allowfullscreen
+		frameborder="0"
+		height="317"
+		{src}
+		title="YouTube video player"
+		width="100%"
+	/>
+{/if}

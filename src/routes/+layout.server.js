@@ -6,11 +6,6 @@ export async function load({ cookies, fetch }) {
 		res.json()
 	);
 
-	/** @type { {data: Participants} } */
-	const { data: participants } = await fetch('/api/participants').then((res) =>
-		res.json()
-	);
-
 	const {
 		data: pageData,
 		success,
@@ -22,7 +17,6 @@ export async function load({ cookies, fetch }) {
 	const data = {
 		authorized: !!authToken,
 		practices,
-		participants,
 		pageData
 	};
 
