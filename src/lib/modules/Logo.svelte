@@ -8,9 +8,8 @@
 
 <style scoped>
 	.logo {
-		font-weight: 800;
-		font-size: 30px;
-		line-height: 38px;
-		text-decoration: none;
+		font-weight: var(--font-heading-weight);
+		font-size: var(--logo-font-size);
+		line-height: 120%;
 	}
 </style>

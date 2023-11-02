@@ -19,7 +19,7 @@
 		<ul class="list">
 			{#each participants as menuItem}
 				<li>
-					<a href={`participants/${menuItem.slug}`}>{menuItem.name[lang]}</a>
+					<a href={`/participants/${menuItem.slug}`}>{menuItem.name[lang]}</a>
 				</li>
 			{/each}
 		</ul>

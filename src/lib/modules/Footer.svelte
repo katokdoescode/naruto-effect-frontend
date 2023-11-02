@@ -14,12 +14,12 @@
 		place-items: center;
 		position: relative;
 		gap: 30px;
-		font-weight: 300;
 		color: #949494;
 		height: 94px;
 	}
 
 	@media (width >= 1018px) {
+		/* SHADOW */
 		.copyright::before {
 			content: '';
 			position: absolute;
@@ -37,10 +37,10 @@
 	}
 
 	.copyright .year {
-		font-size: 18px;
+		font-size: var(--year-font-size);
 	}
 
 	.copyright .disclaimer {
-		font-size: 11px;
+		font-size: var(--copyright-font-size);
 	}
 </style>

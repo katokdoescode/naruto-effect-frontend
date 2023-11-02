@@ -19,7 +19,8 @@
 	/* MAIN PAGE SIZES */
 	--initial-padding-top: 51px;
 	--initial-padding-on-the-sides: 70px;
-	--body-padding: 0 var(--initial-padding-on-the-sides) 0;
+	--body-padding: var(--initial-padding-top) var(--initial-padding-on-the-sides)
+		0;
 
 	--max-content-width: 1250px;
 	--min-content-width: calc(
@@ -29,10 +30,9 @@
 
 	/* TYPOGRAPHY */
 	/* MAIN TEXT */
-	--font-main-family: 'Gillroy', Tahoma, sans-serif;
+	--font-main-family: 'Gilroy', Tahoma, sans-serif;
 	--font-main-weight: 300;
 	--font-main-size: clamp(12px, 1.5vw, 16px);
-	--text-color: #000000;
 
 	/* HEADING */
 	--font-heading-weight: 800;
@@ -53,6 +53,13 @@
 	--font-second-menu-size: 16px;
 	--font-second-menu-heading-size: 16px;
 
+	/* FOOTER */
+	--year-font-size: 18px;
+	--copyright-font-size: 11px;
+
+	/* TEXT LOGO */
+	--logo-font-size: 30px;
+
 	/* LINKS */
 	--external-link-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill-rule='evenodd' stroke-linejoin='round' stroke-miterlimit='2' clip-rule='evenodd' viewBox='0 0 24 24'%3E%3Cpath fill-rule='nonzero' d='M22 7c0-.5-.4-1-1-1H7a1 1 0 0 0-1 1v14c0 .6.5 1 1 1h14c.5 0 1-.4 1-1zM2 15v2c0 .6.5 1 1 1h2v-1.5H3.5V15zm13.4-5c.4 0 .7.3.7.8s-.3.7-.7.7h-2.8l4.4 4.4a.8.8 0 1 1-1 1.1l-4.5-4.4v2.8c0 .4-.3.7-.8.7a.7.7 0 0 1-.7-.7v-4.6c0-.5.3-.8.8-.8h4.6zm-11.9.6V14H2v-3.4zm0-4.6v3.6H2V6zM15 2v1.5h1.5V5H18V3c0-.5-.4-1-1-1zM5 2H3a1 1 0 0 0-1 1v2h1.5V3.5H5zm4.5 1.5H6V2h3.5zm4.5 0h-3.5V2H14z'/%3E%3C/svg%3E");
 
@@ -68,6 +75,19 @@
 @media (width <= 1018px) {
 	:root {
 		--initial-padding-top: 25px;
+		--sections-padding: 0;
+		--max-content-width: 100%;
+		/* MAIN SECTION */
+		--max-left-section-width: 100%;
+		--min-left-section-width: unset;
+
+		/* CONTENT SECTION */
+		--max-center-section-width: 100%;
+		--min-center-section-width: unset;
+
+		/* SECONDARY SECTION */
+		--max-right-section-width: 100%;
+		--min-right-section-width: unset;
 	}
 }
 

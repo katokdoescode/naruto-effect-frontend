@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/stores';
 	import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
 
 	import { _, locale } from 'svelte-i18n';
@@ -21,8 +22,10 @@
 			{#each practices as menuItem}
 				<li>
 					<a
-						href={`practices/${menuItem.slug[lang]}`}
-						hreflang={lang}>
+						class:active={$page.url.pathname.includes(menuItem.slug[lang])}
+						href={`/practices/${menuItem.slug[lang]}`}
+						hreflang={lang}
+					>
 						{menuItem.name[lang]}
 					</a>
 				</li>
@@ -36,10 +39,12 @@
 	{#if socialLinks}
 		{#each socialLinks as { link, name }}
 			<a
+				class:active={$page.url.pathname.includes(link)}
 				href={link}
 				referrerpolicy="no-referrer"
 				rel="me"
-				target="_blank">
+				target="_blank"
+			>
 				{name[lang]}
 			</a>
 		{/each}
@@ -95,7 +100,7 @@
 
 	.main-nav .links-list li a {
 		text-wrap: balance;
-		font-weight: bold;
+		font-weight: var(--font-menu-weight);
 	}
 
 	.contacts {

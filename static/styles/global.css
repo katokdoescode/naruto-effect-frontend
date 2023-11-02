@@ -108,7 +108,7 @@ h5,
 h6,
 strong,
 b {
-	font-weight: 800;
+	font-weight: var(--font-heading-weight);
 }
 
 html {
@@ -117,20 +117,133 @@ html {
 }
 
 body {
-	font-family: 'Gilroy', 'sans-serif';
-	font-weight: 300;
+	font-family: var(--font-main-family);
+	font-weight: var(--font-main-weight);
+	font-size: var(--font-main-size);
 	position: relative;
 	transition: background-color linear 0.5s;
 	background-color: var(--color-bg-main);
 	color: var(--color-main);
-	padding: var(--body-padding);
-	max-width: var(--max-content-width);
-	margin: 0 auto;
+	margin: 0;
+	padding: 0;
 }
 
 a {
-	text-decoration: none;
 	color: var(--color-main);
+}
+
+/* HEADINGS */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	text-wrap: balance;
+	font-weight: var(--font-heading-weight);
+	margin: 0 0 5px 0;
+	padding: 10px 0 0;
+}
+
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-size: var(--font-main-size);
+}
+
+h1 {
+	font-size: var(--font-heading-size);
+}
+
+h1 + h2,
+h2 + h3 {
+	margin: -5px 0 0 0;
+	padding: 0 0 10px 0;
+	font-size: var(--font-heading-size);
+	font-weight: var(--font-main-weight);
+}
+
+/* LINKS */
+a {
+	color: var(--color-main);
+	font-weight: var(--font-bold-weight);
+	position: relative;
+	text-decoration: none;
+}
+
+/* EXTERNAL LINK */
+a:not([href^='/']):hover::after {
+	content: '' var(--external-link-icon);
+	width: 15px;
+	height: 15px;
+	transform: translate(0, -10px) rotate(90deg);
+	position: absolute;
+}
+
+@media (width <= 1018px) {
+	a:not([href^='/']):hover::after {
+		transform: translate(0.1rem, -0.3rem) rotate(90deg);
+	}
+}
+
+nav a,
+.menu a {
+	text-underline-offset: 4px;
+}
+
+/* LISTS */
+ol,
+ul {
+	margin: 10px 0;
+	padding-left: 1.6em;
+}
+
+li:not(:last-child) {
+	margin-bottom: 10px;
+}
+
+/* OTHER */
+blockquote {
+	margin: 10px 26px;
+}
+
+p {
+	margin: 10px 0;
+}
+
+/* NAVIGATION MENUES */
+nav {
+	font-family: var(--font-main-family);
+}
+
+nav ul,
+nav ol,
+nav li,
+.menu li,
+.menu ul,
+.menu ol {
+	font-size: var(--font-main-menu-size);
+	font-weight: var(--font-bold-weight);
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+nav a,
+.menu a {
+	font-size: inherit;
+	font-weight: inherit;
+	text-decoration: none;
+}
+a.active {
+	text-decoration: underline;
+}
+
+.no-markers {
+	list-style: none;
+	padding-left: 0;
 }
 
 .vh {

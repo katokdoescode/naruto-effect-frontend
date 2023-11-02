@@ -30,7 +30,10 @@
 		background-color: rgba(100, 100, 100, 0.2);
 		display: grid;
 		grid-template-rows: max-content minmax(0px, 1fr) max-content;
-		min-width: 130px;
+
+		min-width: var(--min-right-section-width);
+		max-width: var(--max-right-section-width);
+		width: 100%;
 	}
 
 	.panel-second .controls {

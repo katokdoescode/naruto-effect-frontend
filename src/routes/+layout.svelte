@@ -59,7 +59,9 @@
 		</svelte:fragment>
 	</Content>
 
-	<SecondaryPanel {participants} />
+	<SecondaryPanel
+		{participants}
+		{participateLink} />
 </div>
 
 <style>
@@ -69,7 +71,10 @@
 		height: 100svh;
 		justify-content: space-between;
 		box-sizing: border-box;
-		padding-top: var(--initial-padding-top);
+		padding: var(--body-padding);
+		max-width: var(--max-content-width);
+		margin: 0 auto;
+		column-gap: var(--sections-padding);
 	}
 
 	@media (width <= 1018px) {

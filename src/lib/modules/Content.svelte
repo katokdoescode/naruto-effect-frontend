@@ -21,6 +21,10 @@
 		background-color: rgba(100, 100, 200, 0.2);
 		display: grid;
 		grid-template-rows: max-content minmax(0, 1fr) max-content;
+
+		min-width: var(--min-center-section-width);
+		max-width: var(--max-center-section-width);
+		width: 100%;
 	}
 	.main-page-content::-webkit-scrollbar {
 		display: none;

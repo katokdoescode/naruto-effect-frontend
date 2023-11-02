@@ -119,7 +119,7 @@
 	.mobile-header .bottom {
 		display: flex;
 		justify-content: space-between;
-		font-weight: bold;
+		font-weight: var(--font-menu-weight);
 	}
 
 	.mobile-header .shower {
@@ -136,7 +136,7 @@
 		height: 100svh;
 		width: 100%;
 		z-index: 1;
-		padding-top: var(--initial-padding-top);
+		padding: var(--body-padding);
 	}
 
 	:global(body:has(.mobile-header[data-menu-is-opened='true'])) {
