@@ -67,6 +67,14 @@
  */
 
 /**
+ * @exports CvData
+ * @typedef CvData
+ * @type {object}
+ * @property {LocaleObject} title
+ * @property {LocaleObject} text
+ */
+
+/**
  * @exports AppErrorType
  * @typedef AppErrorType
  * @type {object}

@@ -10,5 +10,6 @@ export const Routes = {
 	PRACTICES: 'practice',
 	PARTICIPANTS: 'participant',
 	DOCUMENTS: 'document',
-	MAIN_PAGE: 'mainpage'
+	MAIN_PAGE: 'mainpage',
+	CV: 'cv'
 };
