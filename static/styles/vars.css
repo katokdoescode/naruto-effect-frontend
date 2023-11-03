@@ -1,7 +1,7 @@
 :root {
 	/* LAYOUT */
 	/* SECTIONS */
-	--sections-padding: 25px;
+	--sections-padding: clamp(40px, 4vmax, 90px);
 
 	/* MAIN SECTION */
 	--max-left-section-width: 279px;
@@ -17,12 +17,12 @@
 	--min-right-section-width: 154px;
 
 	/* MAIN PAGE SIZES */
-	--initial-padding-top: 51px;
+	--initial-padding-top: 50px;
 	--initial-padding-on-the-sides: 70px;
 	--body-padding: var(--initial-padding-top) var(--initial-padding-on-the-sides)
 		0;
 
-	--max-content-width: 1250px;
+	--max-content-width: 1300px;
 	--min-content-width: calc(
 		var(--min-left-section-width) + var(--min-center-section-width) +
 			var(--min-right-section-width)
@@ -32,7 +32,7 @@
 	/* MAIN TEXT */
 	--font-main-family: 'Gilroy', Tahoma, sans-serif;
 	--font-main-weight: 300;
-	--font-main-size: clamp(12px, 1.5vw, 16px);
+	--font-size-main: clamp(12px, 1.5vw, 16px);
 
 	/* HEADING */
 	--font-heading-weight: 800;
@@ -51,11 +51,12 @@
 	--font-main-menu-heading-size: 18px;
 
 	--font-second-menu-size: 16px;
-	--font-second-menu-heading-size: 16px;
+	--font-second-menu-heading-size: 18px;
 
 	/* FOOTER */
 	--year-font-size: 18px;
 	--copyright-font-size: 11px;
+	--buttons-text-size: 14px;
 
 	/* TEXT LOGO */
 	--logo-font-size: 30px;

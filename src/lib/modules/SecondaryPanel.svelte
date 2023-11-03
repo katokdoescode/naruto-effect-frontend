@@ -37,11 +37,16 @@
 
 	.panel-second .controls {
 		display: flex;
-		justify-content: space-between;
+		justify-content: flex-start;
+		column-gap: 40px;
 	}
 
 	.panel-second .wrapper {
 		font-weight: var(--font-menu-weight);
 		padding: 40px 0;
+	}
+
+	.panel-second .service-link {
+		font-size: (--buttons-text-size);
 	}
 </style>

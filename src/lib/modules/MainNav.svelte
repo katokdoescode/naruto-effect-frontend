@@ -39,12 +39,10 @@
 	{#if socialLinks}
 		{#each socialLinks as { link, name }}
 			<a
-				class:active={$page.url.pathname.includes(link)}
 				href={link}
 				referrerpolicy="no-referrer"
 				rel="me"
-				target="_blank"
-			>
+				target="_blank">
 				{name[lang]}
 			</a>
 		{/each}
@@ -112,7 +110,7 @@
 		font-weight: var(--font-menu-weight);
 	}
 	.contacts a {
-		font-size: var(--font-second-menu-size);
+		font-size: var(--buttons-text-size);
 		text-decoration: none;
 	}
 </style>

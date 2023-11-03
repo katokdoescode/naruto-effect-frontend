@@ -72,7 +72,6 @@
 		display: flex;
 		height: 100svh;
 		justify-content: space-between;
-		box-sizing: border-box;
 		padding: var(--body-padding);
 		max-width: var(--max-content-width);
 		margin: 0 auto;

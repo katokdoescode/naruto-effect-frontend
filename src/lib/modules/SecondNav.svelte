@@ -43,7 +43,7 @@
 	.second-nav .title {
 		margin: 0;
 		padding: 0;
-		font-size: var(--font-panel-second-menu-heading-size);
+		font-size: var(--font-second-menu-heading-size);
 		font-weight: var(--font-main-weight);
 	}
 

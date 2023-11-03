@@ -129,7 +129,7 @@ html {
 body {
 	font-family: var(--font-main-family);
 	font-weight: var(--font-main-weight);
-	font-size: var(--font-main-size);
+	font-size: var(--font-size-main);
 	position: relative;
 	transition: background-color linear 0.5s;
 	background-color: var(--color-bg-main);
@@ -164,7 +164,7 @@ h3,
 h4,
 h5,
 h6 {
-	font-size: var(--font-main-size);
+	font-size: var(--font-size-main);
 }
 
 h1 {
@@ -212,10 +212,6 @@ ol,
 ul {
 	margin: 10px 0;
 	padding-left: 1.6em;
-}
-
-li:not(:last-child) {
-	margin-bottom: 10px;
 }
 
 /* OTHER */
