@@ -1,5 +1,6 @@
 import { VITE_BFF_BASE_URL } from '$env/static/private';
-import { AppError, Routes } from '$lib/constants/index.js';
+import { Routes } from '$lib/constants/index.js';
+import { createError } from '$lib/utils/errors.js';
 import { FetchData } from '$lib/utils/fetchData.js';
 import { validateUserData } from '$lib/utils/validate.js';
 import { json } from '@sveltejs/kit';
@@ -26,6 +27,6 @@ export async function POST({ cookies, request }) {
 		cookies.set('authToken', authToken, { path: '/' });
 		return json({ success: true });
 	} else {
-		return json(new AppError(false, 'Email or password is not correct.'));
+		return json(createError(false, 'Email or password is not correct.'));
 	}
 }

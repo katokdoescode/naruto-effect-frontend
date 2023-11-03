@@ -1,3 +1,4 @@
+/** @type {import('./$types').PageServerLoad} */
 export async function load({ parent, fetch }) {
 	const parentData = await parent();
 	/** @type{MainPageData} */

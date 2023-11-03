@@ -12,23 +12,3 @@ export const Routes = {
 	DOCUMENTS: 'document',
 	MAIN_PAGE: 'mainpage'
 };
-
-export class AppError {
-	constructor(success, errorMessage) {
-		this.createError(success, errorMessage);
-	}
-
-	/**
-	 *
-	 * @param {boolean} success
-	 * @param {string} errorMessage
-	 * @returns {AppErrorType}
-	 */
-	createError(success, errorMessage) {
-		return {
-			success,
-			errorMessage,
-			data: undefined
-		};
-	}
-}

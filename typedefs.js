@@ -76,6 +76,14 @@
  */
 
 /**
+ * @exports XanoError
+ * @typedef XanoError
+ * @type {object}
+ * @property {'error'} status
+ * @property {string} message
+ */
+
+/**
  * @exports PracticeRecord
  * @typedef PracticeRecord
  * @type {object}

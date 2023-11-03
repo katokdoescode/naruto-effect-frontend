@@ -1,5 +1,6 @@
 import { VITE_BFF_BASE_URL } from '$env/static/private';
-import { AppError, Routes } from '$lib/constants';
+import { Routes } from '$lib/constants';
+import { createError } from '$lib/utils/errors';
 import { json } from '@sveltejs/kit';
 
 export async function GET() {
@@ -11,6 +12,6 @@ export async function GET() {
 	if (participants) {
 		return json({ success: true, data: participants });
 	} else {
-		return json(new AppError(false, 'Something went wrong. Try again later.'));
+		return json(createError(false, 'Something went wrong. Try again later.'));
 	}
 }

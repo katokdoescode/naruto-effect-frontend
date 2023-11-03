@@ -11,6 +11,9 @@
 	/** @type {boolean} Will have border */
 	export let bordered = false;
 
+	/** @type {boolean} */
+	export let disabled = false;
+
 	/** @type {boolean} Will have active state styles */
 	export let active = false;
 
@@ -24,9 +27,11 @@
 <button
 	{id}
 	class={classes}
+	{disabled}
 	{type}
 	{...$$restProps}
-	on:click={click}>
+	on:click={click}
+>
 	<slot />
 </button>
 
@@ -45,5 +50,10 @@
 		text-decoration: underline;
 		text-underline-offset: 3px;
 		text-decoration-thickness: 2px;
+	}
+
+	.button:disabled {
+		cursor: not-allowed;
+		opacity: 0.8;
 	}
 </style>

@@ -100,6 +100,16 @@ address::after {
 	font-family: inherit;
 }
 
+code {
+	display: inline-block;
+	padding: 1em;
+	background-color: rgba(223, 231, 255, 0.14);
+	border: 3px solid rgba(223, 231, 255, 0.37);
+	margin: 0.3em 0;
+	border-radius: 1em;
+	font-family: revert;
+}
+
 h1,
 h2,
 h3,

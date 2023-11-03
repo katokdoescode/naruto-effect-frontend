@@ -12,12 +12,12 @@
 	/** @type {{ authorized: boolean, practices: Array<object>, participants: Array<object>, pageData: MainPageData }} */
 	export let data;
 
-	let authorized = data?.authorized;
-	let practices = data?.practices;
+	let authorized = data?.authorized || false;
+	let practices = data?.practices || [];
 	let participants =
-		$page.data?.participants || $page.data?.practice.participants;
-	let socialLinks = data?.pageData?.socialLinks;
-	let participateLink = data?.pageData?.participateLink;
+		$page.data?.participants || $page.data?.practice?.participants || [];
+	let socialLinks = data?.pageData?.socialLinks || [];
+	let participateLink = data?.pageData?.participateLink || [];
 
 	let open = false;
 

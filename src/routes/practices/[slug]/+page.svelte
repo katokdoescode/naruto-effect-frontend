@@ -9,7 +9,7 @@
 	export let data;
 
 	/** @type {Practice} */
-	let practice = data?.practice;
+	$: practice = data?.practice;
 </script>
 
 <h1 class="main-header">{practice.title[lang]}</h1>

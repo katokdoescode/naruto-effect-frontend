@@ -1,4 +1,6 @@
 import { error } from '@sveltejs/kit';
+
+/** @type {import('./$types').LayoutServerLoad} */
 export async function load({ cookies, fetch }) {
 	const authToken = cookies.get('authToken');
 	/** @type { {data: Practices} } */
