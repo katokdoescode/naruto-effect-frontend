@@ -28,11 +28,11 @@
 <style>
 	#panel-second {
 		display: grid;
-		grid-template-rows: max-content minmax(0px, 1fr) max-content;
+		grid-template-rows: max-content minmax(0, 1fr) max-content;
 
 		min-width: var(--min-right-section-width);
 		max-width: var(--max-right-section-width);
-		width: 100%;
+		height: 100%;
 	}
 
 	.panel-second .controls {
@@ -47,6 +47,6 @@
 	}
 
 	.panel-second .service-link {
-		font-size: (--buttons-text-size);
+		font-size: var(--buttons-text-size);
 	}
 </style>
