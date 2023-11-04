@@ -24,7 +24,7 @@
 </script>
 
 <h1>Oops...</h1>
-<article>
+<article class="error">
 	<strong>Error message:</strong>
 	<code>{$page.error.message}</code>
 	<Button
