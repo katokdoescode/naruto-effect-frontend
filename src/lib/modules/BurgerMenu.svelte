@@ -61,6 +61,7 @@
 		justify-content: center;
 		align-content: flex-start;
 		color: var(--main-color);
+		font-size: var(--font-main-menu-size);
 		font-weight: var(--font-menu-weight);
 		row-gap: 16px;
 	}

@@ -89,6 +89,9 @@
 		/* SECONDARY SECTION */
 		--max-right-section-width: 100%;
 		--min-right-section-width: unset;
+
+		/* FONTS */
+		--font-main-menu-size: 14px;
 	}
 }
 
