@@ -120,6 +120,7 @@
 		display: flex;
 		justify-content: space-between;
 		font-weight: var(--font-menu-weight);
+		font-size: var(--font-main-menu-size);
 	}
 
 	.mobile-header .shower {
