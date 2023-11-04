@@ -41,6 +41,7 @@
 		margin: 0;
 		background-color: transparent;
 		color: var(--color-main);
+		font-size: var(--font-main-menu-size);
 		font-weight: var(--font-menu-weight);
 		border: none;
 		cursor: pointer;

@@ -19,6 +19,7 @@
 		text-transform: capitalize;
 		cursor: pointer;
 		appearance: none;
+		font-size: var(--font-main-menu-size);
 		font-weight: var(--font-menu-weight);
 		margin: 0;
 		padding: 0;
