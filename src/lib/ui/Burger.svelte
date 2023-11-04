@@ -10,7 +10,7 @@
 
 <label
 	id="control-burger-menu"
-	class={`menu-btn ${isOpened ? 'close' : ''}`}
+	class={`menu-btn ${isOpened ? 'close' : 'open'}`}
 	aria-controls="burger-menu"
 	aria-expanded={isOpened}
 	aria-label={$_('menu.open')}
@@ -53,6 +53,7 @@
 		outline-offset: 2px;
 	}
 
+	.menu-btn[aria-expanded='true']::before,
 	.menu-btn:has(.checkbox:checked)::before,
 	.menu-btn.close::before {
 		background-image: var(--icon-burger-menu-close);
