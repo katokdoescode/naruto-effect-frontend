@@ -70,7 +70,7 @@
 	.main-layout {
 		container: main / inline-size;
 		display: flex;
-		height: 100svh;
+		height: calc(100svh - var(--initial-padding-top));
 		justify-content: space-between;
 		padding: var(--body-padding);
 		max-width: var(--max-content-width);
