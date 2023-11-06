@@ -53,6 +53,10 @@
 		animation-delay: calc((var(--index) - 1) * var(--single-view-duration));
 	}
 
+	:global(.logo svg path) {
+		fill: var(--color-main);
+	}
+
 	@media (prefers-reduced-motion) {
 		:global(.logo svg) {
 			animation: none;
