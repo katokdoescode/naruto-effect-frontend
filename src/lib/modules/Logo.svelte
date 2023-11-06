@@ -5,13 +5,9 @@
 	let frame = undefined;
 
 	onMount(() => {
-		const logoIdx = Number(localStorage.getItem('logoIdx'));
-		if (logoIdx) {
-			frame = logoIdx < 10 ? logoIdx + 1 : 1;
-			localStorage.setItem('logoIdx', frame.toString());
-		} else {
-			frame = 1;
-		}
+		const idx = localStorage.getItem('logoIdx');
+		const logoIdx = idx ? Number(idx) : 0;
+		frame = logoIdx;
 	});
 </script>
 

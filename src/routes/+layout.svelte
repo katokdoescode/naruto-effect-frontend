@@ -25,6 +25,13 @@
 		authorized = true;
 	}
 
+	function logoController() {
+		const idx = localStorage.getItem('logoIdx');
+		const logoIdx = idx ? Number(idx) : 0;
+		const newIdx = logoIdx < 10 ? logoIdx + 1 : 1;
+		localStorage.setItem('logoIdx', newIdx.toString());
+	}
+
 	onMount(() => {
 		initHandlers(window);
 		const settedLocale = localStorage.getItem('userLang');
@@ -34,6 +41,8 @@
 			document.querySelector('html').lang = lang;
 			localStorage.setItem('userLang', lang);
 		});
+
+		logoController();
 	});
 
 	onDestroy(() => {
