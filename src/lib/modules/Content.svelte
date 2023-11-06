@@ -1,6 +1,7 @@
 <script>
 	import Footer from './Footer.svelte';
 	import Header from './Header.svelte';
+	import ShadowWrapper from './ShadowWrapper.svelte';
 </script>
 
 <section
@@ -8,9 +9,11 @@
 	class="panel">
 	<Header />
 
-	<main class="main-page-content">
-		<slot />
-	</main>
+	<ShadowWrapper noPads>
+		<main class="main-page-content">
+			<slot />
+		</main>
+	</ShadowWrapper>
 
 	<slot name="login" />
 	<Footer />
@@ -29,7 +32,8 @@
 		display: none;
 	}
 	.main-page-content {
-		margin-top: 62px;
+		padding-top: 62px;
+		padding-bottom: 10em;
 		overflow: hidden auto;
 		scrollbar-width: none;
 	}

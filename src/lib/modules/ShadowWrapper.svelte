@@ -1,10 +1,11 @@
 <script>
 	export let noTop = false;
 	export let noBottom = false;
+	export let noPads = false;
 
 	$: classes = `shadow-wrapper ${noTop ? 'no-top' : ''} ${
 		noBottom ? 'no-bottom' : ''
-	}`;
+	} ${noPads ? 'no-pads' : ''}`;
 </script>
 
 <div class={classes}>
@@ -13,54 +14,44 @@
 
 <style scoped>
 	.shadow-wrapper {
+		--top-mask-size: 80px;
+		--bottom-mask-size: 80px;
+
 		margin-top: 8px;
 		padding-top: 8px;
 		min-height: 0;
-	}
-	.shadow-wrapper,
-	.shadow-wrapper.no-top {
-		display: flex;
-		flex-direction: column;
+
 		position: relative;
 		height: auto;
 		cursor: row-resize;
-	}
 
-	.shadow-wrapper.no-top::after,
-	.shadow-wrapper::before,
-	.shadow-wrapper::after {
-		pointer-events: none;
-		content: '';
-		display: block;
-		position: absolute;
-		width: 100%;
-		height: 114px;
-	}
-	.shadow-wrapper::before {
-		z-index: 1;
-		height: 38px;
-		top: -10px;
-		background: linear-gradient(
-			to top,
-			rgba(255, 255, 255, 0) 0%,
-			rgba(255, 255, 255, 0) 0.01%,
-			var(--color-bg-main) 100%
-		);
-	}
-
-	.shadow-wrapper.no-top::after,
-	.shadow-wrapper::after {
-		bottom: 0;
-		background: linear-gradient(
+		-webkit-mask-image: linear-gradient(
 			to bottom,
-			rgba(255, 255, 255, 0) 0%,
-			rgba(255, 255, 255, 0) 0.01%,
-			var(--color-bg-main) 100%
+			transparent 0%,
+			black var(--top-mask-size, 0),
+			black calc(100% - var(--bottom-mask-size, 0)),
+			transparent 100%
+		);
+
+		mask-image: linear-gradient(
+			to bottom,
+			transparent 0%,
+			black var(--top-mask-size, 0),
+			black calc(100% - var(--bottom-mask-size, 0)),
+			transparent 100%
 		);
 	}
 
-	.shadow-wrapper.no-top::after,
-	.shadow-wrapper.no-bottom::after {
-		display: none;
+	.shadow-wrapper.no-top {
+		--top-mask-size: 0px;
+	}
+
+	.shadow-wrapper.no-bottom {
+		--bottom-mask-size: 0px;
+	}
+
+	.shadow-wrapper.no-pads {
+		margin: 0;
+		padding: 0;
 	}
 </style>

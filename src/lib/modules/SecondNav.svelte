@@ -30,7 +30,6 @@
 	.second-nav {
 		display: flex;
 		flex-direction: column;
-		gap: 15px;
 		padding-top: clamp(60px, 17.5svh, 175px);
 	}
 

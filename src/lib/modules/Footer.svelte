@@ -17,24 +17,6 @@
 		height: 94px;
 	}
 
-	@media (width >= 1018px) {
-		/* SHADOW */
-		.copyright::before {
-			content: '';
-			position: absolute;
-			top: -114px;
-			display: block;
-			width: 100%;
-			height: 114px;
-			background: linear-gradient(
-				to bottom,
-				rgba(255, 255, 255, 0) 0%,
-				rgba(255, 255, 255, 0) 0.01%,
-				var(--color-bg-main) 100%
-			);
-		}
-	}
-
 	.copyright .year {
 		font-size: var(--year-font-size);
 	}
