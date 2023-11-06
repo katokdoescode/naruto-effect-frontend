@@ -16,6 +16,15 @@
 	.shadow-wrapper {
 		--top-mask-size: 80px;
 		--bottom-mask-size: 80px;
+		--shadow-gradient-mask: linear-gradient(
+			to bottom,
+			transparent 0%,
+			black var(--top-mask-size, 0),
+			black calc(100% - var(--bottom-mask-size, 0)),
+			transparent 100%
+		);
+
+		display: flex;
 
 		margin-top: 8px;
 		padding-top: 8px;
@@ -25,21 +34,8 @@
 		height: auto;
 		cursor: row-resize;
 
-		-webkit-mask-image: linear-gradient(
-			to bottom,
-			transparent 0%,
-			black var(--top-mask-size, 0),
-			black calc(100% - var(--bottom-mask-size, 0)),
-			transparent 100%
-		);
-
-		mask-image: linear-gradient(
-			to bottom,
-			transparent 0%,
-			black var(--top-mask-size, 0),
-			black calc(100% - var(--bottom-mask-size, 0)),
-			transparent 100%
-		);
+		-webkit-mask-image: var(--shadow-gradient-mask);
+		mask-image: var(--shadow-gradient-mask);
 	}
 
 	.shadow-wrapper.no-top {
