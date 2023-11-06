@@ -17,7 +17,7 @@
 	<h2 class="title">{$_('mainMenu.practices')}:</h2>
 	<ShadowWrapper
 		noBottom={practices.length <= 2}
-		noTop={practices.length <= 2}>
+		noTop>
 		<ul class="links-list">
 			{#each practices as menuItem}
 				<li>
