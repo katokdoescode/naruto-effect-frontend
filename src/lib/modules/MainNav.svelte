@@ -23,6 +23,7 @@
 				<li>
 					<a
 						class:active={$page.url.pathname.includes(menuItem.slug[lang])}
+						data-sveltekit-keepfocus
 						href={`/practices/${menuItem.slug[lang]}`}
 						hreflang={lang}
 					>
