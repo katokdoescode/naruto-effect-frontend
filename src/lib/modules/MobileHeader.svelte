@@ -1,4 +1,5 @@
 <script>
+	import { onNavigate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Logo from '$lib/modules/Logo.svelte';
 	import MainNav from '$lib/modules/MainNav.svelte';
@@ -47,6 +48,14 @@
 		isBurgerMenuOpened = false;
 		isMainMenuOpened = false;
 	}
+
+	function hideAllMenus() {
+		isBurgerMenuOpened = false;
+		isSecondaryMenuOpened = false;
+		isMainMenuOpened = false;
+	}
+
+	onNavigate(() => hideAllMenus());
 </script>
 
 <header
