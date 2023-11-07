@@ -1,14 +1,8 @@
 <script>
+	import { browser } from '$app/environment';
 	import InlineIcon from '$lib/ui/InlineIcon.svelte';
-	import { onMount } from 'svelte';
 	import { _ } from 'svelte-i18n';
-	let frame = undefined;
-
-	onMount(() => {
-		const idx = localStorage.getItem('logoIdx');
-		const logoIdx = idx ? Number(idx) : 0;
-		frame = logoIdx;
-	});
+	$: logoIdx = browser ? localStorage.getItem('logoIdx') || 1 : 1;
 </script>
 
 <a
@@ -17,9 +11,7 @@
 	href="/"
 	title={$_('narutoEffect')}
 >
-	{#if frame}
-		<InlineIcon src={`/images/logo/logo-frame-${frame}.svg`} />
-	{/if}
+	<InlineIcon src={`/images/logo/logo-frame-${logoIdx}.svg`} />
 </a>
 
 <style scoped>

@@ -16,7 +16,7 @@
 	{...$$restProps}>
 	<h2 class="title">{$_('mainMenu.practices')}:</h2>
 	<ShadowWrapper
-		noBottom={practices.length <= 2}
+		noBottom={practices.length <= 3}
 		noTop>
 		<ul class="links-list">
 			{#each practices as menuItem}
@@ -33,6 +33,7 @@
 		</ul>
 	</ShadowWrapper>
 </nav>
+
 <section
 	class="contacts no-mobile"
 	aria-label="Контакты">

@@ -16,12 +16,16 @@
 		<LangSwitch id="change-lang-panel-second" />
 	</div>
 
-	<SecondNav {participants} />
+	<SecondNav
+		aria-label="Participants"
+		{participants} />
 
 	<div class="wrapper">
 		<a
 			class="service-link"
-			href={participateLink}>{$_('participate')}</a>
+			href={participateLink}>
+			{$_('participate')}
+		</a>
 	</div>
 </aside>
 

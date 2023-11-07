@@ -14,7 +14,7 @@
 	{...$$restProps}>
 	<h2 class="title">{$_('mainMenu.participants')}:</h2>
 	<ShadowWrapper
-		noBottom={participants.length <= 2}
+		noBottom={participants.length <= 3}
 		noTop>
 		<ul class="list">
 			{#each participants as menuItem}

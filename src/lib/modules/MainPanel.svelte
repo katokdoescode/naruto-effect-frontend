@@ -1,8 +1,8 @@
 <script>
 	import Logo from '$lib/modules/Logo.svelte';
 	import MainNav from '$lib/modules/MainNav.svelte';
-	export let practices;
-	export let socialLinks;
+	export let practices = [];
+	export let socialLinks = [];
 </script>
 
 <header
@@ -13,6 +13,7 @@
 	</div>
 
 	<MainNav
+		aria-label="Practices"
 		{practices}
 		{socialLinks} />
 </header>

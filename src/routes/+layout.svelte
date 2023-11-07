@@ -1,5 +1,4 @@
 <script>
-	import { page } from '$app/stores';
 	import Content from '$lib/modules/Content.svelte';
 	import Login from '$lib/modules/Login.svelte';
 	import MainPanel from '$lib/modules/MainPanel.svelte';
@@ -14,8 +13,7 @@
 
 	let authorized = data?.authorized || false;
 	let practices = data?.practices || [];
-	let participants =
-		$page.data?.participants || $page.data?.practice?.participants || [];
+	let participants = data?.participants || [];
 	let socialLinks = data?.pageData?.socialLinks || [];
 	let participateLink = data?.pageData?.participateLink || [];
 
@@ -54,6 +52,7 @@
 	<MainPanel
 		{practices}
 		{socialLinks} />
+
 	<MobileHeader
 		{participants}
 		{participateLink}
