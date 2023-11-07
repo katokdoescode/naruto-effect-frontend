@@ -1,5 +1,5 @@
 // TO BE PLACED AFTER CSS LINKS
-const savedScheme = localStorage.getItem('color-scheme');
+const savedScheme = localStorage.getItem('colorScheme');
 /** @type {HTMLLinkElement} */
 const lightStylesheet = document.querySelector(
 	'link[href="/styles/themes/light.css"]'

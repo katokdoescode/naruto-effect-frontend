@@ -12,7 +12,7 @@
 
 	onMount(() => {
 		// Get the initial scheme from localStorage or default to auto
-		scheme = localStorage.getItem('color-scheme') || ColorSchemes.AUTO;
+		scheme = localStorage.getItem('colorScheme') || ColorSchemes.AUTO;
 		isMounted = true;
 		updateTheme();
 	});
@@ -39,7 +39,7 @@
 			darkStylesheet.media = 'all';
 		}
 
-		localStorage.setItem('color-scheme', scheme);
+		localStorage.setItem('colorScheme', scheme);
 	}
 
 	function switchNextTheme() {
@@ -56,7 +56,7 @@
 	<legend>{$_('legend')}</legend>
 	<input
 		id="light"
-		name="color-scheme"
+		name="colorScheme"
 		type="radio"
 		value="light"
 		bind:group={scheme}
@@ -70,7 +70,7 @@
 
 	<input
 		id="auto"
-		name="color-scheme"
+		name="colorScheme"
 		type="radio"
 		value="auto"
 		bind:group={scheme}
@@ -84,7 +84,7 @@
 
 	<input
 		id="dark"
-		name="color-scheme"
+		name="colorScheme"
 		type="radio"
 		value="dark"
 		bind:group={scheme}
