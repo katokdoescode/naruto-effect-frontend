@@ -1,5 +1,11 @@
+<script>
+	import { page } from '$app/stores';
+</script>
+
 <header class="content-header no-mobile">
-	<a href="/cv">CV</a>
+	<a
+		class:active={$page.url.pathname.includes('/cv')}
+		href="/cv">CV</a>
 </header>
 
 <style scoped>

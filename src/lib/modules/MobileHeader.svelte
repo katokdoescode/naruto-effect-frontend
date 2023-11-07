@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/stores';
 	import Logo from '$lib/modules/Logo.svelte';
 	import MainNav from '$lib/modules/MainNav.svelte';
 	import SecondNav from '$lib/modules/SecondNav.svelte';
@@ -67,7 +68,9 @@
 			{$_('mainMenu.practices')}
 		</Button>
 
-		<a href="/cv">CV</a>
+		<a
+			class:active={$page.url.pathname.includes('/cv')}
+			href="/cv">CV</a>
 
 		<Button
 			id="control-second-menu"

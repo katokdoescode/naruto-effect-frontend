@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/stores';
 	import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
 	import { _, locale } from 'svelte-i18n';
 	export let participants = [];
@@ -18,7 +19,10 @@
 		<ul class="list">
 			{#each participants as menuItem}
 				<li>
-					<a href={`/participants/${menuItem.slug}`}>{menuItem.name[lang]}</a>
+					<a
+						class:active={$page.url.pathname.includes(menuItem.slug)}
+						href={`/participants/${menuItem.slug}`}>{menuItem.name[lang]}</a
+					>
 				</li>
 			{/each}
 		</ul>
