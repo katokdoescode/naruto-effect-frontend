@@ -1,4 +1,4 @@
-import { VITE_BFF_BASE_URL } from '$env/static/private';
+import { VITE_ADMIN_EMAIL, VITE_BFF_BASE_URL } from '$env/static/private';
 import { Routes } from '$lib/constants/index.js';
 import { createError } from '$lib/utils/errors.js';
 import { FetchData } from '$lib/utils/fetchData.js';
@@ -9,7 +9,7 @@ export async function POST({ cookies, request }) {
 	const data = await request.formData();
 
 	const userData = {
-		email: data.get('email') || '',
+		email: VITE_ADMIN_EMAIL,
 		password: data.get('password') || ''
 	};
 
@@ -20,8 +20,10 @@ export async function POST({ cookies, request }) {
 		});
 
 	const url = VITE_BFF_BASE_URL + Routes.LOGIN;
-	// @ts-ignore
-	const { authToken } = await fetch(url, new FetchData({ data: userData }));
+	const { authToken } = await fetch(
+		url,
+		new FetchData({ data: userData })
+	).then((res) => res.json());
 
 	if (authToken) {
 		cookies.set('authToken', authToken, { path: '/' });

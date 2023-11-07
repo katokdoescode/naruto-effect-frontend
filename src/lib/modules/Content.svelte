@@ -24,6 +24,8 @@
 		display: grid;
 		grid-template-rows: max-content minmax(0, 1fr) max-content;
 
+		position: relative;
+
 		min-width: var(--min-center-section-width);
 		max-width: var(--max-center-section-width);
 		width: 100%;

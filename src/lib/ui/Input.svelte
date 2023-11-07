@@ -15,6 +15,11 @@
 	export let name;
 
 	/**
+	 * @type {?string}
+	 */
+	export let label = undefined;
+
+	/**
 	 * @type {string}
 	 */
 	export let value = '';
@@ -47,7 +52,11 @@
 	/>
 
 	<span class="label">
-		<slot name="label">{name}</slot>
+		<slot name="label">
+			{#if label}
+				{label}
+			{/if}
+		</slot>
 	</span>
 
 	<span class="error">
@@ -60,6 +69,7 @@
 		display: grid;
 		grid-template-columns: 1fr;
 		grid-template-rows: max-content 1fr max-content;
+		width: 100%;
 	}
 
 	.label {
@@ -68,6 +78,14 @@
 
 	.real-input {
 		order: 2;
+
+		border: none;
+		border-bottom: 2px solid var(--color-main);
+		background-color: var(--color-bg-main);
+		width: 100%;
+
+		font-size: 24px;
+		/* TODO: change size */
 	}
 
 	.error {

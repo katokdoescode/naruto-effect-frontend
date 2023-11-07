@@ -12,18 +12,24 @@
 	/** @type {{ authorized: boolean, practices: Array<object>, participants: Array<object>, pageData: MainPageData }} */
 	export let data;
 
-	let authorized = data?.authorized || false;
+	const combo = writable();
+	const authorized = writable();
 	let practices = data?.practices || [];
 	let participants = data?.participants || [];
 	let socialLinks = data?.pageData?.socialLinks || [];
 	let participateLink = data?.pageData?.participateLink || [];
 
-	let open = false;
-
-	const combo = writable();
+	$: open = false;
+	$: authorized.set(data?.authorized || false);
 
 	function authorize() {
-		authorized = true;
+		authorized.set(true);
+		closeLoginModal();
+	}
+
+	function closeLoginModal() {
+		combo.set(false);
+		open = false;
 	}
 
 	function logoController() {
@@ -60,9 +66,10 @@
 		destroyHandlers;
 	});
 
+	setContext('authorized', authorized);
 	setContext('combo', combo);
 	getContext('combo').subscribe((pressed) => {
-		if (pressed) open = pressed;
+		if (pressed) open = true;
 	});
 </script>
 
@@ -81,9 +88,9 @@
 		<slot />
 		<svelte:fragment slot="login">
 			<Login
-				{authorized}
 				bind:open
-				on:success={authorize} />
+				on:success={authorize}
+				on:close={closeLoginModal} />
 		</svelte:fragment>
 	</Content>
 

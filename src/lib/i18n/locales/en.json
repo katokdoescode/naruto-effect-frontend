@@ -2,6 +2,7 @@
 	"email": "Email",
 	"password": "Password",
 	"signIn": "Sign In",
+	"signOut": "Sign Out",
 	"signingIn": "Signing In",
 	"close": "Close",
 	"copyright": "All material on the site is the intellectual property of Naruto Effect members and may only be used with prior approval",
@@ -21,5 +22,6 @@
 	"narutoEffect": "Naruto Effect",
 	"mainMenu.practices": "Practices",
 	"mainMenu.participants": "Participants",
-	"participate": "Participate"
+	"participate": "Participate",
+	"hokagemode": "Hokagemode"
 }

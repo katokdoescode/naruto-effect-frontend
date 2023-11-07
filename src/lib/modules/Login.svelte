@@ -2,14 +2,14 @@
 	import { enhance } from '$app/forms';
 	import Button from '$lib/ui/Button.svelte';
 	import Input from '$lib/ui/Input.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import { _ } from 'svelte-i18n';
 	const dispatch = createEventDispatcher();
 	/**
 	 * @type {boolean}
 	 */
 	export let open = false;
-	export let authorized = false;
+	const authorized = getContext('authorized');
 	let isLoading = false;
 	let errorMessage;
 
@@ -17,6 +17,7 @@
 		errorMessage = undefined;
 		isLoading = false;
 		open = false;
+		dispatch('close');
 	}
 
 	async function signIn() {
@@ -35,32 +36,84 @@
 	}
 </script>
 
-<dialog {open}>
-	<form
-		action="/api/signIn"
-		method="post"
-		use:enhance={signIn}>
-		<Input
-			name="email"
-			autocomplete="email"
-			type="email" />
-		<Input
-			name="password"
-			autocomplete="password"
-			type="password" />
-		<Button type="submit"
-		>{isLoading ? `${$_('signingIn')}...` : $_('signIn')}</Button
+<dialog
+	class="login-dialog"
+	{open}>
+	<div class="wrapper">
+		<form
+			class="login-form"
+			action="/api/signIn"
+			method="post"
+			use:enhance={signIn}
 		>
-		{#if !!errorMessage}
-			<span>{errorMessage}</span>
-		{/if}
-		{#if authorized}
-			<span>Already authorized</span>
-		{/if}
-	</form>
-	<form
-		method="dialog"
-		on:submit={closeModal}>
-		<button type="submit">{$_('close')}</button>
-	</form>
+			<h2>{$_('hokagemode')}</h2>
+
+			<Input
+				name="password"
+				autocomplete="password"
+				type="password" />
+
+			<Button
+				styleType="login"
+				type="submit">
+				{isLoading ? `${$_('signingIn')}...` : $_('signIn')}
+			</Button>
+			{#if !!errorMessage}
+				<span>{errorMessage}</span>
+			{/if}
+			{#if $authorized}
+				<span>Already authorized</span>
+			{/if}
+		</form>
+		<form
+			class="close-dialog"
+			method="dialog"
+			on:submit={closeModal}>
+			<Button
+				styleType="login"
+				type="submit">{$_('close')}</Button>
+		</form>
+	</div>
 </dialog>
+
+<style scoped>
+	.login-dialog[open] {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		background-color: var(--color-bg-main);
+		border: none;
+		display: flex;
+		align-items: center;
+	}
+
+	.login-dialog .wrapper {
+		transform: translateY(-50%);
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.login-dialog .wrapper h2 {
+		font-size: var(--font-heading-size);
+	}
+
+	.close-dialog {
+		position: absolute;
+		top: -100%;
+		right: 0;
+	}
+
+	.login-form {
+		display: flex;
+		flex-direction: column;
+		gap: 34px;
+	}
+
+	.login-form :global(button) {
+		margin-left: auto;
+	}
+</style>

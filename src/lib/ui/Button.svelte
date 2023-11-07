@@ -65,6 +65,8 @@
 	}
 
 	.button.bordered {
+		align-self: center;
+		height: max-content;
 		border: 2px solid var(--color-gray);
 		border-radius: 6px;
 		padding: 0 21px;
@@ -101,6 +103,7 @@
 		padding: 10px 23px;
 		background-color: var(--color-main);
 		color: var(--color-bg-main);
+		text-transform: lowercase;
 	}
 
 	.button.bordered:hover {
