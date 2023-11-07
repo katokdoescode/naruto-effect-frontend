@@ -51,19 +51,22 @@
 			<Input
 				name="password"
 				autocomplete="password"
-				type="password" />
+				type="password">
+				<svelte:fragment slot="error">
+					{#if !!errorMessage}
+						<span>{errorMessage}</span>
+					{/if}
+					{#if $authorized}
+						<span>Already authorized</span>
+					{/if}
+				</svelte:fragment>
+			</Input>
 
 			<Button
 				styleType="login"
 				type="submit">
 				{isLoading ? `${$_('signingIn')}...` : $_('signIn')}
 			</Button>
-			{#if !!errorMessage}
-				<span>{errorMessage}</span>
-			{/if}
-			{#if $authorized}
-				<span>Already authorized</span>
-			{/if}
 		</form>
 		<form
 			class="close-dialog"
