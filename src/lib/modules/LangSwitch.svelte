@@ -1,12 +1,14 @@
 <script>
-	import { locale, locales } from 'svelte-i18n';
+	import { _, locale, locales } from 'svelte-i18n';
 	export let id;
 </script>
 
 <select
 	{id}
 	class="language-switch"
-	bind:value={$locale}>
+	aria-label={$_('switchLanguage')}
+	bind:value={$locale}
+>
 	{#each $locales as locale}
 		<option value={locale}>{locale}</option>
 	{/each}
