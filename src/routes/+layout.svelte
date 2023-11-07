@@ -4,9 +4,10 @@
 	import MainPanel from '$lib/modules/MainPanel.svelte';
 	import MobileHeader from '$lib/modules/MobileHeader.svelte';
 	import SecondaryPanel from '$lib/modules/SecondaryPanel.svelte';
-	import { destroyHandlers, initHandlers } from '$lib/utils/keyboardHandler';
-	import { onDestroy, onMount } from 'svelte';
+	import { handleKeydown, handleKeyup } from '$lib/utils/keyboardHandler';
+	import { getContext, onDestroy, onMount, setContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
+	import { writable } from 'svelte/store';
 
 	/** @type {{ authorized: boolean, practices: Array<object>, participants: Array<object>, pageData: MainPageData }} */
 	export let data;
@@ -19,6 +20,8 @@
 
 	let open = false;
 
+	const combo = writable();
+
 	function authorize() {
 		authorized = true;
 	}
@@ -30,8 +33,17 @@
 		localStorage.setItem('logoIdx', newIdx.toString());
 	}
 
+	function initHandlers() {
+		window.addEventListener('keydown', (e) => combo.set(handleKeydown(e)));
+		window.addEventListener('keyup', handleKeyup);
+	}
+
+	function destroyHandlers() {
+		window.removeEventListener('keydown', handleKeydown);
+		window.removeEventListener('keyup', handleKeyup);
+	}
+
 	onMount(() => {
-		initHandlers(window);
 		const settedLocale = localStorage.getItem('userLang');
 		if (settedLocale) locale.set(settedLocale);
 
@@ -40,11 +52,17 @@
 			localStorage.setItem('userLang', lang);
 		});
 
+		initHandlers();
 		logoController();
 	});
 
 	onDestroy(() => {
 		destroyHandlers;
+	});
+
+	setContext('combo', combo);
+	getContext('combo').subscribe((pressed) => {
+		if (pressed) open = pressed;
 	});
 </script>
 
