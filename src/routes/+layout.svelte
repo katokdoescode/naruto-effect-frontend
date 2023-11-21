@@ -73,6 +73,12 @@
 	});
 </script>
 
+<svelte:head>
+	{#if $authorized}
+		<script src="/node_modules/tinymce/tinymce.min.js"></script>
+	{/if}
+</svelte:head>
+
 <div class="screen main-layout">
 	<MainPanel
 		{practices}

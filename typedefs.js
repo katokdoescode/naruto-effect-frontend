@@ -58,6 +58,7 @@
  * @exports MainPageData
  * @typedef MainPageData
  * @type {object}
+ * @property {number} id
  * @property {LocaleObject} title
  * @property {string} videoLink
  * @property {LocaleObject} text
@@ -88,6 +89,7 @@
  * @typedef XanoError
  * @type {object}
  * @property {'error'} status
+ * @property {string} code
  * @property {string} message
  */
 

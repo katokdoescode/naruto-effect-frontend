@@ -1,13 +1,42 @@
 <script>
+	import { setContext } from 'svelte';
+	import { writable } from 'svelte/store';
 	import Footer from './Footer.svelte';
 	import Header from './Header.svelte';
 	import ShadowWrapper from './ShadowWrapper.svelte';
+	const isContentPageEditing = writable();
+	const contentPageStatus = writable();
+	const contentPage = writable();
+
+	isContentPageEditing.set(false);
+
+	setContext('isContentPageEditing', isContentPageEditing);
+	setContext('contentPageStatus', contentPageStatus);
+	setContext('contentPage', contentPage);
+
+	async function saveContent() {
+		contentPageStatus.set('loading');
+
+		const response = await fetch('/api/mainPage', {
+			method: 'PATCH',
+			body: JSON.stringify($contentPage)
+		}).then((data) => data.json());
+
+		if (response.success) {
+			isContentPageEditing.set(false);
+			contentPageStatus.set('success');
+			setTimeout(() => contentPageStatus.set(null), 2500);
+		} else {
+			contentPageStatus.set('error');
+			setTimeout(() => contentPageStatus.set(null), 3500);
+		}
+	}
 </script>
 
 <section
 	id="panel-content"
 	class="panel">
-	<Header />
+	<Header on:save={saveContent} />
 
 	<ShadowWrapper noPads>
 		<main class="main-page-content">
@@ -38,5 +67,6 @@
 		padding-bottom: 10em;
 		overflow: hidden auto;
 		scrollbar-width: none;
+		width: 100%;
 	}
 </style>

@@ -23,5 +23,10 @@
 	"mainMenu.practices": "Практики",
 	"mainMenu.participants": "Участники",
 	"participate": "Принять участие",
-	"hokagemode": "Режим хокаге"
+	"hokagemode": "Режим хокаге",
+	"button.edit": "Редактировать",
+	"button.save": "Сохранить",
+	"button.loading": "сохранение...",
+	"button.success": "Сохранено!",
+	"button.error": "Не получилось"
 }

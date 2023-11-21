@@ -40,10 +40,6 @@
 	$: dispatch('input', value);
 </script>
 
-<svelte:head>
-	<script src="/node_modules/tinymce/tinymce.min.js"></script>
-</svelte:head>
-
 <div class="editor-wrapper">
 	<Editor
 		{id}

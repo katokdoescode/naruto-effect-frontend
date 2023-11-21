@@ -23,5 +23,10 @@
 	"mainMenu.practices": "Practices",
 	"mainMenu.participants": "Participants",
 	"participate": "Participate",
-	"hokagemode": "Hokagemode"
+	"hokagemode": "Hokagemode",
+	"button.edit": "Edit",
+	"button.save": "Save",
+	"button.loading": "saving...",
+	"button.success": "Saved",
+	"button.error": "Didn\t saved"
 }
