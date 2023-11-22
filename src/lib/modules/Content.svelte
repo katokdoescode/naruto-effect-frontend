@@ -1,6 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import { setContext } from 'svelte';
+	import { locale } from 'svelte-i18n';
 	import { writable } from 'svelte/store';
 	import Footer from './Footer.svelte';
 	import Header from './Header.svelte';
@@ -9,24 +10,49 @@
 	let route;
 	page.subscribe((pageObject) => (route = pageObject.route.id));
 
+	const isContentPageEditing = writable();
+	const contentPageStatus = writable();
+	const contentPage = writable();
+	const practiceData = writable();
+
+	isContentPageEditing.set(false);
+
+	setContext('isContentPageEditing', isContentPageEditing);
+	setContext('contentPageStatus', contentPageStatus);
+	setContext('contentPage', contentPage);
+	setContext('practiceData', practiceData);
+
 	$: url = function () {
 		switch (route) {
 			case '/':
 				return {
 					route: '/api/mainPage',
-					method: 'PATCH'
+					method: 'PATCH',
+					data: JSON.stringify($contentPage),
+					onSuccess: function (data) {
+						return data;
+					}
 				};
 
 			case '/practices/create':
 				return {
 					route: '/api/practices',
-					method: 'POST'
+					method: 'POST',
+					data: JSON.stringify($practiceData),
+					onSuccess: function (data) {
+						const slug = data.slug[$locale];
+						window.location.assign(`/practices/${slug}`);
+					}
 				};
 
 			case '/practices/[slug]':
 				return {
 					route: '/api/practices',
-					method: 'PATCH'
+					method: 'PATCH',
+					data: JSON.stringify({}),
+					onSuccess: function (data) {
+						return data;
+					}
 				};
 
 			default:
@@ -34,28 +60,21 @@
 		}
 	};
 
-	const isContentPageEditing = writable();
-	const contentPageStatus = writable();
-	const contentPage = writable();
-
-	isContentPageEditing.set(false);
-
-	setContext('isContentPageEditing', isContentPageEditing);
-	setContext('contentPageStatus', contentPageStatus);
-	setContext('contentPage', contentPage);
-
 	async function saveContent() {
 		contentPageStatus.set('loading');
 
 		const response = await fetch(url().route, {
 			method: url().method,
-			body: JSON.stringify($contentPage)
+			body: url().data
 		}).then((data) => data.json());
 
 		if (response.success) {
 			isContentPageEditing.set(false);
 			contentPageStatus.set('success');
-			setTimeout(() => contentPageStatus.set(null), 2500);
+			setTimeout(() => {
+				contentPageStatus.set(null);
+				url().onSuccess(response.data);
+			}, 2500);
 		} else {
 			contentPageStatus.set('error');
 			setTimeout(() => contentPageStatus.set(null), 3500);

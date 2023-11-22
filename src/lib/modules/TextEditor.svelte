@@ -48,7 +48,7 @@
 	class:inline>
 	{#if !value && placeholder}
 		<article class="editor-placeholder">
-			{#if inline}
+			{#if !inline}
 				{@html placeholder}
 			{:else}
 				{placeholder}

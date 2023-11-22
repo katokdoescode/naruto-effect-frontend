@@ -33,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@katokdoescode/car-slugger": "^1.0.3",
 		"@tinymce/tinymce-svelte": "^1.0.1",
 		"husky": "^8.0.3",
 		"lint-staged": "^15.0.1",

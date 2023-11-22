@@ -94,23 +94,13 @@
  */
 
 /**
- * @exports PracticeRecord
- * @typedef PracticeRecord
- * @type {object}
- * @property {LocaleObject} name
- * @property {string} link
- */
-
-/**
  * @exports Practice
  * @typedef Practice
  * @type {object}
  * @property {number} id
- * @property {LocaleObject} name
  * @property {LocaleObject} slug
  * @property {LocaleObject} title
  * @property {LocaleObject} subtitle
  * @property {string} videoLink
  * @property {LocaleObject} description
- * @property {PracticeRecord[]} records
  */

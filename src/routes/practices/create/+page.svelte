@@ -3,27 +3,17 @@
 	import TextEditor from '$lib/modules/TextEditor.svelte';
 	import Input from '$lib/ui/Input.svelte';
 	import Textarea from '$lib/ui/Textarea.svelte';
-	import { getContext, setContext } from 'svelte';
+	import { clean } from '$lib/utils/objectCleaner';
+	import { CarSlugger } from '@katokdoescode/car-slugger';
+	import { getContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
-	import { writable } from 'svelte/store';
 
 	const isContentPageEditing = getContext('isContentPageEditing');
 	const contentPageStatus = getContext('contentPageStatus');
 	const authorized = getContext('authorized');
+	const practiceData = getContext('practiceData');
 
-	const practiceCreationStatus = writable();
-	const isPracticeEditing = writable();
-	const practiceTitle = writable();
-	const practiceSubtitle = writable();
-	const practiceDescription = writable();
-	const practiceLink = writable();
-
-	setContext('practiceCreationStatus', practiceCreationStatus);
-	setContext('isPracticeEditing', isPracticeEditing);
-	setContext('practiceTitle', practiceTitle);
-	setContext('practiceSubtitle', practiceSubtitle);
-	setContext('practiceDescription', practiceDescription);
-	setContext('practiceLink', practiceLink);
+	const slugger = new CarSlugger();
 
 	isContentPageEditing.set(true);
 	contentPageStatus.set(null);
@@ -31,14 +21,18 @@
 	/** @type{Practice} */
 	let localValue = {
 		id: null,
-		name: { en: '', ru: '' },
 		slug: { en: '', ru: '' },
 		title: { en: '', ru: '' },
 		subtitle: { en: '', ru: '' },
 		videoLink: '',
-		description: { en: '', ru: '' },
-		records: []
+		description: { en: '', ru: '' }
 	};
+
+	$: Object.entries(localValue.title).forEach(([key, value]) => {
+		if (value) localValue.slug[key] = slugger.getSlug(localValue.title[key]);
+	});
+
+	$: practiceData.set(clean(localValue));
 </script>
 
 {#if $authorized}

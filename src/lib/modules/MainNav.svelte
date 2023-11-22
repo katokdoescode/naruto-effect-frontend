@@ -36,7 +36,7 @@
 						href={`/practices/${menuItem.slug[$locale]}`}
 						hreflang={$locale}
 					>
-						{menuItem.name[$locale]}
+						{menuItem.title[$locale]}
 					</a>
 				</li>
 			{/each}
