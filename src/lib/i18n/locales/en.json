@@ -28,5 +28,6 @@
 	"button.save": "Save",
 	"button.loading": "saving...",
 	"button.success": "Saved",
-	"button.error": "Didn\t saved"
+	"button.error": "Didn\t saved",
+	"button.add": "Add"
 }

@@ -20,6 +20,9 @@
 	/** @type {"none"|"login"} Specific style of the button */
 	export let styleType = 'none';
 
+	/** @type {string} */
+	export let href = null;
+
 	$: classes = `button ${active ? 'active' : ''}`;
 
 	$: if (color !== 'transparent' && styleType === 'none') {
@@ -35,16 +38,26 @@
 	}
 </script>
 
-<button
-	{id}
-	class={classes}
-	{disabled}
-	{type}
-	{...$$restProps}
-	on:click={click}
->
-	<slot />
-</button>
+{#if href}
+	<a
+		{id}
+		class={classes}
+		{...$$restProps}
+		{href}>
+		<slot />
+	</a>
+{:else}
+	<button
+		{id}
+		class={classes}
+		{disabled}
+		{type}
+		{...$$restProps}
+		on:click={click}
+	>
+		<slot />
+	</button>
+{/if}
 
 <style scoped>
 	.button {
@@ -58,6 +71,11 @@
 		cursor: pointer;
 	}
 
+	button.button {
+		font: inherit;
+		font-weight: var(--font-menu-weight);
+	}
+
 	.button:not(.bordered).active {
 		text-decoration: underline;
 		text-underline-offset: 3px;
@@ -65,7 +83,7 @@
 	}
 
 	.button.bordered {
-		align-self: center;
+		align-self: flex-start;
 		height: max-content;
 		border: 2px solid var(--color-gray);
 		border-radius: 6px;

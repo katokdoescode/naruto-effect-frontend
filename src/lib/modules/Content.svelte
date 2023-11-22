@@ -1,9 +1,39 @@
 <script>
+	import { page } from '$app/stores';
 	import { setContext } from 'svelte';
 	import { writable } from 'svelte/store';
 	import Footer from './Footer.svelte';
 	import Header from './Header.svelte';
 	import ShadowWrapper from './ShadowWrapper.svelte';
+
+	let route;
+	page.subscribe((pageObject) => (route = pageObject.route.id));
+
+	$: url = function () {
+		switch (route) {
+			case '/':
+				return {
+					route: '/api/mainPage',
+					method: 'PATCH'
+				};
+
+			case '/practices/create':
+				return {
+					route: '/api/practices',
+					method: 'POST'
+				};
+
+			case '/practices/[slug]':
+				return {
+					route: '/api/practices',
+					method: 'PATCH'
+				};
+
+			default:
+				break;
+		}
+	};
+
 	const isContentPageEditing = writable();
 	const contentPageStatus = writable();
 	const contentPage = writable();
@@ -17,8 +47,8 @@
 	async function saveContent() {
 		contentPageStatus.set('loading');
 
-		const response = await fetch('/api/mainPage', {
-			method: 'PATCH',
+		const response = await fetch(url().route, {
+			method: url().method,
 			body: JSON.stringify($contentPage)
 		}).then((data) => data.json());
 

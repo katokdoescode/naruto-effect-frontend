@@ -49,7 +49,7 @@
 			<h2>{$_('hokagemode')}</h2>
 
 			<Input
-				name="password"
+				id="password"
 				autocomplete="password"
 				type="password">
 				<svelte:fragment slot="error">

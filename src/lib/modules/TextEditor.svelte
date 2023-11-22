@@ -1,4 +1,5 @@
 <script>
+	/* eslint-disable svelte/no-at-html-tags */
 	import Editor from '@tinymce/tinymce-svelte';
 	import { createEventDispatcher } from 'svelte';
 
@@ -15,9 +16,9 @@
 	export let id;
 
 	/** @type{string} */
-	export let value = '';
+	export let value;
 
-	/** @type{string} */
+	/** @type{string|boolean} */
 	export let placeholder = 'Type here...';
 
 	let conf = {
@@ -28,10 +29,9 @@
 		statusbar: false,
 		contextmenu: inline
 			? false
-			: 'redo fontsize bold h2 h3 hr italic underline strikethrough link lists',
+			: 'bold fontsize align italic list underline strikethrough link hr undo', // indent и выбор параграфа
 		resize: false,
-		content_css: 'N',
-		skin: 'Naruto',
+		content_css: '',
 		skin_url: '/styles/tinymce/ui/Naruto',
 		font_css: '/styles/fonts.css',
 		plugins: ['autolink', 'lists', 'link'],
@@ -46,6 +46,16 @@
 <div
 	class="editor-wrapper"
 	class:inline>
+	{#if !value && placeholder}
+		<article class="editor-placeholder">
+			{#if inline}
+				{@html placeholder}
+			{:else}
+				{placeholder}
+			{/if}
+		</article>
+	{/if}
+
 	<Editor
 		{id}
 		{conf}
@@ -58,13 +68,28 @@
 
 <style scoped>
 	.editor-wrapper {
+		position: relative;
 		width: 100%;
 		height: 100%;
+		min-height: 300px;
+	}
+
+	.editor-placeholder {
+		position: absolute;
+		top: 1em;
+		opacity: 0.5;
+		pointer-events: none;
+	}
+
+	:global(.editor-placeholder > *:first-child) {
+		margin-top: 0;
 	}
 
 	.editor-wrapper.inline {
 		height: auto;
+		min-height: initial;
 	}
+
 	:global(.tinymce-wrapper) {
 		width: 100%;
 		height: 100%;

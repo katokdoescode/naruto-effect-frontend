@@ -1,17 +1,29 @@
 <script>
 	import { page } from '$app/stores';
 	import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
-
+	import Button from '$lib/ui/Button.svelte';
+	import { getContext } from 'svelte';
 	import { _, locale } from 'svelte-i18n';
+
 	export let practices = [];
 	export let socialLinks = [];
+	const authorized = getContext('authorized');
 </script>
 
 <nav
 	id="main-menu"
 	class="main-nav"
 	{...$$restProps}>
-	<h2 class="title">{$_('mainMenu.practices')}:</h2>
+	{#if $authorized}
+		<div class="edit-title-wrapper">
+			<h2 class="title">{$_('mainMenu.practices')}:</h2>
+			<Button
+				color="gray"
+				href="/practices/create">{$_('button.add')}</Button>
+		</div>
+	{:else}
+		<h2 class="title">{$_('mainMenu.practices')}:</h2>
+	{/if}
 	<ShadowWrapper
 		noBottom={practices.length <= 3}
 		noTop>
@@ -111,5 +123,11 @@
 	.contacts a {
 		font-size: var(--buttons-text-size);
 		text-decoration: none;
+	}
+
+	.edit-title-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
 	}
 </style>

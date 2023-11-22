@@ -28,5 +28,6 @@
 	"button.save": "Сохранить",
 	"button.loading": "сохранение...",
 	"button.success": "Сохранено!",
-	"button.error": "Не получилось"
+	"button.error": "Не получилось",
+	"button.add": "Добавить"
 }
