@@ -23,10 +23,13 @@
 	/** @type {string} */
 	export let href = null;
 
+	/** @type {string} */
+	export let nativeClasses = '';
+
 	$: classes = `button ${active ? 'active' : ''}`;
 
 	$: if (color !== 'transparent' && styleType === 'none') {
-		classes += 'bordered' + ' ' + color;
+		classes += 'bordered' + ' ' + color + nativeClasses;
 	}
 
 	$: if (styleType !== 'none') {
@@ -69,11 +72,6 @@
 		font-weight: var(--font-menu-weight);
 		border: none;
 		cursor: pointer;
-	}
-
-	button.button {
-		font: inherit;
-		font-weight: var(--font-menu-weight);
 	}
 
 	.button:not(.bordered).active {
