@@ -31,8 +31,27 @@
 	$: if (isEditing) contentPage.set(pageData);
 </script>
 
-<h1 class="main-header">{pageData.title[lang]}</h1>
-<YouTube link={videoLink} />
+{#if isEditing}
+	<h1 class="main-header">
+		<TextEditor
+			id="contentTitleEditor"
+			inline
+			bind:value={localValue.title[lang]}
+		/>
+	</h1>
+{:else}
+	<h1 class="main-header">{pageData.title[lang]}</h1>
+{/if}
+
+{#if isEditing}
+	<TextEditor
+		id="contentVideoEditor"
+		inline
+		bind:value={localValue.videoLink}
+	/>
+{:else}
+	<YouTube link={videoLink} />
+{/if}
 
 {#if isEditing}
 	<TextEditor
