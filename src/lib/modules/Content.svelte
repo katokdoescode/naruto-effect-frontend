@@ -49,7 +49,7 @@
 				return {
 					route: '/api/practices',
 					method: 'PATCH',
-					data: JSON.stringify({}),
+					data: JSON.stringify($practiceData),
 					onSuccess: function (data) {
 						return data;
 					}

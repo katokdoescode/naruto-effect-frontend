@@ -44,3 +44,31 @@ export async function POST({ request, cookies }) {
 		return json(createError(false, 'Something went wrong. Try again later.'));
 	}
 }
+export async function PATCH({ request, cookies }) {
+	/** @type {Practice} */
+	const data = await request.json();
+	const authToken = cookies.get('authToken');
+	const url = VITE_BFF_BASE_URL + Routes.PRACTICES + `/${data.id}`;
+
+	const requestOptions = {
+		method: 'PATCH',
+		headers: {
+			Authorization: authToken,
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(data)
+	};
+
+	/** @type {Practice&XanoError} */
+	const practice = await fetch(url, requestOptions).then((res) => res.json());
+
+	if (practice.message) {
+		return json(createError(false, practice.message));
+	}
+
+	if (practice) {
+		return json({ success: true, data: practice });
+	} else {
+		return json(createError(false, 'Something went wrong. Try again later.'));
+	}
+}
