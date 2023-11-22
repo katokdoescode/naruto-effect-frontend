@@ -3,9 +3,6 @@
 	import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
 	import { _, locale } from 'svelte-i18n';
 	export let participants = [];
-	let lang;
-
-	locale.subscribe((l) => (lang = l));
 </script>
 
 <nav
@@ -22,7 +19,7 @@
 					<a
 						class:active={$page.url.pathname.includes(menuItem.slug)}
 						data-sveltekit-keepfocus
-						href={`/participants/${menuItem.slug}`}>{menuItem.name[lang]}</a
+						href={`/participants/${menuItem.slug}`}>{menuItem.name[$locale]}</a
 					>
 				</li>
 			{/each}

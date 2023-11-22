@@ -7,9 +7,6 @@
 	const isContentPageEditing = getContext('isContentPageEditing');
 	const contentPage = getContext('contentPage');
 
-	let lang;
-	locale.subscribe((l) => (lang = l));
-
 	/* eslint-disable svelte/no-at-html-tags */
 	/** @type {import('./$types').PageData} */
 	export let data;
@@ -36,11 +33,11 @@
 		<TextEditor
 			id="contentTitleEditor"
 			inline
-			bind:value={localValue.title[lang]}
+			bind:value={localValue.title[$locale]}
 		/>
 	</h1>
 {:else}
-	<h1 class="main-header">{pageData.title[lang]}</h1>
+	<h1 class="main-header">{pageData.title[$locale]}</h1>
 {/if}
 
 {#if isEditing}
@@ -56,9 +53,9 @@
 {#if isEditing}
 	<TextEditor
 		id="contentPageEditor"
-		bind:value={localValue.text[lang]} />
+		bind:value={localValue.text[$locale]} />
 {:else}
 	<article class="main-article">
-		{@html pageData.text[lang]}
+		{@html pageData.text[$locale]}
 	</article>
 {/if}

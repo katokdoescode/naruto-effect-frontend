@@ -2,9 +2,6 @@
 	import { _, locale } from 'svelte-i18n';
 	import LangSwitch from './LangSwitch.svelte';
 	import ThemeSwitch from './ThemeSwitch.svelte';
-	let lang;
-
-	locale.subscribe((l) => (lang = l));
 
 	/** @type{SocialLinkLocale[]} */
 	export let socialLinks = null;
@@ -26,7 +23,7 @@
 						referrerpolicy="no-referrer"
 						rel="me"
 						target="_blank">
-						{name[lang]}
+						{name[$locale]}
 					</a>
 				</li>
 			{/each}

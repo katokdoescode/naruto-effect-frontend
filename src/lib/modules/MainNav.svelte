@@ -5,9 +5,6 @@
 	import { _, locale } from 'svelte-i18n';
 	export let practices = [];
 	export let socialLinks = [];
-	let lang;
-
-	locale.subscribe((l) => (lang = l));
 </script>
 
 <nav
@@ -22,12 +19,12 @@
 			{#each practices as menuItem}
 				<li>
 					<a
-						class:active={$page.url.pathname.includes(menuItem.slug[lang])}
+						class:active={$page.url.pathname.includes(menuItem.slug[$locale])}
 						data-sveltekit-keepfocus
-						href={`/practices/${menuItem.slug[lang]}`}
-						hreflang={lang}
+						href={`/practices/${menuItem.slug[$locale]}`}
+						hreflang={$locale}
 					>
-						{menuItem.name[lang]}
+						{menuItem.name[$locale]}
 					</a>
 				</li>
 			{/each}
@@ -45,7 +42,7 @@
 				referrerpolicy="no-referrer"
 				rel="me"
 				target="_blank">
-				{name[lang]}
+				{name[$locale]}
 			</a>
 		{/each}
 	{/if}
