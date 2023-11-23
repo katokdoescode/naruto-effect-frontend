@@ -1,68 +1,63 @@
 <script>
-	/**
-	 * @type {'text'|'password'|'phone'|'email'|'number' }
-	 */
+	import { createEventDispatcher } from 'svelte';
+
+	/** @type {boolean} */
+	export let simple = false;
+
+	/** @type {string} */
+	export let value = '';
+
+	/** @type {'text'|'password'|'phone'|'email'|'number' } */
 	export let type = 'text';
 
-	/**
-	 * @type {string|null}
-	 */
-	export const placeholder = null;
+	/** @type {string|null} */
+	export let placeholder = null;
 
-	/**
-	 * @type {string}
-	 */
-	export let name;
+	/** @type {string} */
+	export let id;
 
-	/**
-	 * @type {?string}
-	 */
-	export let label = undefined;
+	/** @type {string} */
+	export let label = null;
 
-	/**
-	 * @type {string}
-	 */
-	export let value = '';
-	/**
-	 * @type {string}
-	 */
+	/** @type {string} */
 	export let autocomplete = 'off';
 
-	/**
-	 *
-	 * @param {Event & { currentTarget: EventTarget & HTMLInputElement; }} event
-	 */
-	function handleInput(event) {
-		const { currentTarget } = event;
-
-		value = type.match(/^(number|range)$/)
-			? currentTarget.value
-			: currentTarget.value;
-	}
+	const dispatch = createEventDispatcher();
+	$: dispatch('input', value);
 </script>
 
-<label class="input">
+{#if !simple}
+	<label class="input">
+		<input
+			{id}
+			name={id}
+			class="real-input"
+			{autocomplete}
+			{placeholder}
+			{type}
+			{value}
+		/>
+
+		<span class="label">
+			<slot name="label">
+				{#if label}
+					{label}
+				{/if}
+			</slot>
+		</span>
+
+		<span class="error">
+			<slot name="error" />
+		</span>
+	</label>
+{:else}
 	<input
-		{name}
-		class="real-input"
-		{autocomplete}
+		{id}
+		name={id}
+		class="input simple"
 		{placeholder}
-		{type}
-		on:input={handleInput}
-	/>
-
-	<span class="label">
-		<slot name="label">
-			{#if label}
-				{label}
-			{/if}
-		</slot>
-	</span>
-
-	<span class="error">
-		<slot name="error" />
-	</span>
-</label>
+		bind:value />
+{/if}
 
 <style scoped>
 	.input {
@@ -70,6 +65,20 @@
 		grid-template-columns: 1fr;
 		grid-template-rows: max-content 1fr max-content;
 		width: 100%;
+	}
+
+	.input:focus-visible {
+		outline-offset: -1px;
+	}
+
+	.input.simple {
+		border: none;
+		padding: 0;
+		margin: 0;
+		width: 100%;
+
+		line-height: inherit;
+		font: inherit;
 	}
 
 	.label {

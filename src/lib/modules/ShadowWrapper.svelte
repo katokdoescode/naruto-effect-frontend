@@ -32,7 +32,6 @@
 
 		position: relative;
 		height: auto;
-		cursor: row-resize;
 
 		-webkit-mask-image: var(--shadow-gradient-mask);
 		mask-image: var(--shadow-gradient-mask);

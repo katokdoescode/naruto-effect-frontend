@@ -21,7 +21,18 @@
 	"menu.close": "Закрыть меню",
 	"narutoEffect": "Эффект Наруто",
 	"mainMenu.practices": "Практики",
+	"mainMenu.practices.new": "Добавляем новую практику",
+	"mainMenu.participants.new": "Добавляем нового/новую практиканта/практикантку",
 	"mainMenu.participants": "Участники",
+	"mainMenu.settings": "Настройки",
+	"mainMenu.settings.publicity": "Запись видна на сайте",
 	"participate": "Принять участие",
-	"hokagemode": "Режим хокаге"
+	"hokagemode": "Режим хокаге",
+	"button.edit": "Редактировать",
+	"button.save": "Сохранить",
+	"button.loading": "сохранение...",
+	"button.success": "Сохранено!",
+	"button.error": "Не получилось",
+	"button.add": "Добавить",
+	"button.cancel": "Отмена"
 }

@@ -2,35 +2,82 @@
 	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 	import Button from '$lib/ui/Button.svelte';
-	import { getContext } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import { _ } from 'svelte-i18n';
+	const dispatch = createEventDispatcher();
 	const authorized = getContext('authorized');
+	const isEditingState = getContext('isEditingState');
+	const contentPageStatus = getContext('contentPageStatus');
 
 	async function signOut() {
 		return async ({ result }) => {
 			if (result.success) {
-				authorized.set(false);
+				dispatch('logout');
 			}
 		};
+	}
+
+	$: btnStatus = function () {
+		if ($contentPageStatus) {
+			return $contentPageStatus;
+		} else {
+			return $isEditingState ? 'save' : 'edit';
+		}
+	};
+
+	$: btnColor = function () {
+		if (btnStatus()) {
+			switch (btnStatus()) {
+				case 'success':
+					return 'green';
+				case 'error':
+					return 'red';
+				default:
+					return 'gray';
+			}
+		}
+
+		return 'gray';
+	};
+
+	function editContentPage() {
+		if ($isEditingState) {
+			dispatch('save');
+			return;
+		}
+
+		isEditingState.set(true);
 	}
 </script>
 
 <header class="content-header no-mobile">
-	<a
-		class:active={$page.url.pathname.includes('/cv')}
-		href="/cv">CV</a>
+	<div class="row">
+		<a
+			class:active={$page.url.pathname.includes('/cv')}
+			href="/cv">CV</a>
+
+		{#if $authorized}
+			<div class="signout">
+				<span>{$_('hokagemode')}</span>
+				<form
+					action="/api/signOut"
+					method="POST"
+					use:enhance={signOut}>
+					<Button
+						color="black"
+						type="submit">{$_('signOut')}</Button>
+				</form>
+			</div>
+		{/if}
+	</div>
 
 	{#if $authorized}
-		<div class="signout">
-			<span>{$_('hokagemode')}</span>
-			<form
-				action="/api/signOut"
-				method="POST"
-				use:enhance={signOut}>
-				<Button
-					color="black"
-					type="submit">{$_('signOut')}</Button>
-			</form>
+		<div class="row">
+			<Button
+				color={btnColor()}
+				on:click={editContentPage}>
+				{$_(`button.${btnStatus()}`)}
+			</Button>
 		</div>
 	{/if}
 </header>
@@ -38,10 +85,16 @@
 <style scoped>
 	.content-header {
 		display: flex;
-		justify-content: space-between;
+		flex-direction: column;
+		row-gap: 62px;
 		width: 100%;
 		font-size: var(--font-main-menu-size);
 		font-weight: var(--font-menu-weight);
+	}
+
+	.content-header .row {
+		display: flex;
+		justify-content: space-between;
 	}
 
 	.content-header .signout {

@@ -5,26 +5,72 @@
 	import MobileHeader from '$lib/modules/MobileHeader.svelte';
 	import SecondaryPanel from '$lib/modules/SecondaryPanel.svelte';
 	import { handleKeydown, handleKeyup } from '$lib/utils/keyboardHandler';
-	import { getContext, onDestroy, onMount, setContext } from 'svelte';
+	import { onDestroy, onMount, setContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
 	import { writable } from 'svelte/store';
 
-	/** @type {{ authorized: boolean, practices: Array<object>, participants: Array<object>, pageData: MainPageData }} */
+	/** @type {MainLayoutData} */
 	export let data;
 
 	const combo = writable();
 	const authorized = writable();
+	const isEditingState = writable();
+	const contentPageStatus = writable();
+	const contentPage = writable();
+	const practiceData = writable();
+	const participantData = writable();
+
 	let practices = data?.practices || [];
 	let participants = data?.participants || [];
 	let socialLinks = data?.pageData?.socialLinks || [];
 	let participateLink = data?.pageData?.participateLink || [];
 
-	$: open = false;
-	$: authorized.set(data?.authorized || false);
+	/**
+	 * Control authorization data
+	 * @param {boolean} state
+	 */
+	async function authorize(state) {
+		authorized.set(state);
 
-	function authorize() {
-		authorized.set(true);
-		closeLoginModal();
+		if (state) closeLoginModal();
+		else isEditingState.set(false);
+
+		await fetch('/api/practices')
+			.then((res) => res.json())
+			.then(({ data }) => {
+				practices = data;
+			});
+
+		await fetch('/api/participants')
+			.then((res) => res.json())
+			.then(({ data }) => {
+				participants = data;
+			});
+	}
+
+	/**
+	 * Update data in page data array
+	 * @param {CustomEvent&{detail: {method: string, data: Participant|Practice}}} update
+	 */
+	function updateData(update) {
+		const { method, data } = update.detail;
+
+		const methods = {
+			/** @param {Practice} data */
+			updatePractices: function (data) {
+				practices = practices.map((practice) =>
+					practice.id === data.id ? data : practice
+				);
+			},
+			/** @param {Participant} data */
+			updateParticipants: function (data) {
+				participants = participants.map((participant) =>
+					participant.id === data.id ? data : participant
+				);
+			}
+		};
+
+		methods[method](data);
 	}
 
 	function closeLoginModal() {
@@ -68,10 +114,24 @@
 
 	setContext('authorized', authorized);
 	setContext('combo', combo);
-	getContext('combo').subscribe((pressed) => {
-		if (pressed) open = true;
-	});
+	setContext('isEditingState', isEditingState);
+	setContext('contentPageStatus', contentPageStatus);
+	setContext('contentPage', contentPage);
+	setContext('practiceData', practiceData);
+	setContext('participantData', participantData);
+
+	$: if ($combo) {
+		open = true;
+	}
+	$: open = false;
+	$: authorized.set(data?.authorized || false);
 </script>
+
+<svelte:head>
+	{#if $authorized}
+		<script src="/scripts/tinymce/tinymce.min.js"></script>
+	{/if}
+</svelte:head>
 
 <div class="screen main-layout">
 	<MainPanel
@@ -84,13 +144,16 @@
 		{practices}
 		{socialLinks} />
 
-	<Content>
+	<Content
+		on:update={updateData}
+		on:logout={() => authorize(false)}>
 		<slot />
 		<svelte:fragment slot="login">
 			<Login
 				bind:open
-				on:success={authorize}
-				on:close={closeLoginModal} />
+				on:success={() => authorize(true)}
+				on:close={closeLoginModal}
+			/>
 		</svelte:fragment>
 	</Content>
 

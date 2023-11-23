@@ -1,13 +1,117 @@
 <script>
+	import { page } from '$app/stores';
+	import { pick } from '$lib/utils/objectCleaner';
+	import { createEventDispatcher, getContext } from 'svelte';
+	import { locale } from 'svelte-i18n';
 	import Footer from './Footer.svelte';
 	import Header from './Header.svelte';
 	import ShadowWrapper from './ShadowWrapper.svelte';
+	const dispatch = createEventDispatcher();
+
+	let route;
+	page.subscribe((pageObject) => (route = pageObject.route.id));
+
+	const isEditingState = getContext('isEditingState');
+	const contentPageStatus = getContext('contentPageStatus');
+	const contentPage = getContext('contentPage');
+	const practiceData = getContext('practiceData');
+	const participantData = getContext('participantData');
+
+	isEditingState.set(false);
+
+	$: url = function () {
+		switch (route) {
+			case '/':
+				return {
+					route: '/api/mainPage',
+					method: 'PATCH',
+					data: JSON.stringify($contentPage),
+					onSuccess: function (data) {
+						return data;
+					}
+				};
+
+			case '/practices/create':
+				return {
+					route: '/api/practices',
+					method: 'POST',
+					data: JSON.stringify($practiceData),
+					onSuccess: function (data) {
+						const slug = data.slug[$locale];
+						window.location.assign(`/practices/${slug}`);
+					}
+				};
+
+			case '/practices/[slug]':
+				return {
+					route: '/api/practices',
+					method: 'PATCH',
+					data: JSON.stringify($practiceData),
+					onSuccess: function (practice) {
+						dispatch('update', {
+							method: 'updatePractices',
+							data: pick(practice, ['id', 'isVisible', 'slug', 'title'])
+						});
+					}
+				};
+
+			case '/participants/create':
+				return {
+					route: '/api/participants',
+					method: 'POST',
+					data: JSON.stringify($participantData),
+					onSuccess: function (data) {
+						const slug = data.slug;
+						window.location.assign(`/participants/${slug}`);
+					}
+				};
+
+			case '/participants/[slug]':
+				return {
+					route: '/api/participants',
+					method: 'PATCH',
+					data: JSON.stringify($participantData),
+					onSuccess: function (participant) {
+						dispatch('update', {
+							method: 'updateParticipants',
+							data: pick(participant, ['id', 'isVisible', 'slug', 'name'])
+						});
+					}
+				};
+
+			default:
+				break;
+		}
+	};
+
+	async function saveContent() {
+		contentPageStatus.set('loading');
+
+		const response = await fetch(url().route, {
+			method: url().method,
+			body: url().data
+		}).then((data) => data.json());
+
+		if (response.success) {
+			isEditingState.set(false);
+			contentPageStatus.set('success');
+			setTimeout(() => {
+				contentPageStatus.set(null);
+				url().onSuccess(response.data);
+			}, 2500);
+		} else {
+			contentPageStatus.set('error');
+			setTimeout(() => contentPageStatus.set(null), 3500);
+		}
+	}
 </script>
 
 <section
 	id="panel-content"
 	class="panel">
-	<Header />
+	<Header
+		on:save={saveContent}
+		on:logout={() => dispatch('logout')} />
 
 	<ShadowWrapper noPads>
 		<main class="main-page-content">
@@ -38,5 +142,6 @@
 		padding-bottom: 10em;
 		overflow: hidden auto;
 		scrollbar-width: none;
+		width: 100%;
 	}
 </style>

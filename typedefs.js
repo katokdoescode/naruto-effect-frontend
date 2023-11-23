@@ -20,7 +20,7 @@
  * @property {string} slug
  * @property {LocaleObject} title
  * @property {LocaleObject} description
- * @property {SocialLink[]} socialLinks
+ * @property {boolean} isVisible
  */
 
 /**
@@ -58,6 +58,7 @@
  * @exports MainPageData
  * @typedef MainPageData
  * @type {object}
+ * @property {number} id
  * @property {LocaleObject} title
  * @property {string} videoLink
  * @property {LocaleObject} text
@@ -88,15 +89,8 @@
  * @typedef XanoError
  * @type {object}
  * @property {'error'} status
+ * @property {string} code
  * @property {string} message
- */
-
-/**
- * @exports PracticeRecord
- * @typedef PracticeRecord
- * @type {object}
- * @property {LocaleObject} name
- * @property {string} link
  */
 
 /**
@@ -104,11 +98,16 @@
  * @typedef Practice
  * @type {object}
  * @property {number} id
- * @property {LocaleObject} name
  * @property {LocaleObject} slug
  * @property {LocaleObject} title
  * @property {LocaleObject} subtitle
  * @property {string} videoLink
  * @property {LocaleObject} description
- * @property {PracticeRecord[]} records
+ * @property {boolean} isVisible
+ */
+
+/**
+ * @exports MainLayoutData
+ * @typedef MainLayoutData
+ * @type {{ authorized: boolean, practices: Array<object>, participants: Array<object>, pageData: MainPageData }}
  */
