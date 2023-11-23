@@ -1,8 +1,7 @@
 <script>
 	import { page } from '$app/stores';
-	import { setContext } from 'svelte';
+	import { getContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
-	import { writable } from 'svelte/store';
 	import Footer from './Footer.svelte';
 	import Header from './Header.svelte';
 	import ShadowWrapper from './ShadowWrapper.svelte';
@@ -10,17 +9,12 @@
 	let route;
 	page.subscribe((pageObject) => (route = pageObject.route.id));
 
-	const isContentPageEditing = writable();
-	const contentPageStatus = writable();
-	const contentPage = writable();
-	const practiceData = writable();
+	const isEditingState = getContext('isEditingState');
+	const contentPageStatus = getContext('contentPageStatus');
+	const contentPage = getContext('contentPage');
+	const practiceData = getContext('practiceData');
 
-	isContentPageEditing.set(false);
-
-	setContext('isContentPageEditing', isContentPageEditing);
-	setContext('contentPageStatus', contentPageStatus);
-	setContext('contentPage', contentPage);
-	setContext('practiceData', practiceData);
+	isEditingState.set(false);
 
 	$: url = function () {
 		switch (route) {
@@ -69,7 +63,7 @@
 		}).then((data) => data.json());
 
 		if (response.success) {
-			isContentPageEditing.set(false);
+			isEditingState.set(false);
 			contentPageStatus.set('success');
 			setTimeout(() => {
 				contentPageStatus.set(null);

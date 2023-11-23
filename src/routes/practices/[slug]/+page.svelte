@@ -11,7 +11,7 @@
 	import { locale } from 'svelte-i18n';
 
 	const practiceData = getContext('practiceData');
-	const isContentPageEditing = getContext('isContentPageEditing');
+	const isEditingState = getContext('isEditingState');
 
 	const slugger = new CarSlugger();
 
@@ -32,7 +32,7 @@
 	$: practiceData.set(clean(localValue));
 </script>
 
-{#if $isContentPageEditing}
+{#if $isEditingState}
 	<h1 class="main-header">
 		<Textarea
 			id="practiceTitle"

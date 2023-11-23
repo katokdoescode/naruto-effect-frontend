@@ -8,6 +8,14 @@
 	export let practices = [];
 	export let socialLinks = [];
 	const authorized = getContext('authorized');
+	const isEditingState = getContext('isEditingState');
+
+	function cancelCreating() {
+		isEditingState.set(false);
+		if ($page.route.id === '/practices/create') {
+			window.location.assign('/');
+		}
+	}
 </script>
 
 <nav
@@ -15,33 +23,47 @@
 	class="main-nav"
 	{...$$restProps}>
 	{#if $authorized}
-		<div class="edit-title-wrapper">
-			<h2 class="title">{$_('mainMenu.practices')}:</h2>
-			<Button
-				color="gray"
-				href="/practices/create">{$_('button.add')}</Button>
-		</div>
+		{#if $isEditingState}
+			<div class="edit-title-wrapper">
+				<h2 class="title">{$_('mainMenu.practices.new')}:</h2>
+				<Button
+					color="gray"
+					on:click={cancelCreating}
+				>{$_('button.cancel')}</Button
+				>
+			</div>
+		{:else}
+			<div class="edit-title-wrapper">
+				<h2 class="title">{$_('mainMenu.practices')}:</h2>
+				<Button
+					color="gray"
+					href="/practices/create">{$_('button.add')}</Button
+				>
+			</div>
+		{/if}
 	{:else}
 		<h2 class="title">{$_('mainMenu.practices')}:</h2>
 	{/if}
-	<ShadowWrapper
-		noBottom={practices.length <= 3}
-		noTop>
-		<ul class="links-list">
-			{#each practices as menuItem}
-				<li>
-					<a
-						class:active={$page.url.pathname.includes(menuItem.slug[$locale])}
-						data-sveltekit-keepfocus
-						href={`/practices/${menuItem.slug[$locale]}`}
-						hreflang={$locale}
-					>
-						{menuItem.title[$locale]}
-					</a>
-				</li>
-			{/each}
-		</ul>
-	</ShadowWrapper>
+	{#if !$isEditingState}
+		<ShadowWrapper
+			noBottom={practices.length <= 3}
+			noTop>
+			<ul class="links-list">
+				{#each practices as menuItem}
+					<li>
+						<a
+							class:active={$page.url.pathname.includes(menuItem.slug[$locale])}
+							data-sveltekit-keepfocus
+							href={`/practices/${menuItem.slug[$locale]}`}
+							hreflang={$locale}
+						>
+							{menuItem.title[$locale]}
+						</a>
+					</li>
+				{/each}
+			</ul>
+		</ShadowWrapper>
+	{/if}
 </nav>
 
 <section

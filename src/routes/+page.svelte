@@ -7,7 +7,7 @@
 	import { getContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
 
-	const isContentPageEditing = getContext('isContentPageEditing');
+	const isEditingState = getContext('isEditingState');
 	const contentPage = getContext('contentPage');
 
 	/** @type {import('./$types').PageData} */
@@ -19,7 +19,7 @@
 	const videoLink = pageData?.videoLink;
 
 	let isEditing = false;
-	isContentPageEditing.subscribe((x) => {
+	isEditingState.subscribe((x) => {
 		isEditing = x;
 	});
 

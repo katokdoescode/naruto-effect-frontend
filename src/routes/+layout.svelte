@@ -5,7 +5,7 @@
 	import MobileHeader from '$lib/modules/MobileHeader.svelte';
 	import SecondaryPanel from '$lib/modules/SecondaryPanel.svelte';
 	import { handleKeydown, handleKeyup } from '$lib/utils/keyboardHandler';
-	import { getContext, onDestroy, onMount, setContext } from 'svelte';
+	import { onDestroy, onMount, setContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
 	import { writable } from 'svelte/store';
 
@@ -14,13 +14,15 @@
 
 	const combo = writable();
 	const authorized = writable();
+	const isEditingState = writable();
+	const contentPageStatus = writable();
+	const contentPage = writable();
+	const practiceData = writable();
+
 	let practices = data?.practices || [];
 	let participants = data?.participants || [];
 	let socialLinks = data?.pageData?.socialLinks || [];
 	let participateLink = data?.pageData?.participateLink || [];
-
-	$: open = false;
-	$: authorized.set(data?.authorized || false);
 
 	function authorize() {
 		authorized.set(true);
@@ -68,9 +70,16 @@
 
 	setContext('authorized', authorized);
 	setContext('combo', combo);
-	getContext('combo').subscribe((pressed) => {
-		if (pressed) open = true;
-	});
+	setContext('isEditingState', isEditingState);
+	setContext('contentPageStatus', contentPageStatus);
+	setContext('contentPage', contentPage);
+	setContext('practiceData', practiceData);
+
+	$: if ($combo) {
+		open = true;
+	}
+	$: open = false;
+	$: authorized.set(data?.authorized || false);
 </script>
 
 <svelte:head>

@@ -6,7 +6,7 @@
 	import { _ } from 'svelte-i18n';
 	const dispatch = createEventDispatcher();
 	const authorized = getContext('authorized');
-	const isContentPageEditing = getContext('isContentPageEditing');
+	const isEditingState = getContext('isEditingState');
 	const contentPageStatus = getContext('contentPageStatus');
 
 	async function signOut() {
@@ -17,21 +17,11 @@
 		};
 	}
 
-	let isEditing = false;
-	isContentPageEditing.subscribe((x) => {
-		isEditing = x;
-	});
-
-	let status;
-	contentPageStatus.subscribe((x) => {
-		status = x;
-	});
-
 	$: btnStatus = function () {
-		if (status) {
-			return status;
+		if ($contentPageStatus) {
+			return $contentPageStatus;
 		} else {
-			return isEditing ? 'save' : 'edit';
+			return $isEditingState ? 'save' : 'edit';
 		}
 	};
 
@@ -51,12 +41,12 @@
 	};
 
 	function editContentPage() {
-		if (isEditing) {
+		if ($isEditingState) {
 			dispatch('save');
 			return;
 		}
 
-		isContentPageEditing.set(true);
+		isEditingState.set(true);
 	}
 </script>
 

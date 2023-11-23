@@ -21,6 +21,7 @@
 	"menu.close": "Закрыть меню",
 	"narutoEffect": "Эффект Наруто",
 	"mainMenu.practices": "Практики",
+	"mainMenu.practices.new": "Добавляем новую практику",
 	"mainMenu.participants": "Участники",
 	"participate": "Принять участие",
 	"hokagemode": "Режим хокаге",
@@ -29,5 +30,6 @@
 	"button.loading": "сохранение...",
 	"button.success": "Сохранено!",
 	"button.error": "Не получилось",
-	"button.add": "Добавить"
+	"button.add": "Добавить",
+	"button.cancel": "Отмена"
 }

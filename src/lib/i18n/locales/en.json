@@ -22,12 +22,14 @@
 	"narutoEffect": "Naruto Effect",
 	"mainMenu.practices": "Practices",
 	"mainMenu.participants": "Participants",
+	"mainMenu.practices.new": "Adding new practice",
 	"participate": "Participate",
 	"hokagemode": "Hokagemode",
 	"button.edit": "Edit",
 	"button.save": "Save",
 	"button.loading": "saving...",
 	"button.success": "Saved",
-	"button.error": "Didn\t saved",
-	"button.add": "Add"
+	"button.error": "Didn't saved",
+	"button.add": "Add",
+	"button.cancel": "Cancel"
 }

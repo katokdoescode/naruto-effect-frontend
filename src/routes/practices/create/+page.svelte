@@ -8,14 +8,14 @@
 	import { getContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
 
-	const isContentPageEditing = getContext('isContentPageEditing');
+	const isEditingState = getContext('isEditingState');
 	const contentPageStatus = getContext('contentPageStatus');
 	const authorized = getContext('authorized');
 	const practiceData = getContext('practiceData');
 
 	const slugger = new CarSlugger();
 
-	isContentPageEditing.set(true);
+	isEditingState.set(true);
 	contentPageStatus.set(null);
 
 	/** @type{Practice} */
