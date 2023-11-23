@@ -61,9 +61,7 @@
 		{conf}
 		{disabled}
 		{inline}
-		scriptSrc="/tinymce/tinymce.min.js"
-		bind:value
-	/>
+		bind:value />
 </div>
 
 <style scoped>

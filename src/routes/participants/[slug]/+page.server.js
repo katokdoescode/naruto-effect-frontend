@@ -19,7 +19,7 @@ export async function load({ params, fetch, cookies }) {
 	const participant = res.data;
 
 	if (!participant) throw error(404, res.errorMessage);
-	if (!participant.isVisible && !isAuthenticated)
+	if (!participant?.isVisible && !isAuthenticated)
 		throw error(404, 'Participant not found');
 
 	return { participant, participants };

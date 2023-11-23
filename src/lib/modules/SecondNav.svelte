@@ -17,9 +17,9 @@
 	const isPracticePage = $page.url.pathname.includes('/practices');
 
 	let checked = isParticipantsPage
-		? $participantData.isVisible
+		? $participantData?.isVisible || false
 		: isPracticePage
-		? $practiceData.isVisible
+		? $practiceData?.isVisible || false
 		: false;
 
 	let isVisible = false;
@@ -94,7 +94,7 @@
 					<li>
 						<a
 							class:active={$page.url.pathname.includes(menuItem.slug)}
-							class:disabled={!menuItem.isVisible}
+							class:disabled={!menuItem?.isVisible || false}
 							data-sveltekit-keepfocus
 							href={`/participants/${menuItem.slug}`}
 						>{menuItem.name[$locale]}</a

@@ -13,7 +13,7 @@ export async function load({ params, fetch, cookies }) {
 	const practice = res.data;
 
 	if (!practice) throw error(404, res.errorMessage);
-	if (!practice.isVisible && !isAuthenticated)
+	if (!practice?.isVisible && !isAuthenticated)
 		throw error(404, 'Practice not found');
 
 	return { practice };

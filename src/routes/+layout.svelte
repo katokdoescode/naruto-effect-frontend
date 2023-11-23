@@ -127,7 +127,7 @@
 
 <svelte:head>
 	{#if $authorized}
-		<script src="/node_modules/tinymce/tinymce.min.js"></script>
+		<script src="/scripts/tinymce/tinymce.min.js"></script>
 	{/if}
 </svelte:head>
 
