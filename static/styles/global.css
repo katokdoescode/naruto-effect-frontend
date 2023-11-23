@@ -247,6 +247,7 @@ nav a,
 	font-weight: inherit;
 	text-decoration: none;
 }
+
 a.active {
 	text-decoration: underline;
 }

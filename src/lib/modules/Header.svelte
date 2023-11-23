@@ -12,7 +12,7 @@
 	async function signOut() {
 		return async ({ result }) => {
 			if (result.success) {
-				authorized.set(false);
+				dispatch('logout');
 			}
 		};
 	}

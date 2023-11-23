@@ -5,17 +5,38 @@
 	import { getContext } from 'svelte';
 	import { _, locale } from 'svelte-i18n';
 
+	/** @type{Practices} */
 	export let practices = [];
+	/** @type {SocialLink[]}*/
 	export let socialLinks = [];
 	const authorized = getContext('authorized');
 	const isEditingState = getContext('isEditingState');
 
+	$: pageName = $page.url.pathname.split('/')[1];
+	$: isMainPage = pageName === '';
+
 	function cancelCreating() {
 		isEditingState.set(false);
-		if ($page.route.id === '/practices/create') {
+		if ($page.url.pathname.match('/create')) {
 			window.location.assign('/');
 		}
 	}
+
+	$: visiblePractices = practices
+		? practices
+			.filter(({ isVisible }) => Boolean(isVisible))
+			.sort((a, b) => {
+				return a.title[$locale] - b.title[$locale]; // Sort practices by localized title [a-z]
+			})
+		: [];
+
+	$: disabledPractices = practices
+		? practices
+			.filter(({ isVisible }) => Boolean(!isVisible))
+			.sort((a, b) => {
+				return a.title[$locale] - b.title[$locale]; // Sort practices by localized title [a-z]
+			})
+		: [];
 </script>
 
 <nav
@@ -23,35 +44,49 @@
 	class="main-nav"
 	{...$$restProps}>
 	{#if $authorized}
-		{#if $isEditingState}
+		{#if $isEditingState && !isMainPage}
 			<div class="edit-title-wrapper">
-				<h2 class="title">{$_('mainMenu.practices.new')}:</h2>
+				<h2 class="title">{$_(`mainMenu.${pageName}.new`)}:</h2>
 				<Button
 					color="gray"
-					on:click={cancelCreating}
-				>{$_('button.cancel')}</Button
-				>
+					on:click={cancelCreating}>
+					{$_('button.cancel')}
+				</Button>
 			</div>
 		{:else}
 			<div class="edit-title-wrapper">
 				<h2 class="title">{$_('mainMenu.practices')}:</h2>
 				<Button
 					color="gray"
-					href="/practices/create">{$_('button.add')}</Button
-				>
+					href="/practices/create">
+					{$_('button.add')}
+				</Button>
 			</div>
 		{/if}
 	{:else}
 		<h2 class="title">{$_('mainMenu.practices')}:</h2>
 	{/if}
-	{#if !$isEditingState}
+	{#if !$isEditingState || ($isEditingState && isMainPage)}
 		<ShadowWrapper
 			noBottom={practices.length <= 3}
 			noTop>
 			<ul class="links-list">
-				{#each practices as menuItem}
+				{#each visiblePractices as menuItem}
 					<li>
 						<a
+							class:active={$page.url.pathname.includes(menuItem.slug[$locale])}
+							data-sveltekit-keepfocus
+							href={`/practices/${menuItem.slug[$locale]}`}
+							hreflang={$locale}
+						>
+							{menuItem.title[$locale]}
+						</a>
+					</li>
+				{/each}
+				{#each disabledPractices as menuItem}
+					<li>
+						<a
+							class="disabled"
 							class:active={$page.url.pathname.includes(menuItem.slug[$locale])}
 							data-sveltekit-keepfocus
 							href={`/practices/${menuItem.slug[$locale]}`}
@@ -132,6 +167,10 @@
 	.main-nav .links-list li a {
 		text-wrap: balance;
 		font-weight: var(--font-menu-weight);
+	}
+
+	.main-nav .links-list a.disabled {
+		opacity: 0.5;
 	}
 
 	.contacts {

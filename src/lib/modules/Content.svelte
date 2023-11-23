@@ -1,10 +1,11 @@
 <script>
 	import { page } from '$app/stores';
-	import { getContext } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
 	import Footer from './Footer.svelte';
 	import Header from './Header.svelte';
 	import ShadowWrapper from './ShadowWrapper.svelte';
+	const dispatch = createEventDispatcher();
 
 	let route;
 	page.subscribe((pageObject) => (route = pageObject.route.id));
@@ -13,6 +14,7 @@
 	const contentPageStatus = getContext('contentPageStatus');
 	const contentPage = getContext('contentPage');
 	const practiceData = getContext('practiceData');
+	const participantData = getContext('participantData');
 
 	isEditingState.set(false);
 
@@ -49,6 +51,27 @@
 					}
 				};
 
+			case '/participants/create':
+				return {
+					route: '/api/participants',
+					method: 'POST',
+					data: JSON.stringify($participantData),
+					onSuccess: function (data) {
+						const slug = data.slug;
+						window.location.assign(`/participants/${slug}`);
+					}
+				};
+
+			case '/participants/[slug]':
+				return {
+					route: '/api/participants',
+					method: 'PATCH',
+					data: JSON.stringify($participantData),
+					onSuccess: function (data) {
+						return data;
+					}
+				};
+
 			default:
 				break;
 		}
@@ -79,7 +102,9 @@
 <section
 	id="panel-content"
 	class="panel">
-	<Header on:save={saveContent} />
+	<Header
+		on:save={saveContent}
+		on:logout={() => dispatch('logout')} />
 
 	<ShadowWrapper noPads>
 		<main class="main-page-content">

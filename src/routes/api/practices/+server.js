@@ -3,14 +3,21 @@ import { Routes } from '$lib/constants/index.js';
 import { createError } from '$lib/utils/errors';
 import { json } from '@sveltejs/kit';
 
-export async function GET() {
+export async function GET({ cookies }) {
+	const isAuthenticated = !!cookies.get('authToken');
 	const url = VITE_BFF_BASE_URL + Routes.PRACTICES;
 
-	/** @type {Practices} **/
+	/** @type {Practices&XanoError} **/
 	const practices = await fetch(url).then((res) => res.json());
 
+	if (practices.message)
+		return json(createError(false, 'Something went wrong. Try again later.'));
+
 	if (practices) {
-		return json({ success: true, data: practices });
+		return json({
+			success: true,
+			data: practices.filter(({ isVisible }) => isAuthenticated || isVisible)
+		});
 	} else {
 		return json(createError(false, 'Something went wrong. Try again later.'));
 	}

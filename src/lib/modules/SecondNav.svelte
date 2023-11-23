@@ -1,30 +1,117 @@
 <script>
 	import { page } from '$app/stores';
 	import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
+	import Button from '$lib/ui/Button.svelte';
+	import { getContext } from 'svelte';
 	import { _, locale } from 'svelte-i18n';
+
+	/** @type {Participants} */
 	export let participants = [];
+	let checked = false;
+	let isVisible = false;
+
+	const authorized = getContext('authorized');
+	const isEditingState = getContext('isEditingState');
+	const participantData = getContext('participantData');
+	const practiceData = getContext('practiceData');
+
+	const isParticipantsPage = $page.url.pathname.match('/participants');
+	const isPracticePage = $page.url.pathname.match('/practices');
+
+	$: pageName = $page.url.pathname.split('/')[1];
+	$: isMainPage = pageName === '';
+
+	$: isVisible = checked;
+
+	$: {
+		if (isParticipantsPage)
+			participantData.set({
+				...$participantData,
+				isVisible
+			});
+		else if (isPracticePage)
+			practiceData.set({
+				...$practiceData,
+				isVisible
+			});
+	}
+
+	$: visibleParticipants = participants
+		? participants
+			.filter(({ isVisible }) => Boolean(isVisible))
+			.sort((a, b) => {
+				return a.name[$locale] - b.name[$locale]; // Sort participants by localized name [a-z]
+			})
+		: [];
+
+	$: disabledParticipants = participants
+		? participants
+			.filter(({ isVisible }) => Boolean(!isVisible))
+			.sort((a, b) => {
+				return a.name[$locale] - b.name[$locale]; // Sort participants by localized name [a-z]
+			})
+		: [];
 </script>
 
 <nav
 	id="second-menu"
 	class="second-nav"
 	{...$$restProps}>
-	<h2 class="title">{$_('mainMenu.participants')}:</h2>
-	<ShadowWrapper
-		noBottom={participants.length <= 3}
-		noTop>
-		<ul class="list">
-			{#each participants as menuItem}
-				<li>
-					<a
-						class:active={$page.url.pathname.includes(menuItem.slug)}
-						data-sveltekit-keepfocus
-						href={`/participants/${menuItem.slug}`}>{menuItem.name[$locale]}</a
-					>
-				</li>
-			{/each}
-		</ul>
-	</ShadowWrapper>
+	{#if $authorized}
+		{#if $isEditingState && !isMainPage}
+			<div class="edit-title-wrapper">
+				<h2 class="title">{$_('mainMenu.settings')}:</h2>
+				<label class="checkbox">
+					<input
+						type="checkbox"
+						bind:checked />
+					<span>{$_('mainMenu.settings.publicity')}</span>
+				</label>
+			</div>
+		{:else}
+			<div class="edit-title-wrapper">
+				<h2 class="title">{$_('mainMenu.participants')}:</h2>
+				<Button
+					color="gray"
+					href="/participants/create">
+					{$_('button.add')}
+				</Button>
+			</div>
+		{/if}
+	{:else}
+		<h2 class="title">{$_('mainMenu.participants')}:</h2>
+	{/if}
+
+	{#if !$isEditingState || isMainPage}
+		<ShadowWrapper
+			noBottom={participants.length <= 3}
+			noTop>
+			<ul class="list">
+				{#each visibleParticipants as menuItem}
+					<li>
+						<a
+							class:active={$page.url.pathname.includes(menuItem.slug)}
+							class:disabled={!menuItem.isVisible}
+							data-sveltekit-keepfocus
+							href={`/participants/${menuItem.slug}`}
+						>{menuItem.name[$locale]}</a
+						>
+					</li>
+				{/each}
+				{#each disabledParticipants as menuItem}
+					<li>
+						<a
+							class="disabled"
+							class:active={$page.url.pathname.includes(menuItem.slug)}
+							data-sveltekit-keepfocus
+							href={`/participants/${menuItem.slug}`}
+						>{menuItem.name[$locale]}</a
+						>
+					</li>
+				{/each}
+			</ul>
+		</ShadowWrapper>
+	{/if}
 </nav>
 
 <style>
@@ -67,5 +154,15 @@
 		margin: 0;
 		font-size: var(--font-panel-second-menu-size);
 		font-weight: var(--font-menu-weight);
+	}
+
+	.second-nav .list a.disabled {
+		opacity: 0.5;
+	}
+
+	.edit-title-wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
 	}
 </style>

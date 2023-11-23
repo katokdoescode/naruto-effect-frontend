@@ -18,15 +18,32 @@
 	const contentPageStatus = writable();
 	const contentPage = writable();
 	const practiceData = writable();
+	const participantData = writable();
 
 	let practices = data?.practices || [];
 	let participants = data?.participants || [];
 	let socialLinks = data?.pageData?.socialLinks || [];
 	let participateLink = data?.pageData?.participateLink || [];
 
-	function authorize() {
-		authorized.set(true);
-		closeLoginModal();
+	/**
+	 * Control authorization data
+	 * @param {boolean} state
+	 */
+	async function authorize(state) {
+		authorized.set(state);
+		if (state) closeLoginModal();
+
+		await fetch('/api/practices')
+			.then((res) => res.json())
+			.then(({ data }) => {
+				practices = data;
+			});
+
+		await fetch('/api/participants')
+			.then((res) => res.json())
+			.then(({ data }) => {
+				participants = data;
+			});
 	}
 
 	function closeLoginModal() {
@@ -74,6 +91,7 @@
 	setContext('contentPageStatus', contentPageStatus);
 	setContext('contentPage', contentPage);
 	setContext('practiceData', practiceData);
+	setContext('participantData', participantData);
 
 	$: if ($combo) {
 		open = true;
@@ -99,13 +117,14 @@
 		{practices}
 		{socialLinks} />
 
-	<Content>
+	<Content on:logout={() => authorize(false)}>
 		<slot />
 		<svelte:fragment slot="login">
 			<Login
 				bind:open
-				on:success={authorize}
-				on:close={closeLoginModal} />
+				on:success={() => authorize(true)}
+				on:close={closeLoginModal}
+			/>
 		</svelte:fragment>
 	</Content>
 

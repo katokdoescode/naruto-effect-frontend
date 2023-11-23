@@ -79,6 +79,7 @@
 		top: 1em;
 		opacity: 0.5;
 		pointer-events: none;
+		z-index: 1;
 	}
 
 	:global(.editor-placeholder > *:first-child) {

@@ -20,7 +20,7 @@
  * @property {string} slug
  * @property {LocaleObject} title
  * @property {LocaleObject} description
- * @property {SocialLink[]} socialLinks
+ * @property {boolean} isVisible
  */
 
 /**
@@ -103,4 +103,5 @@
  * @property {LocaleObject} subtitle
  * @property {string} videoLink
  * @property {LocaleObject} description
+ * @property {boolean} isVisible
  */
