@@ -16,3 +16,17 @@ export function clean(sourceObject, undesiredValues = [undefined, null, NaN]) {
 
 	return result;
 }
+
+/**
+ * Like lodash pick
+ * @param {object} object - Source object
+ * @param {string[]} keys - Keys to pick
+ * @returns {object}
+ */
+export const pick = (object, keys) =>
+	keys.reduce((obj, key) => {
+		if (Object.prototype.hasOwnProperty.call(object, key)) {
+			obj[key] = object[key];
+		}
+		return obj;
+	}, {});

@@ -24,8 +24,9 @@
 		slug: { en: '', ru: '' },
 		title: { en: '', ru: '' },
 		subtitle: { en: '', ru: '' },
+		description: { en: '', ru: '' },
 		videoLink: '',
-		description: { en: '', ru: '' }
+		isVisible: false
 	};
 
 	$: Object.entries(localValue.title).forEach(([key, value]) => {

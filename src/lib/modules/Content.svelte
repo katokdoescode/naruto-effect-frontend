@@ -1,5 +1,6 @@
 <script>
 	import { page } from '$app/stores';
+	import { pick } from '$lib/utils/objectCleaner';
 	import { createEventDispatcher, getContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
 	import Footer from './Footer.svelte';
@@ -46,8 +47,11 @@
 					route: '/api/practices',
 					method: 'PATCH',
 					data: JSON.stringify($practiceData),
-					onSuccess: function (data) {
-						return data;
+					onSuccess: function (practice) {
+						dispatch('update', {
+							method: 'updatePractices',
+							data: pick(practice, ['id', 'isVisible', 'slug', 'title'])
+						});
 					}
 				};
 
@@ -67,8 +71,11 @@
 					route: '/api/participants',
 					method: 'PATCH',
 					data: JSON.stringify($participantData),
-					onSuccess: function (data) {
-						return data;
+					onSuccess: function (participant) {
+						dispatch('update', {
+							method: 'updateParticipants',
+							data: pick(participant, ['id', 'isVisible', 'slug', 'name'])
+						});
 					}
 				};
 

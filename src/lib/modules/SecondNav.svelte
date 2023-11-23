@@ -7,34 +7,37 @@
 
 	/** @type {Participants} */
 	export let participants = [];
-	let checked = false;
-	let isVisible = false;
 
 	const authorized = getContext('authorized');
 	const isEditingState = getContext('isEditingState');
 	const participantData = getContext('participantData');
 	const practiceData = getContext('practiceData');
 
-	const isParticipantsPage = $page.url.pathname.match('/participants');
-	const isPracticePage = $page.url.pathname.match('/practices');
+	const isParticipantsPage = $page.url.pathname.includes('/participants');
+	const isPracticePage = $page.url.pathname.includes('/practices');
+
+	let checked = isParticipantsPage
+		? $participantData.isVisible
+		: isPracticePage
+		? $practiceData.isVisible
+		: false;
+
+	let isVisible = false;
 
 	$: pageName = $page.url.pathname.split('/')[1];
 	$: isMainPage = pageName === '';
-
 	$: isVisible = checked;
 
-	$: {
-		if (isParticipantsPage)
-			participantData.set({
-				...$participantData,
-				isVisible
-			});
-		else if (isPracticePage)
-			practiceData.set({
-				...$practiceData,
-				isVisible
-			});
-	}
+	$: if (isParticipantsPage)
+		participantData.set({
+			...$participantData,
+			isVisible
+		});
+	else if (isPracticePage)
+		practiceData.set({
+			...$practiceData,
+			isVisible
+		});
 
 	$: visibleParticipants = participants
 		? participants
@@ -86,7 +89,7 @@
 		<ShadowWrapper
 			noBottom={participants.length <= 3}
 			noTop>
-			<ul class="list">
+			<ul class="links-list">
 				{#each visibleParticipants as menuItem}
 					<li>
 						<a
@@ -135,7 +138,7 @@
 		font-weight: var(--font-main-weight);
 	}
 
-	.second-nav .list {
+	.second-nav .links-list {
 		display: flex;
 		flex-direction: column;
 		overflow: auto;
@@ -150,13 +153,21 @@
 		padding-bottom: 80px;
 	}
 
-	.second-nav .list li {
+	.second-nav .links-list::after {
+		content: '';
+		display: list-item block;
+		height: 5em;
+		width: 100%;
+		flex-shrink: 0;
+	}
+
+	.second-nav .links-list li {
 		margin: 0;
 		font-size: var(--font-panel-second-menu-size);
 		font-weight: var(--font-menu-weight);
 	}
 
-	.second-nav .list a.disabled {
+	.second-nav .links-list a.disabled {
 		opacity: 0.5;
 	}
 

@@ -10,18 +10,10 @@
 	const isEditingState = getContext('isEditingState');
 	const contentPage = getContext('contentPage');
 
-	/** @type {import('./$types').PageData} */
 	export let data;
 
 	/** @type {MainPageData} */
 	const pageData = data?.pageData;
-
-	const videoLink = pageData?.videoLink;
-
-	let isEditing = false;
-	isEditingState.subscribe((x) => {
-		isEditing = x;
-	});
 
 	contentPage.set(pageData);
 
@@ -30,31 +22,23 @@
 	$: contentPage.set(localValue);
 </script>
 
-{#if isEditing}
+{#if $isEditingState}
 	<h1 class="main-header">
 		<Textarea
 			id="contentTitleEditor"
 			bind:value={localValue.title[$locale]} />
 	</h1>
-{:else}
-	<h1 class="main-header">{pageData.title[$locale]}</h1>
-{/if}
-
-{#if isEditing}
 	<Input
 		id="contentVideoEditor"
 		simple
 		bind:value={localValue.videoLink} />
-{:else}
-	<YouTube link={videoLink} />
-{/if}
-
-{#if isEditing}
 	<TextEditor
 		id="contentPageEditor"
 		bind:value={localValue.text[$locale]} />
 {:else}
+	<h1 class="main-header">{pageData?.title[$locale] || ''}</h1>
+	<YouTube link={pageData?.videoLink || ''} />
 	<article class="main-article">
-		{@html pageData.text[$locale]}
+		{@html pageData?.text[$locale] || ''}
 	</article>
 {/if}

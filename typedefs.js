@@ -105,3 +105,9 @@
  * @property {LocaleObject} description
  * @property {boolean} isVisible
  */
+
+/**
+ * @exports MainLayoutData
+ * @typedef MainLayoutData
+ * @type {{ authorized: boolean, practices: Array<object>, participants: Array<object>, pageData: MainPageData }}
+ */

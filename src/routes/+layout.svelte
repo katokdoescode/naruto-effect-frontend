@@ -9,7 +9,7 @@
 	import { locale } from 'svelte-i18n';
 	import { writable } from 'svelte/store';
 
-	/** @type {{ authorized: boolean, practices: Array<object>, participants: Array<object>, pageData: MainPageData }} */
+	/** @type {MainLayoutData} */
 	export let data;
 
 	const combo = writable();
@@ -44,6 +44,31 @@
 			.then(({ data }) => {
 				participants = data;
 			});
+	}
+
+	/**
+	 * Update data in page data array
+	 * @param {CustomEvent&{detail: {method: string, data: Participant|Practice}}} update
+	 */
+	function updateData(update) {
+		const { method, data } = update.detail;
+
+		const methods = {
+			/** @param {Practice} data */
+			updatePractices: function (data) {
+				practices = practices.map((practice) =>
+					practice.id === data.id ? data : practice
+				);
+			},
+			/** @param {Participant} data */
+			updateParticipants: function (data) {
+				participants = participants.map((participant) =>
+					participant.id === data.id ? data : participant
+				);
+			}
+		};
+
+		methods[method](data);
 	}
 
 	function closeLoginModal() {
@@ -117,7 +142,9 @@
 		{practices}
 		{socialLinks} />
 
-	<Content on:logout={() => authorize(false)}>
+	<Content
+		on:update={updateData}
+		on:logout={() => authorize(false)}>
 		<slot />
 		<svelte:fragment slot="login">
 			<Login

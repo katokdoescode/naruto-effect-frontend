@@ -3,7 +3,7 @@
 	import Button from '$lib/ui/Button.svelte';
 
 	let disabled = true;
-	let counter = 5;
+	let counter = 20;
 
 	function startCountdown() {
 		const intervalId = setInterval(() => {

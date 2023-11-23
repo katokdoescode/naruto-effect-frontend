@@ -17,7 +17,7 @@
 
 	function cancelCreating() {
 		isEditingState.set(false);
-		if ($page.url.pathname.match('/create')) {
+		if ($page.url.pathname.includes('/create')) {
 			window.location.assign('/');
 		}
 	}
