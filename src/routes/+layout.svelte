@@ -31,7 +31,9 @@
 	 */
 	async function authorize(state) {
 		authorized.set(state);
+
 		if (state) closeLoginModal();
+		else isEditingState.set(false);
 
 		await fetch('/api/practices')
 			.then((res) => res.json())
