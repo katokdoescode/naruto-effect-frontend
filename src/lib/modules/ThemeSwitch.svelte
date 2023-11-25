@@ -5,10 +5,14 @@
 	import { onMount } from 'svelte';
 	import { _ } from 'svelte-i18n';
 
+	import { getContext } from 'svelte';
+
 	let scheme;
 	let isMounted = false;
 	const availableSchemes = Object.values(ColorSchemes);
 	$: schemeId = availableSchemes.findIndex((s) => s === scheme);
+
+	const appColorScheme = getContext('appColorScheme');
 
 	onMount(() => {
 		// Get the initial scheme from localStorage or default to auto
@@ -40,6 +44,20 @@
 		}
 
 		localStorage.setItem('colorScheme', scheme);
+		const darkModePreference = window.matchMedia(
+			'(prefers-color-scheme: dark)'
+		);
+		const lightModePreference = window.matchMedia(
+			'(prefers-color-scheme: light)'
+		);
+		const prefersColorScheme = darkModePreference
+			? 'dark'
+			: lightModePreference
+			? 'light'
+			: null;
+		appColorScheme.set(
+			scheme === ColorSchemes.AUTO ? prefersColorScheme : scheme
+		);
 	}
 
 	function switchNextTheme() {
@@ -53,7 +71,7 @@
 </script>
 
 <fieldset class="vh">
-	<legend>{$_('legend')}</legend>
+	<legend>{$_('scheme.legend')}</legend>
 	<input
 		id="light"
 		name="colorScheme"
@@ -64,9 +82,8 @@
 	<label
 		aria-label={$_('scheme.light')}
 		for="light"
-		title={$_('scheme.light')}>
-		🌕
-	</label>
+		title={$_('scheme.light')}
+	/>
 
 	<input
 		id="auto"
@@ -78,9 +95,7 @@
 	<label
 		aria-label={$_('scheme.auto')}
 		for="auto"
-		title={$_('scheme.auto')}>
-		🌗
-	</label>
+		title={$_('scheme.auto')} />
 
 	<input
 		id="dark"
@@ -92,9 +107,7 @@
 	<label
 		aria-label={$_('scheme.dark')}
 		for="dark"
-		title={$_('scheme.dark')}>
-		🌑
-	</label>
+		title={$_('scheme.dark')} />
 </fieldset>
 
 <Button

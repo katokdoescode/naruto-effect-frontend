@@ -1,6 +1,6 @@
 <script>
 	import { page } from '$app/stores';
-	import { pick } from '$lib/utils/objectCleaner';
+	import { pick } from '$lib/utils/objectsTools';
 	import { createEventDispatcher, getContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
 	import Footer from './Footer.svelte';
@@ -95,9 +95,9 @@
 		if (response.success) {
 			isEditingState.set(false);
 			contentPageStatus.set('success');
+			url().onSuccess(response.data);
 			setTimeout(() => {
 				contentPageStatus.set(null);
-				url().onSuccess(response.data);
 			}, 2500);
 		} else {
 			contentPageStatus.set('error');

@@ -191,7 +191,7 @@
 	border-radius: 50%;
 	height: 2.1em;
 	width: 2.1em;
-	background-color: #fff;
+	background-color: var(--color-bg-main);
 	color: #207ab7;
 }
 .tinymce-mobile-outer-container
@@ -212,7 +212,7 @@
 	z-index: 2;
 }
 .tinymce-mobile-android-container.tinymce-mobile-android-maximized {
-	background: #fff;
+	background: var(--color-bg-main);
 	border: none;
 	bottom: 0;
 	display: flex;
@@ -242,14 +242,14 @@
 	margin-top: 23px;
 }
 .tinymce-mobile-toolstrip {
-	background: #fff;
+	background: var(--color-bg-main);
 	display: flex;
 	flex: 0 0 auto;
 	z-index: 1;
 }
 .tinymce-mobile-toolstrip .tinymce-mobile-toolbar {
 	align-items: center;
-	background-color: #fff;
+	background-color: var(--color-bg-main);
 	border-bottom: 1px solid #ccc;
 	display: flex;
 	flex: 1;
@@ -580,7 +580,7 @@
 	.tinymce-mobile-toolbar-group
 	.tinymce-mobile-slider.tinymce-mobile-hue-slider-container
 	.tinymce-mobile-hue-slider-black {
-	background: #000;
+	background: var(--color-main);
 	height: 0.2em;
 	margin-bottom: 0.3em;
 	margin-top: 0.3em;
@@ -591,7 +591,7 @@
 	.tinymce-mobile-toolbar-group
 	.tinymce-mobile-slider.tinymce-mobile-hue-slider-container
 	.tinymce-mobile-hue-slider-white {
-	background: #fff;
+	background: var(--color-bg-main);
 	height: 0.2em;
 	margin-bottom: 0.3em;
 	margin-top: 0.3em;
@@ -608,7 +608,7 @@
 	border: 0.5em solid rgba(136, 136, 136, 0);
 	border-radius: 3em;
 	bottom: 0;
-	color: #fff;
+	color: var(--color-bg-main);
 	display: flex;
 	height: 0.5em;
 	justify-content: center;
@@ -669,7 +669,7 @@
 	.tinymce-mobile-toolbar.tinymce-mobile-context-toolbar
 	.tinymce-mobile-toolbar-group
 	input {
-	background: #fff;
+	background: var(--color-bg-main);
 	border: none;
 	border-radius: 0;
 	color: #455a64;
@@ -698,7 +698,7 @@
 	color: #888;
 }
 .tinymce-mobile-dropup {
-	background: #fff;
+	background: var(--color-bg-main);
 	display: flex;
 	overflow: hidden;
 	width: 100%;
@@ -734,7 +734,7 @@
 }
 .tinymce-mobile-styles-menu {
 	font-family: sans-serif;
-	outline: 4px solid #000;
+	outline: 4px solid var(--color-main);
 	overflow: hidden;
 	position: relative;
 	width: 100%;
@@ -750,7 +750,7 @@
 	transition: transform 0.5s ease-in-out;
 }
 .tinymce-mobile-styles-menu .tinymce-mobile-styles-item {
-	border-bottom: 1px solid #ddd;
+	border-bottom: 1px solid var(--color-bg-main);
 	color: #455a64;
 	cursor: pointer;
 	display: flex;
@@ -785,7 +785,7 @@
 .tinymce-mobile-styles-menu .tinymce-mobile-styles-collapser,
 .tinymce-mobile-styles-menu .tinymce-mobile-styles-separator {
 	align-items: center;
-	background: #fff;
+	background: var(--color-bg-main);
 	border-top: #455a64;
 	color: #455a64;
 	display: flex;
@@ -840,14 +840,14 @@
 	height: 100%;
 }
 .tinymce-mobile-outer-container .tinymce-mobile-editor-socket iframe {
-	background-color: #fff;
+	background-color: var(--color-bg-main);
 	width: 100%;
 }
 .tinymce-mobile-editor-socket .tinymce-mobile-mask-edit-icon {
 	background-color: #207ab7;
 	border-radius: 50%;
 	bottom: 1em;
-	color: #fff;
+	color: var(--color-bg-main);
 	font-size: 1em;
 	height: 2.1em;
 	position: fixed;

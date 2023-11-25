@@ -1,21 +1,15 @@
 <script>
-	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
+	import SignOut from '$lib/modules/hokage/SignOut.svelte';
 	import Button from '$lib/ui/Button.svelte';
 	import { createEventDispatcher, getContext } from 'svelte';
 	import { _ } from 'svelte-i18n';
+
 	const dispatch = createEventDispatcher();
+
 	const authorized = getContext('authorized');
 	const isEditingState = getContext('isEditingState');
 	const contentPageStatus = getContext('contentPageStatus');
-
-	async function signOut() {
-		return async ({ result }) => {
-			if (result.success) {
-				dispatch('logout');
-			}
-		};
-	}
 
 	$: btnStatus = function () {
 		if ($contentPageStatus) {
@@ -57,17 +51,7 @@
 			href="/cv">CV</a>
 
 		{#if $authorized}
-			<div class="signout">
-				<span>{$_('hokagemode')}</span>
-				<form
-					action="/api/signOut"
-					method="POST"
-					use:enhance={signOut}>
-					<Button
-						color="black"
-						type="submit">{$_('signOut')}</Button>
-				</form>
-			</div>
+			<SignOut on:logout={() => dispatch('logout')} />
 		{/if}
 	</div>
 
@@ -95,12 +79,5 @@
 	.content-header .row {
 		display: flex;
 		justify-content: space-between;
-	}
-
-	.content-header .signout {
-		display: grid;
-		grid-template-columns: repeat(2, max-content);
-		gap: 21px;
-		place-items: flex-start;
 	}
 </style>

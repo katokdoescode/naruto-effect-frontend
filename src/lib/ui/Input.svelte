@@ -22,8 +22,12 @@
 	/** @type {string} */
 	export let autocomplete = 'off';
 
+	/** @type {string} */
+	export let nativeClass = '';
+
 	const dispatch = createEventDispatcher();
 	$: dispatch('input', value);
+	$: classes = `${nativeClass} input simple`;
 </script>
 
 {#if !simple}
@@ -54,7 +58,7 @@
 	<input
 		{id}
 		name={id}
-		class="input simple"
+		class={classes}
 		{placeholder}
 		bind:value />
 {/if}
@@ -76,9 +80,8 @@
 		padding: 0;
 		margin: 0;
 		width: 100%;
-
-		line-height: inherit;
-		font: inherit;
+		font-size: 1em;
+		background: inherit;
 	}
 
 	.label {
@@ -87,14 +90,11 @@
 
 	.real-input {
 		order: 2;
-
 		border: none;
 		border-bottom: 2px solid var(--color-main);
 		background-color: var(--color-bg-main);
 		width: 100%;
-
-		font-size: 24px;
-		/* TODO: change size */
+		font-size: 1.6em;
 	}
 
 	.error {

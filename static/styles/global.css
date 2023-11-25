@@ -152,8 +152,10 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+.h {
 	text-wrap: balance;
+	font-size: var(--font-heading-size);
 	font-weight: var(--font-heading-weight);
 	margin: 0 0 5px 0;
 	padding: 10px 0 0;
@@ -163,24 +165,32 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+.h.l2 {
 	font-size: var(--font-size-main);
 }
 
-h1 {
-	font-size: var(--font-heading-size);
-}
-
 h1 + h2,
-h2 + h3 {
+h2 + h3,
+.h.next {
 	margin: -5px 0 0 0;
 	padding: 0 0 10px 0;
 	font-size: var(--font-heading-size);
 	font-weight: var(--font-main-weight);
 }
 
+/* TEXT */
+blockquote {
+	margin: 10px 26px;
+}
+
+p {
+	margin: 10px 0;
+}
+
 /* LINKS */
-a {
+a,
+.link {
 	color: var(--color-main);
 	font-weight: var(--font-bold-weight);
 	position: relative;
@@ -190,6 +200,7 @@ a {
 /* EXTERNAL LINK */
 a:not([href^='/']):hover::after {
 	content: '' var(--external-link-icon);
+	color: var(--color-main);
 	width: 15px;
 	height: 15px;
 	transform: translate(0, -10px) rotate(90deg);
@@ -202,11 +213,6 @@ a:not([href^='/']):hover::after {
 	}
 }
 
-nav a,
-.menu a {
-	text-underline-offset: 4px;
-}
-
 /* LISTS */
 ol,
 ul {
@@ -214,26 +220,14 @@ ul {
 	padding-left: 1.6em;
 }
 
-/* OTHER */
-blockquote {
-	margin: 10px 26px;
-}
-
-p {
-	margin: 10px 0;
-}
-
-/* NAVIGATION MENUES */
+/* NAVIGATION MENUS */
 nav {
 	font-family: var(--font-main-family);
 }
 
 nav ul,
 nav ol,
-nav li,
-.menu li,
-.menu ul,
-.menu ol {
+nav li {
 	font-size: var(--font-main-menu-size);
 	font-weight: var(--font-bold-weight);
 	list-style: none;
@@ -241,11 +235,19 @@ nav li,
 	padding: 0;
 }
 
-nav a,
-.menu a {
+nav a {
 	font-size: inherit;
 	font-weight: inherit;
 	text-decoration: none;
+	text-underline-offset: 4px;
+}
+
+/* INPUTS */
+textarea,
+input,
+select,
+button {
+	font-family: inherit;
 }
 
 a.active {

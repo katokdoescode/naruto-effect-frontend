@@ -11,6 +11,10 @@ export default defineConfig({
 				{
 					src: './node_modules/tinymce/*',
 					dest: './scripts/tinymce'
+				},
+				{
+					src: './static/styles/tinymce/Naruto/content/*',
+					dest: './scripts/tinymce/skins/content/Naruto'
 				}
 			]
 		})

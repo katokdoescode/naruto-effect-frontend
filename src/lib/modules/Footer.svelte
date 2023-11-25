@@ -15,6 +15,7 @@
 		gap: 30px;
 		color: #949494;
 		height: 94px;
+		margin-top: auto;
 	}
 
 	.copyright .year {

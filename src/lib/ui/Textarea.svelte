@@ -10,6 +10,9 @@
 	/** @type{string} */
 	export let placeholder = '';
 
+	/** @type{string} */
+	export let nativeClass = '';
+
 	/** @type{boolean} */
 	export let resize = false;
 
@@ -26,12 +29,13 @@
 
 	$: dispatch('input', value);
 	$: if (element) updateHeight({ target: element });
+	$: classes = `${nativeClass} textarea`;
 </script>
 
 <textarea
 	bind:this={element}
 	{id}
-	class="textarea"
+	class={classes}
 	class:resize
 	{placeholder}
 	bind:value
@@ -41,14 +45,10 @@
 <style scoped>
 	.textarea {
 		border: none;
-		padding: 0;
-		margin: 0;
 		width: 100%;
-		height: var(--height);
-		line-height: inherit;
-		font: inherit;
 		resize: none;
 		overflow-y: hidden;
+		background: inherit;
 	}
 
 	.textarea:focus-visible {

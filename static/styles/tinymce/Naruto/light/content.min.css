@@ -4,11 +4,17 @@
 * For LGPL see License.txt in the project root for license information.
 * For commercial licenses see https://www.tiny.cloud/
 */
+@import '../../../vars.css';
+@import '../../../themes/light.css';
+
 body {
-	font-family: 'Gilroy', sans-serif;
+	font-family: var(--font-main-family);
+	background-color: var(--color-bg-main);
+	color: var(--color-main);
 	line-height: normal;
 	margin: 0;
 }
+
 table {
 	border-collapse: collapse;
 }

@@ -1,9 +1,7 @@
 <script>
 	/* eslint-disable svelte/no-at-html-tags */
-	import { Placeholder } from '$lib/constants/index.js';
-	import TextEditor from '$lib/modules/TextEditor.svelte';
-	import Textarea from '$lib/ui/Textarea.svelte';
-	import { clean } from '$lib/utils/objectCleaner.js';
+	import ParticipantEditor from '$lib/modules/hokage/ParticipantEditor.svelte';
+	import { clean } from '$lib/utils/objectsTools.js';
 	import { CarSlugger } from '@katokdoescode/car-slugger';
 	import { getContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
@@ -30,29 +28,10 @@
 </script>
 
 {#if $authorized && $isEditingState}
-	<h1 class="main-header">
-		<Textarea
-			id="practiceTitle"
-			placeholder="Имя и фамилия практиканта/практикантки"
-			bind:value={localValue.name[$locale]}
-		/>
-	</h1>
-	<h2 class="main-header">
-		<Textarea
-			id="practiceSubtitle"
-			placeholder="Кто он/она?"
-			bind:value={localValue.title[$locale]}
-		/>
-	</h2>
-
-	<TextEditor
-		id="practiceDescription"
-		placeholder={Placeholder.participant}
-		bind:value={localValue.description[$locale]}
-	/>
+	<ParticipantEditor bind:localValue />
 {:else}
-	<h1 class="main-header">{participant.name[$locale]}</h1>
-	<h2 class="main-header">{participant.title[$locale]}</h2>
+	<h1>{participant.name[$locale]}</h1>
+	<h2>{participant.title[$locale]}</h2>
 	<article class="main-article">
 		{@html participant.description[$locale]}
 	</article>

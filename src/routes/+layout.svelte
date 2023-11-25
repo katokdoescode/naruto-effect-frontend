@@ -19,6 +19,7 @@
 	const contentPage = writable();
 	const practiceData = writable();
 	const participantData = writable();
+	const appColorScheme = writable();
 
 	let practices = data?.practices || [];
 	let participants = data?.participants || [];
@@ -119,6 +120,7 @@
 	setContext('contentPage', contentPage);
 	setContext('practiceData', practiceData);
 	setContext('participantData', participantData);
+	setContext('appColorScheme', appColorScheme);
 
 	$: if ($combo) {
 		open = true;
@@ -172,6 +174,7 @@
 		max-width: var(--max-content-width);
 		margin: 0 auto;
 		column-gap: var(--sections-padding);
+		min-height: 800px;
 	}
 
 	@media (width <= 1018px) {

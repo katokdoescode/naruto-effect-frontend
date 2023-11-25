@@ -1,7 +1,7 @@
 <script>
 	/* eslint-disable svelte/no-at-html-tags */
 	import Editor from '@tinymce/tinymce-svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 
 	/** @type{object} */
 	export let addConf = {};
@@ -21,6 +21,9 @@
 	/** @type{string|boolean} */
 	export let placeholder = 'Type here...';
 
+	const appColorScheme = getContext('appColorScheme');
+	let skinUrl = `/styles/tinymce/Naruto/${$appColorScheme}`;
+
 	let conf = {
 		height: inline ? 'max-content' : '100%',
 		toolbar: false,
@@ -31,13 +34,17 @@
 			? false
 			: 'bold fontsize align italic list underline strikethrough link hr undo', // indent и выбор параграфа
 		resize: false,
-		content_css: '',
-		skin_url: '/styles/tinymce/ui/Naruto',
+		content_css: 'Naruto',
 		font_css: '/styles/fonts.css',
 		plugins: ['autolink', 'lists', 'link'],
 		...addConf,
 		placeholder
 	};
+
+	appColorScheme.subscribe((scheme) => {
+		skinUrl = `/styles/tinymce/Naruto/${scheme}`;
+		conf.skin_url = skinUrl;
+	});
 
 	const dispatch = createEventDispatcher();
 	$: dispatch('input', value);
@@ -55,13 +62,14 @@
 			{/if}
 		</article>
 	{/if}
-
-	<Editor
-		{id}
-		{conf}
-		{disabled}
-		{inline}
-		bind:value />
+	{#key skinUrl}
+		<Editor
+			{id}
+			{conf}
+			{disabled}
+			{inline}
+			bind:value />
+	{/key}
 </div>
 
 <style scoped>

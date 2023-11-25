@@ -6,33 +6,61 @@
 	"signingIn": "Вход",
 	"close": "Закрыть",
 	"copyright": "Все размещенные на сайте материалы – интеллектуальная собственность участников Эффекта Наруто и может быть использована только с предварительным согласованием",
-	"legend": "Тема",
-	"btnLight": "Светлая",
-	"btnAuto": "Авто",
-	"btnDark": "Темная",
-	"scheme.null": "Авто",
-	"scheme.undefined": "Авто",
-	"scheme.auto": "Авто",
-	"scheme.dark": "Ночь",
-	"scheme.light": "День",
+	"scheme": {
+		"legend": "Тема",
+		"null": "Авто",
+		"undefined": "Авто",
+		"auto": "Авто",
+		"dark": "Ночь",
+		"light": "День"
+	},
 	"changeColorScheme": "Изменить цветовую схему",
 	"switchLanguage": "Сменить язык",
-	"menu.open": "Открыть меню",
-	"menu.close": "Закрыть меню",
+	"menu": {
+		"open": "Открыть меню",
+		"close": "Закрыть меню"
+	},
 	"narutoEffect": "Эффект Наруто",
-	"mainMenu.practices": "Практики",
-	"mainMenu.practices.new": "Добавляем новую практику",
-	"mainMenu.participants.new": "Добавляем нового/новую практиканта/практикантку",
-	"mainMenu.participants": "Участники",
-	"mainMenu.settings": "Настройки",
-	"mainMenu.settings.publicity": "Запись видна на сайте",
+	"mainMenu": {
+		"practices": "Практики",
+		"practices.new": "Добавляем новую практику",
+		"participants.new": "Добавляем нового/новую практиканта/практикантку",
+		"participants": "Участники",
+		"settings": "Настройки",
+		"settings.publicity": "Запись видна на сайте"
+	},
 	"participate": "Принять участие",
 	"hokagemode": "Режим хокаге",
-	"button.edit": "Редактировать",
-	"button.save": "Сохранить",
-	"button.loading": "сохранение...",
-	"button.success": "Сохранено!",
-	"button.error": "Не получилось",
-	"button.add": "Добавить",
-	"button.cancel": "Отмена"
+	"button": {
+		"edit": "Редактировать",
+		"save": "Сохранить",
+		"loading": "Сохранение...",
+		"success": "Сохранено!",
+		"error": "Не получилось",
+		"add": "Добавить",
+		"cancel": "Отмена",
+		"light": "Светлая",
+		"auto": "Авто",
+		"dark": "Темная"
+	},
+	"placeholder": {
+		"mainPage": {
+			"title": "Заголовок",
+			"video": "Сюда ссылку на видео",
+			"description": "Текст тут..."
+		},
+		"practice": {
+			"name": "Название практики",
+			"subtitle": "Подзаголовок практики",
+			"video": "Сюда ссылку на видео"
+		},
+		"participant": {
+			"name": "Имя и фамилия практиканта/практикантки",
+			"title": "Кто он/она?"
+		},
+		"cv": {
+			"title": "Заголовок",
+			"description": "Текст тут..."
+		}
+	}
 }

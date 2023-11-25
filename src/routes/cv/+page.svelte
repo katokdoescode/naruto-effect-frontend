@@ -7,7 +7,7 @@
 	let cvData = data?.cvData || undefined;
 </script>
 
-<h1 class="main-header">{cvData.title[$locale]}</h1>
+<h1>{cvData.title[$locale]}</h1>
 <article class="main-article">
 	{@html cvData.text[$locale]}
 </article>
