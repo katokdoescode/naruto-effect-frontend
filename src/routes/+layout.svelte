@@ -144,7 +144,9 @@
 		{participants}
 		{participateLink}
 		{practices}
-		{socialLinks} />
+		{socialLinks}
+		on:logout={() => authorize(false)}
+	/>
 
 	<Content
 		on:update={updateData}

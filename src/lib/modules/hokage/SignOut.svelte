@@ -4,6 +4,9 @@
 	import { createEventDispatcher } from 'svelte';
 	import { _ } from 'svelte-i18n';
 
+	/**@type{string}*/
+	export let nativeClass = '';
+
 	const dispatch = createEventDispatcher();
 
 	async function signOut() {
@@ -15,7 +18,7 @@
 	}
 </script>
 
-<div class="signout">
+<div class={'signout ' + nativeClass}>
 	<span>{$_('hokagemode')}</span>
 	<form
 		action="/api/signOut"

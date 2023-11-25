@@ -4,10 +4,16 @@
 	import Logo from '$lib/modules/Logo.svelte';
 	import MainNav from '$lib/modules/MainNav.svelte';
 	import SecondNav from '$lib/modules/SecondNav.svelte';
+	import ToggleEditMode from '$lib/modules/hokage/ToggleEditMode.svelte';
 	import Burger from '$lib/ui/Burger.svelte';
 	import Button from '$lib/ui/Button.svelte';
+	import { createEventDispatcher, getContext } from 'svelte';
 	import { _ } from 'svelte-i18n';
 	import BurgerMenu from './BurgerMenu.svelte';
+
+	const dispatch = createEventDispatcher();
+
+	const authorized = getContext('authorized');
 
 	export let practices;
 	export let participants;
@@ -91,6 +97,9 @@
 			{$_('mainMenu.participants')}
 		</Button>
 	</div>
+	{#if $authorized}
+		<ToggleEditMode />
+	{/if}
 
 	{#if isAnyMenuOpened}
 		<section class="shower">
@@ -108,7 +117,9 @@
 				<BurgerMenu
 					aria-hidden="false"
 					{participateLink}
-					{socialLinks} />
+					{socialLinks}
+					on:logout={() => dispatch('logout')}
+				/>
 			{/if}
 		</section>
 	{/if}

@@ -1,7 +1,12 @@
 <script>
+	import { createEventDispatcher, getContext } from 'svelte';
 	import { _, locale } from 'svelte-i18n';
 	import LangSwitch from './LangSwitch.svelte';
 	import ThemeSwitch from './ThemeSwitch.svelte';
+	import SignOut from './hokage/SignOut.svelte';
+
+	const dispatch = createEventDispatcher();
+	const authorized = getContext('authorized');
 
 	/** @type{SocialLinkLocale[]} */
 	export let socialLinks = null;
@@ -28,6 +33,14 @@
 				</li>
 			{/each}
 		</ul>
+	{/if}
+
+	{#if $authorized}
+		<div class="burger-logout">
+			<SignOut
+				nativeClass="wide"
+				on:logout={() => dispatch('logout')} />
+		</div>
 	{/if}
 
 	<ul class="links-list horizontal">
@@ -73,6 +86,18 @@
 		position: absolute;
 		bottom: var(--initial-padding-top);
 		flex-direction: row;
+		justify-content: space-between;
+	}
+
+	.burger-logout {
+		width: 100%;
+		position: absolute;
+		top: 65%;
+		transform: translateY(-50%);
+	}
+
+	.burger-logout :global(.wide) {
+		display: flex;
 		justify-content: space-between;
 	}
 </style>
