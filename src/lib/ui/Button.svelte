@@ -29,7 +29,7 @@
 	$: classes = `button ${active ? 'active' : ''}`;
 
 	$: if (color !== 'transparent' && styleType === 'none') {
-		classes += 'bordered' + ' ' + color + nativeClasses;
+		classes += 'bordered' + ' ' + color + ' ' + nativeClasses;
 	}
 
 	$: if (styleType !== 'none') {
