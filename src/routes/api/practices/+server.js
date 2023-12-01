@@ -51,6 +51,7 @@ export async function POST({ request, cookies }) {
 		return json(createError(false, 'Something went wrong. Try again later.'));
 	}
 }
+
 export async function PATCH({ request, cookies }) {
 	/** @type {Practice} */
 	const data = await request.json();
@@ -77,5 +78,31 @@ export async function PATCH({ request, cookies }) {
 		return json({ success: true, data: practice });
 	} else {
 		return json(createError(false, 'Something went wrong. Try again later.'));
+	}
+}
+
+export async function DELETE({ request, cookies }) {
+	/** @type {Practice} */
+	const { id } = await request.json();
+	const authToken = cookies.get('authToken');
+	const url = VITE_BFF_BASE_URL + Routes.PRACTICES + `/${id}`;
+
+	const requestOptions = {
+		method: 'DELETE',
+		headers: {
+			Authorization: authToken,
+			'Content-Type': 'application/json'
+		}
+	};
+
+	/** @type {null|XanoError} */
+	const practice = await fetch(url, requestOptions).then((res) => res.json());
+
+	if (!practice) {
+		return json({ success: true });
+	}
+
+	if (practice.message) {
+		return json(createError(false, practice.message));
 	}
 }

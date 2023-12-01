@@ -83,3 +83,31 @@ export async function PATCH({ request, cookies }) {
 		return json(createError(false, 'Something went wrong. Try again later.'));
 	}
 }
+
+export async function DELETE({ request, cookies }) {
+	/** @type {Participant} */
+	const { id } = await request.json();
+	const authToken = cookies.get('authToken');
+	const url = VITE_BFF_BASE_URL + Routes.PARTICIPANTS + `/${id}`;
+
+	const requestOptions = {
+		method: 'DELETE',
+		headers: {
+			Authorization: authToken,
+			'Content-Type': 'application/json'
+		}
+	};
+
+	/** @type {null|XanoError} */
+	const participant = await fetch(url, requestOptions).then((res) =>
+		res.json()
+	);
+
+	if (!participant) {
+		return json({ success: true, data: participant });
+	}
+
+	if (participant.message) {
+		return json(createError(false, participant.message));
+	}
+}

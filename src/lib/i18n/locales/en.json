@@ -62,5 +62,15 @@
 			"title": "Title",
 			"description": "Text"
 		}
+	},
+	"messages": {
+		"confirm": {
+			"participant": {
+				"delete": "Really want to delete participant's page"
+			},
+			"practice": {
+				"delete": "Really want to delete practice's page"
+			}
+		}
 	}
 }

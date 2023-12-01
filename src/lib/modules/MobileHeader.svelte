@@ -4,12 +4,12 @@
 	import Logo from '$lib/modules/Logo.svelte';
 	import MainNav from '$lib/modules/MainNav.svelte';
 	import SecondNav from '$lib/modules/SecondNav.svelte';
-	import ToggleEditMode from '$lib/modules/hokage/ToggleEditMode.svelte';
 	import Burger from '$lib/ui/Burger.svelte';
 	import Button from '$lib/ui/Button.svelte';
 	import { createEventDispatcher, getContext } from 'svelte';
 	import { _ } from 'svelte-i18n';
 	import BurgerMenu from './BurgerMenu.svelte';
+	import MobileEditPanel from './hokage/MobileEditPanel.svelte';
 
 	const dispatch = createEventDispatcher();
 
@@ -73,33 +73,34 @@
 	</div>
 
 	<div class="bottom">
-		<Button
-			id="control-main-menu"
-			active={isMainMenuOpened}
-			aria-controls="main-menu"
-			aria-expanded={isMainMenuOpened}
-			on:click={toggleMainMenu}
-		>
-			{$_('mainMenu.practices')}
-		</Button>
+		{#if $authorized && !isAnyMenuOpened}
+			<MobileEditPanel />
+		{:else}
+			<Button
+				id="control-main-menu"
+				active={isMainMenuOpened}
+				aria-controls="main-menu"
+				aria-expanded={isMainMenuOpened}
+				on:click={toggleMainMenu}
+			>
+				{$_('mainMenu.practices')}
+			</Button>
 
-		<a
-			class:active={$page.url.pathname.includes('/cv')}
-			href="/cv">CV</a>
+			<a
+				class:active={$page.url.pathname.includes('/cv')}
+				href="/cv">CV</a>
 
-		<Button
-			id="control-second-menu"
-			active={isSecondaryMenuOpened}
-			aria-controls="second-menu"
-			aria-expanded={isSecondaryMenuOpened}
-			on:click={toggleSecondaryMenu}
-		>
-			{$_('mainMenu.participants')}
-		</Button>
+			<Button
+				id="control-second-menu"
+				active={isSecondaryMenuOpened}
+				aria-controls="second-menu"
+				aria-expanded={isSecondaryMenuOpened}
+				on:click={toggleSecondaryMenu}
+			>
+				{$_('mainMenu.participants')}
+			</Button>
+		{/if}
 	</div>
-	{#if $authorized}
-		<ToggleEditMode />
-	{/if}
 
 	{#if isAnyMenuOpened}
 		<section class="shower">
@@ -145,6 +146,8 @@
 		justify-content: space-between;
 		font-weight: var(--font-menu-weight);
 		font-size: var(--font-main-menu-size);
+		gap: 2em 1em;
+		flex-wrap: wrap;
 	}
 
 	.mobile-header .shower {

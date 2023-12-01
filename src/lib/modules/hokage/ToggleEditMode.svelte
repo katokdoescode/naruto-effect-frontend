@@ -8,16 +8,16 @@
 	const dispatch = createEventDispatcher();
 
 	let route;
-	page.subscribe((pageObject) => (route = pageObject.route.id));
+	$: route = $page.route.id;
 
 	const isEditingState = getContext('isEditingState');
-	const contentPageStatus = getContext('contentPageStatus');
+	const editingPageStatus = getContext('editingPageStatus');
 	const contentPage = getContext('contentPage');
 	const practiceData = getContext('practiceData');
 	const participantData = getContext('participantData');
 
 	async function saveContent() {
-		contentPageStatus.set('loading');
+		editingPageStatus.set('loading');
 
 		const response = await fetch(url().route, {
 			method: url().method,
@@ -26,14 +26,14 @@
 
 		if (response.success) {
 			isEditingState.set(false);
-			contentPageStatus.set('success');
+			editingPageStatus.set('success');
 			url().onSuccess(response.data);
 			setTimeout(() => {
-				contentPageStatus.set(null);
+				editingPageStatus.set(null);
 			}, 2500);
 		} else {
-			contentPageStatus.set('error');
-			setTimeout(() => contentPageStatus.set(null), 3500);
+			editingPageStatus.set('error');
+			setTimeout(() => editingPageStatus.set(null), 3500);
 		}
 	}
 
@@ -112,8 +112,8 @@
 	};
 
 	$: btnStatus = function () {
-		if ($contentPageStatus) {
-			return $contentPageStatus;
+		if ($editingPageStatus) {
+			return $editingPageStatus;
 		} else {
 			return $isEditingState ? 'save' : 'edit';
 		}
