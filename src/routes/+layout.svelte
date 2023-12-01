@@ -15,7 +15,7 @@
 	const combo = writable();
 	const authorized = writable();
 	const isEditingState = writable();
-	const contentPageStatus = writable();
+	const editingPageStatus = writable();
 	const contentPage = writable();
 	const practiceData = writable();
 	const participantData = writable();
@@ -116,7 +116,7 @@
 	setContext('authorized', authorized);
 	setContext('combo', combo);
 	setContext('isEditingState', isEditingState);
-	setContext('contentPageStatus', contentPageStatus);
+	setContext('editingPageStatus', editingPageStatus);
 	setContext('contentPage', contentPage);
 	setContext('practiceData', practiceData);
 	setContext('participantData', participantData);

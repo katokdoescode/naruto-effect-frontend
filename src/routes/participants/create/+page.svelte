@@ -5,14 +5,14 @@
 	import { getContext } from 'svelte';
 
 	const isEditingState = getContext('isEditingState');
-	const contentPageStatus = getContext('contentPageStatus');
+	const editingPageStatus = getContext('editingPageStatus');
 	const authorized = getContext('authorized');
 	const participantData = getContext('participantData');
 
 	const slugger = new CarSlugger();
 
 	isEditingState.set(true);
-	contentPageStatus.set(null);
+	editingPageStatus.set(null);
 
 	/** @type{Participant} */
 	let localValue = {
