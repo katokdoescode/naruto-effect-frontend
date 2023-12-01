@@ -41,7 +41,9 @@
 		"cancel": "Cancel",
 		"light": "Light",
 		"auto": "Auto",
-		"dark": "Dark"
+		"dark": "Dark",
+		"dont": "don't do it",
+		"ok": "I see"
 	},
 	"placeholder": {
 		"mainPage": {
@@ -65,12 +67,15 @@
 	},
 	"messages": {
 		"confirm": {
+			"delete": "Are we sure we're deleting it?",
+			"exit": "Save it before you leave?",
 			"participant": {
 				"delete": "Really want to delete participant's page"
 			},
 			"practice": {
 				"delete": "Really want to delete practice's page"
 			}
-		}
+		},
+		"deleted": "Entry deleted"
 	}
 }

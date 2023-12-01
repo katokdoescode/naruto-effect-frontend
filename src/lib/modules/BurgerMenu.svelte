@@ -1,9 +1,16 @@
 <script>
+	import Button from '$lib/ui/Button.svelte';
 	import { createEventDispatcher, getContext } from 'svelte';
 	import { _, locale } from 'svelte-i18n';
 	import LangSwitch from './LangSwitch.svelte';
 	import ThemeSwitch from './ThemeSwitch.svelte';
 	import SignOut from './hokage/SignOut.svelte';
+	/**
+	 * [ ] Спрашивать пользователя хочет ли он действительно уйти со страницы
+	 * [ ] На главной странице не показывать кнопки удалить и публикация
+	 * [ ] Добавить модалку
+	 * [ ] Добавить кнопку «Закрыть» на странице логина
+	 */
 
 	const dispatch = createEventDispatcher();
 	const authorized = getContext('authorized');
@@ -41,8 +48,15 @@
 				nativeClass="wide"
 				on:logout={() => dispatch('logout')} />
 		</div>
-	{/if}
 
+		<Button
+			color="gray"
+			nativeClasses="burger-edit"
+			on:click={() => alert('Редактировать!')}
+		>
+			{$_('button.edit')}
+		</Button>
+	{/if}
 	<ul class="links-list horizontal">
 		<li>
 			<a href={participateLink}>
@@ -78,7 +92,7 @@
 
 	.burger-menu .links-list:not(.horizontal) {
 		position: absolute;
-		top: 40%;
+		top: 27%;
 		transform: translateY(-50%);
 	}
 
@@ -99,5 +113,10 @@
 	.burger-logout :global(.wide) {
 		display: flex;
 		justify-content: space-between;
+	}
+
+	:global(.burger-edit) {
+		position: absolute;
+		bottom: calc(var(--initial-padding-top) + 10%);
 	}
 </style>

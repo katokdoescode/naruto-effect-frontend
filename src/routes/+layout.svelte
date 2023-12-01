@@ -4,6 +4,8 @@
 	import MainPanel from '$lib/modules/MainPanel.svelte';
 	import MobileHeader from '$lib/modules/MobileHeader.svelte';
 	import SecondaryPanel from '$lib/modules/SecondaryPanel.svelte';
+	import ConfirmDelete from '$lib/modules/hokage/modals/ConfirmDelete.svelte';
+	import ConfirmExit from '$lib/modules/hokage/modals/ConfirmExit.svelte';
 	import { handleKeydown, handleKeyup } from '$lib/utils/keyboardHandler';
 	import { onDestroy, onMount, setContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
@@ -20,6 +22,8 @@
 	const practiceData = writable();
 	const participantData = writable();
 	const appColorScheme = writable();
+	const isShowConfirmExitModal = writable();
+	const isShowDeleteModal = writable();
 
 	let practices = data?.practices || [];
 	let participants = data?.participants || [];
@@ -121,6 +125,8 @@
 	setContext('practiceData', practiceData);
 	setContext('participantData', participantData);
 	setContext('appColorScheme', appColorScheme);
+	setContext('isShowConfirmExitModal', isShowConfirmExitModal);
+	setContext('isShowDeleteModal', isShowDeleteModal);
 
 	$: if ($combo) {
 		open = true;
@@ -165,6 +171,9 @@
 		{participants}
 		{participateLink} />
 </div>
+
+<ConfirmExit />
+<ConfirmDelete />
 
 <style>
 	.main-layout {

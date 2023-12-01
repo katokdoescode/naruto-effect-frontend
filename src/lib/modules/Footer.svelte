@@ -1,10 +1,34 @@
 <script>
+	import Button from '$lib/ui/Button.svelte';
+	import { getContext } from 'svelte';
 	import { _ } from 'svelte-i18n';
+	const authorized = getContext('authorized');
 </script>
 
+{#if $authorized}
+	<div class="edit no-desktop">
+		<Button
+			color="gray"
+			on:click={() => alert('Редактировать!')}>
+			{$_('button.edit')}
+		</Button>
+	</div>
+{/if}
 <footer class="copyright">
 	<span class="year">2023</span>
-	<span class="disclaimer">{$_('copyright')}</span>
+	<span class="disclaimer">
+		{$_('copyright')}
+	</span>
+
+	{#if $authorized}
+		<div class="edit no-mobile">
+			<Button
+				color="gray"
+				on:click={() => alert('Редактировать!')}>
+				{$_('button.edit')}
+			</Button>
+		</div>
+	{/if}
 </footer>
 
 <style scoped>
@@ -24,5 +48,9 @@
 
 	.copyright .disclaimer {
 		font-size: var(--copyright-font-size);
+	}
+
+	.copyright .edit {
+		align-self: center;
 	}
 </style>
