@@ -23,7 +23,9 @@
 	const participantData = writable();
 	const appColorScheme = writable();
 	const isShowConfirmExitModal = writable();
+	const confirmModalDecision = writable();
 	const isShowDeleteModal = writable();
+	const deleteModalDecision = writable();
 
 	let practices = data?.practices || [];
 	let participants = data?.participants || [];
@@ -126,7 +128,9 @@
 	setContext('participantData', participantData);
 	setContext('appColorScheme', appColorScheme);
 	setContext('isShowConfirmExitModal', isShowConfirmExitModal);
+	setContext('confirmModalDecision', confirmModalDecision);
 	setContext('isShowDeleteModal', isShowDeleteModal);
+	setContext('deleteModalDecision', deleteModalDecision);
 
 	$: if ($combo) {
 		open = true;

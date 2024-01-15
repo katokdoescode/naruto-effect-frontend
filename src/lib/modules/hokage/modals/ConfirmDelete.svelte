@@ -5,6 +5,7 @@
 	import Modal from './Modal.svelte';
 
 	const isShowDeleteModal = getContext('isShowDeleteModal');
+	const deleteModalDecision = getContext('deleteModalDecision');
 
 	let open = false;
 	let message = '';
@@ -12,7 +13,15 @@
 	$: message = $_('messages.confirm.delete');
 	$: open = $isShowDeleteModal;
 
-	function closeModal() {
+	async function cancel() {
+		deleteModalDecision.set(new Promise((resolve) => resolve(false)));
+
+		isShowDeleteModal.set(false);
+	}
+
+	function confirm() {
+		deleteModalDecision.set(new Promise((resolve) => resolve(true)));
+
 		isShowDeleteModal.set(false);
 	}
 </script>
@@ -23,7 +32,14 @@
 	<svelte:fragment slot="buttons">
 		<Button
 			color="gray"
-			on:click={closeModal}>{$_('button.dont')}</Button>
-		<Button color="red">{$_('button.delete')}</Button>
+			on:click={cancel}>
+			{$_('button.dont')}
+		</Button>
+
+		<Button
+			color="red"
+			on:click={confirm}>
+			{$_('button.delete')}
+		</Button>
 	</svelte:fragment>
 </Modal>

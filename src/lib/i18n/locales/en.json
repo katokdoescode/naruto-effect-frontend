@@ -34,6 +34,7 @@
 	"button": {
 		"edit": "Edit",
 		"save": "Save",
+		"delete": "Delete",
 		"loading": "Saving...",
 		"success": "Saved",
 		"error": "Didn't save",

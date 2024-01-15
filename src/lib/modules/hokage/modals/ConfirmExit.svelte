@@ -5,6 +5,7 @@
 	import Modal from './Modal.svelte';
 
 	const isShowConfirmExitModal = getContext('isShowConfirmExitModal');
+	const confirmModalDecision = getContext('confirmModalDecision');
 
 	let open = false;
 	let message = '';
@@ -12,7 +13,15 @@
 	$: message = $_('messages.confirm.exit');
 	$: open = $isShowConfirmExitModal;
 
-	function closeModal() {
+	async function cancel() {
+		confirmModalDecision.set(new Promise((resolve) => resolve(false)));
+
+		isShowConfirmExitModal.set(false);
+	}
+
+	function confirm() {
+		confirmModalDecision.set(new Promise((resolve) => resolve(true)));
+
 		isShowConfirmExitModal.set(false);
 	}
 </script>
@@ -23,7 +32,13 @@
 	<svelte:fragment slot="buttons">
 		<Button
 			color="gray"
-			on:click={closeModal}>{$_('button.dont')}</Button>
-		<Button color="gray">{$_('button.save')}</Button>
+			on:click={cancel}>
+			{$_('button.dont')}
+		</Button>
+		<Button
+			color="gray"
+			on:click={confirm}>
+			{$_('button.save')}
+		</Button>
 	</svelte:fragment>
 </Modal>
