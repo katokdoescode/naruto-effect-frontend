@@ -109,5 +109,5 @@
 /**
  * @exports MainLayoutData
  * @typedef MainLayoutData
- * @type {{ authorized: boolean, practices: Array<object>, participants: Array<object>, pageData: MainPageData }}
+ * @type {{ authorized: boolean, practices: Array<object>, participants: Array<object>, pageData: MainPageData, loginPhrase: string }}
  */

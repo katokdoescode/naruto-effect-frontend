@@ -1,3 +1,4 @@
+import { VITE_LOGIN_PHRASE } from '$env/static/private';
 import { error } from '@sveltejs/kit';
 
 /** @type {import('./$types').LayoutServerLoad} */
@@ -26,7 +27,8 @@ export async function load({ cookies, fetch }) {
 		authorized: !!authToken,
 		practices,
 		participants,
-		pageData
+		pageData,
+		loginPhrase: VITE_LOGIN_PHRASE
 	};
 
 	return data;

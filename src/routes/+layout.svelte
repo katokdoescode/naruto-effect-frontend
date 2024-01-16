@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/stores';
 	import Content from '$lib/modules/Content.svelte';
 	import Login from '$lib/modules/Login.svelte';
 	import MainPanel from '$lib/modules/MainPanel.svelte';
@@ -31,6 +32,7 @@
 	let participants = data?.participants || [];
 	let socialLinks = data?.pageData?.socialLinks || [];
 	let participateLink = data?.pageData?.participateLink || [];
+	let loginPhrase = data?.loginPhrase || undefined;
 
 	/**
 	 * Control authorization data
@@ -53,6 +55,9 @@
 			.then(({ data }) => {
 				participants = data;
 			});
+
+		// Remove hash after successful login
+		history.replaceState('', document.title, window.location.pathname);
 	}
 
 	/**
@@ -102,6 +107,15 @@
 		window.removeEventListener('keyup', handleKeyup);
 	}
 
+	function readAnchorTag() {
+		const { hash } = $page.url;
+
+		if (!hash || !loginPhrase) return;
+		if (hash === `#${loginPhrase}`) {
+			open = true;
+		}
+	}
+
 	onMount(() => {
 		const settedLocale = localStorage.getItem('userLang');
 		if (settedLocale) locale.set(settedLocale);
@@ -137,6 +151,7 @@
 	}
 	$: open = false;
 	$: authorized.set(data?.authorized || false);
+	$: readAnchorTag();
 </script>
 
 <svelte:head>
