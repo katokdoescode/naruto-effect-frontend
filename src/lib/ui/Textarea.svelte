@@ -16,6 +16,9 @@
 	/** @type{boolean} */
 	export let resize = false;
 
+	/** @type{boolean} */
+	export let round = false;
+
 	let element;
 
 	/** Updates textarea height based on content */
@@ -29,7 +32,7 @@
 
 	$: dispatch('input', value);
 	$: if (element) updateHeight({ target: element });
-	$: classes = `${nativeClass} textarea`;
+	$: classes = `${nativeClass} textarea ${round ? 'round' : ''}`;
 </script>
 
 <textarea
@@ -57,5 +60,14 @@
 
 	.textarea.resize {
 		resize: both;
+	}
+
+	.textarea.round {
+		border-radius: 8px;
+		padding: 5px 8px;
+		background-color: var(--color-bg-main);
+		color: var(--color-main);
+		font-size: 1em;
+		box-sizing: border-box;
 	}
 </style>

@@ -5,6 +5,7 @@
 	import MainPanel from '$lib/modules/MainPanel.svelte';
 	import MobileHeader from '$lib/modules/MobileHeader.svelte';
 	import SecondaryPanel from '$lib/modules/SecondaryPanel.svelte';
+	import FooterEditor from '$lib/modules/hokage/FooterEditor.svelte';
 	import ConfirmDelete from '$lib/modules/hokage/modals/ConfirmDelete.svelte';
 	import ConfirmExit from '$lib/modules/hokage/modals/ConfirmExit.svelte';
 	import { handleKeydown, handleKeyup } from '$lib/utils/keyboardHandler';
@@ -193,6 +194,7 @@
 
 <ConfirmExit />
 <ConfirmDelete />
+<FooterEditor />
 
 <style>
 	.main-layout {
