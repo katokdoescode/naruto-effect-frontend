@@ -1,18 +1,23 @@
 <script>
 	import { _, locale, locales } from 'svelte-i18n';
 	export let id;
+
+	function switchLanguage() {
+		$locale = $locales[nextLanguageIndex];
+	}
+
+	$: nextLanguageIndex =
+		($locales.findIndex((value) => $locale === value) + 1) % $locales.length;
 </script>
 
-<select
+<button
 	{id}
 	class="language-switch"
 	aria-label={$_('switchLanguage')}
-	bind:value={$locale}
+	title={$_('switchLanguage')}
+	type="button"
+	on:click={switchLanguage}>{$locales[nextLanguageIndex]}</button
 >
-	{#each $locales as locale}
-		<option value={locale}>{locale}</option>
-	{/each}
-</select>
 
 <style scoped>
 	.language-switch {
