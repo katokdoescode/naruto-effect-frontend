@@ -29,7 +29,12 @@
 	$: classes = `button ${active ? 'active' : ''}`;
 
 	$: if (color !== 'transparent' && styleType === 'none') {
-		classes += 'bordered' + ' ' + color + ' ' + nativeClasses;
+		classes = [
+			...removeColorsFromClass(classes.split(' ')),
+			'bordered',
+			color,
+			nativeClasses
+		].join(' ');
 	}
 
 	$: if (styleType !== 'none') {
@@ -38,6 +43,17 @@
 
 	function click(event) {
 		dispatch('click', event);
+	}
+
+	/**
+	 * Removes colors from classes array
+	 * @param {string[]} classes
+	 */
+	function removeColorsFromClass(classes) {
+		return classes.filter(
+			(c) =>
+				!['transparent', 'gray', 'black', 'green', 'red', 'white'].includes(c)
+		);
 	}
 </script>
 
