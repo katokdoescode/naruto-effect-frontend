@@ -1,7 +1,6 @@
 <script>
 	import { browser } from '$app/environment';
 	import { ColorSchemes } from '$lib/constants';
-	import Button from '$lib/ui/Button.svelte';
 	import { onMount } from 'svelte';
 	import { _ } from 'svelte-i18n';
 
@@ -10,7 +9,6 @@
 	let scheme;
 	let isMounted = false;
 	const availableSchemes = Object.values(ColorSchemes);
-	$: schemeId = availableSchemes.findIndex((s) => s === scheme);
 
 	const appColorScheme = getContext('appColorScheme');
 
@@ -60,58 +58,28 @@
 		);
 	}
 
-	function switchNextTheme() {
-		if (schemeId === -1) return;
-		const newSchemeId =
-			schemeId >= availableSchemes.length - 1 ? 0 : schemeId + 1;
-		scheme = availableSchemes[newSchemeId];
-	}
-
 	$: if (scheme && browser && isMounted) updateTheme();
 </script>
 
-<fieldset class="vh">
-	<legend>{$_('scheme.legend')}</legend>
-	<input
-		id="light"
-		name="colorScheme"
-		type="radio"
-		value="light"
-		bind:group={scheme}
-	/>
-	<label
-		aria-label={$_('scheme.light')}
-		for="light"
-		title={$_('scheme.light')}
-	/>
+<select
+	class="theme-switch"
+	bind:value={scheme}>
+	{#each availableSchemes as availableScheme}
+		<option value={availableScheme}>{$_(`scheme.${availableScheme}`)}</option>
+	{/each}
+</select>
 
-	<input
-		id="auto"
-		name="colorScheme"
-		type="radio"
-		value="auto"
-		bind:group={scheme}
-	/>
-	<label
-		aria-label={$_('scheme.auto')}
-		for="auto"
-		title={$_('scheme.auto')} />
-
-	<input
-		id="dark"
-		name="colorScheme"
-		type="radio"
-		value="dark"
-		bind:group={scheme}
-	/>
-	<label
-		aria-label={$_('scheme.dark')}
-		for="dark"
-		title={$_('scheme.dark')} />
-</fieldset>
-
-<Button
-	aria-label={$_('changeColorScheme')}
-	on:click={switchNextTheme}>
-	{$_(`scheme.${scheme}`)}
-</Button>
+<style scoped>
+	.theme-switch {
+		border: none;
+		background-color: transparent;
+		text-transform: capitalize;
+		cursor: pointer;
+		appearance: none;
+		font-size: var(--font-main-menu-size);
+		font-weight: var(--font-menu-weight);
+		margin: 0;
+		padding: 0;
+		width: max-content;
+	}
+</style>
