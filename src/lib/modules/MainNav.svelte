@@ -7,8 +7,8 @@
 
 	/** @type{Practices} */
 	export let practices = [];
-	/** @type {SocialLink[]}*/
-	export let socialLinks = [];
+	/** @type {PageLinkLocale[]}*/
+	export let pageLinks = [];
 	const authorized = getContext('authorized');
 	const isEditingState = getContext('isEditingState');
 
@@ -104,8 +104,8 @@
 <section
 	class="contacts no-mobile"
 	aria-label="Контакты">
-	{#if socialLinks}
-		{#each socialLinks as { link, name }}
+	{#if pageLinks}
+		{#each pageLinks as { link, name }}
 			<a
 				href={link}
 				referrerpolicy="no-referrer"

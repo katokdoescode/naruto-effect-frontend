@@ -1,16 +1,28 @@
 <script>
-	import { enhance } from '$app/forms';
 	import Button from '$lib/ui/Button.svelte';
 	import Input from '$lib/ui/Input.svelte';
 	import Textarea from '$lib/ui/Textarea.svelte';
 	import { getContext } from 'svelte';
-	import { _ } from 'svelte-i18n';
+	import { _, locale } from 'svelte-i18n';
 	const isFooterEditorOpen = getContext('isFooterEditorOpen');
 	const footerEditorState = getContext('footerEditorState');
 
-	export let open = true;
 	export let nativeClasses = '';
 	export let id;
+	export let pageData;
+
+	let firstFocusElement;
+
+	$: isReady =
+		!!pageData &&
+		[pageData.id, pageData.pageLinks, pageData.year, pageData.copyright].every(
+			(entry) => !!entry
+		);
+	$: open = $isFooterEditorOpen;
+	$: if (open && firstFocusElement) {
+		firstFocusElement.focus();
+	}
+
 	let submitBtn;
 
 	footerEditorState.set('save');
@@ -23,120 +35,146 @@
 			? 'red'
 			: 'gray';
 
+	function blurLastElement() {
+		firstFocusElement.focus();
+	}
+
 	export function submit() {
 		submitBtn.nativeClick();
 	}
 
-	function submitForm() {
+	async function submitForm() {
 		footerEditorState.set('loading');
 
-		return async ({ result }) => {
-			const { success } = result;
+		/** @type {{success: boolean, data: MainPageData}} */
+		const response = await fetch('/api/common', {
+			method: 'PATCH',
+			body: JSON.stringify(pageData)
+		}).then((res) => res.json());
 
-			footerEditorState.set(success ? 'success' : 'error');
+		if (response.success) {
+			pageData = response.data;
 
+			footerEditorState.set('success');
 			setTimeout(() => {
 				footerEditorState.set('save');
 				isFooterEditorOpen.set(false);
 			}, 3500);
-		};
+		} else {
+			footerEditorState.set('error');
+			setTimeout(() => {
+				footerEditorState.set('save');
+			}, 3500);
+		}
 	}
 </script>
 
-<dialog
-	class={'footer-editor ' + nativeClasses}
-	{open}>
-	<form
-		{id}
-		method="dialog"
-		on:submit={() => isFooterEditorOpen.set(false)} />
-	<form
-		class="form-common"
-		action="/api/common"
-		method="POST"
-		use:enhance={submitForm}
-	>
-		<div class="wrapper">
-			<fieldset class="inputgroup">
-				<Input
-					id="first-link-title"
-					placeholder="Заголовок ссылки 1"
-					round
-					type="text"
-				/>
+{#if open}
+	<div class={'footer-editor ' + nativeClasses}>
+		{#if isReady}
+			<form
+				{id}
+				method="dialog"
+				on:submit={() => isFooterEditorOpen.set(false)}
+			/>
+			<form
+				class="form-common"
+				on:submit|preventDefault={submitForm}>
+				<div class="wrapper">
+					<fieldset class="inputgroup">
+						<Input
+							bind:this={firstFocusElement}
+							id="first-link-title"
+							placeholder="Заголовок ссылки 1"
+							round
+							type="text"
+							bind:value={pageData.pageLinks[0].name[$locale]}
+						/>
 
-				<Input
-					id="first-link-value"
-					placeholder="Ссылка 1"
-					round
-					type="text" />
-			</fieldset>
+						<Input
+							id="first-link-value"
+							placeholder="Ссылка 1"
+							round
+							type="text"
+							bind:value={pageData.pageLinks[0].link}
+						/>
+					</fieldset>
 
-			<fieldset class="inputgroup">
-				<Input
-					id="second-link-title"
-					placeholder="Заголовок ссылки 2"
-					round
-					type="text"
-				/>
+					<fieldset class="inputgroup">
+						<Input
+							id="second-link-title"
+							placeholder="Заголовок ссылки 2"
+							round
+							type="text"
+							bind:value={pageData.pageLinks[1].name[$locale]}
+						/>
 
-				<Input
-					id="second-link-value"
-					placeholder="Ссылка 2"
-					round
-					type="text"
-				/>
-			</fieldset>
+						<Input
+							id="second-link-value"
+							placeholder="Ссылка 2"
+							round
+							type="text"
+							bind:value={pageData.pageLinks[1].link}
+						/>
+					</fieldset>
 
-			<fieldset class="inputgroup wide">
-				<Input
-					id="year"
-					inputmode="numeric"
-					placeholder="Год"
-					round
-					type="text"
-				/>
+					<fieldset class="inputgroup wide">
+						<Input
+							id="year"
+							inputmode="numeric"
+							placeholder="Год"
+							round
+							type="text"
+							bind:value={pageData.year}
+						/>
 
-				<Textarea
-					id="copyright"
-					placeholder="Текст копирайта"
-					round />
-			</fieldset>
+						<Textarea
+							id="copyright"
+							placeholder="Текст копирайта"
+							round
+							bind:value={pageData.copyright[$locale]}
+						/>
+					</fieldset>
 
-			<fieldset class="inputgroup">
-				<Input
-					id="participate-link-title"
-					placeholder="Текст кнопки"
-					round
-					type="text"
-				/>
+					<fieldset class="inputgroup">
+						<Input
+							id="participate-link-title"
+							placeholder="Текст кнопки"
+							round
+							type="text"
+							bind:value={pageData.pageLinks[2].name[$locale]}
+						/>
 
-				<Input
-					id="participate-link-value"
-					placeholder="Ссылка"
-					round
-					type="text"
-				/>
-			</fieldset>
-		</div>
+						<Input
+							id="participate-link-value"
+							placeholder="Ссылка"
+							round
+							type="text"
+							bind:value={pageData.pageLinks[2].link}
+						/>
+					</fieldset>
+				</div>
 
-		<div class="button-container">
-			<Button
-				bind:this={submitBtn}
-				{color}
-				type="submit">
-				{$_(`button.${$footerEditorState}`)}
-			</Button>
+				<div class="button-container">
+					<Button
+						bind:this={submitBtn}
+						{color}
+						type="submit">
+						{$_(`button.${$footerEditorState}`)}
+					</Button>
 
-			<Button
-				color="red"
-				form={id}
-				type="submit">
-				{$_('button.cancel')}
-			</Button>
-		</div>
-	</form>
-</dialog>
+					<Button
+						color="red"
+						form={id}
+						type="submit"
+						on:blur={blurLastElement}>
+						{$_('button.cancel')}
+					</Button>
+				</div>
+			</form>
+		{/if}
+	</div>
+{/if}
 
 <style scoped>
 	.footer-editor {

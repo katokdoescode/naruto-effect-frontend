@@ -47,6 +47,10 @@
 		dispatch('click', event);
 	}
 
+	function blur(event) {
+		dispatch('blur', event);
+	}
+
 	export function nativeClick() {
 		button.click();
 	}
@@ -68,7 +72,8 @@
 		{id}
 		class={classes}
 		{...$$restProps}
-		{href}>
+		{href}
+		on:blur={blur}>
 		<slot />
 	</a>
 {:else}
@@ -80,6 +85,7 @@
 		{type}
 		{...$$restProps}
 		on:click={click}
+		on:blur={blur}
 	>
 		<slot />
 	</button>

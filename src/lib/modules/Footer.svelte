@@ -1,8 +1,14 @@
 <script>
 	import Button from '$lib/ui/Button.svelte';
 	import { createEventDispatcher, getContext } from 'svelte';
-	import { _ } from 'svelte-i18n';
+	import { _, locale } from 'svelte-i18n';
 	const dispatch = createEventDispatcher();
+
+	/** @type{LocaleObject} */
+	export let copyright = null;
+
+	/**@type{string|number}*/
+	export let year = new Date().getFullYear();
 
 	const isFooterEditorOpen = getContext('isFooterEditorOpen');
 	const footerEditorState = getContext('footerEditorState');
@@ -31,9 +37,11 @@
 	</div>
 {/if}
 <footer class="copyright">
-	<span class="year">2023</span>
+	<span class="year">{year}</span>
 	<span class="disclaimer">
-		{$_('copyright')}
+		{#if copyright}
+			{copyright[$locale]}
+		{/if}
 	</span>
 
 	{#if $authorized}

@@ -28,6 +28,12 @@
 	/** @type {string} */
 	export let nativeClass = '';
 
+	export function focus() {
+		element.focus();
+	}
+
+	let element;
+
 	const dispatch = createEventDispatcher();
 	$: dispatch('input', value);
 	$: classes = `${nativeClass} input ${simple ? 'simple' : ''} ${
@@ -38,6 +44,7 @@
 {#if !simple && !round}
 	<label class="input">
 		<input
+			bind:this={element}
 			{id}
 			name={id}
 			class="real-input"
@@ -62,11 +69,13 @@
 	</label>
 {:else}
 	<input
+		bind:this={element}
 		{id}
 		name={id}
 		class={classes}
 		{placeholder}
-		bind:value />
+		bind:value
+	/>
 {/if}
 
 <style scoped>

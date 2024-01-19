@@ -2,7 +2,7 @@
 	import Logo from '$lib/modules/Logo.svelte';
 	import MainNav from '$lib/modules/MainNav.svelte';
 	export let practices = [];
-	export let socialLinks = [];
+	export let pageLinks = [];
 </script>
 
 <header
@@ -14,8 +14,8 @@
 
 	<MainNav
 		aria-label="Practices"
-		{practices}
-		{socialLinks} />
+		{pageLinks}
+		{practices} />
 </header>
 
 <style>

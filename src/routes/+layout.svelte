@@ -34,9 +34,12 @@
 	let footerEditor;
 	let practices = data?.practices || [];
 	let participants = data?.participants || [];
-	let socialLinks = data?.pageData?.socialLinks || [];
-	let participateLink = data?.pageData?.participateLink || [];
+	let pageLinks = data?.pageData?.pageLinks || [];
 	let loginPhrase = data?.loginPhrase || undefined;
+	let pageDataObject = data?.pageData || null;
+
+	$: firstTwoLinks = pageLinks?.slice(0, 2);
+	$: lastLink = pageLinks?.slice(2, 3)[0];
 
 	/**
 	 * Control authorization data
@@ -172,18 +175,18 @@
 
 <div class="screen main-layout">
 	<MainPanel
-		{practices}
-		{socialLinks} />
+		pageLinks={firstTwoLinks}
+		{practices} />
 
 	<MobileHeader
+		pageLinks={firstTwoLinks}
 		{participants}
-		{participateLink}
 		{practices}
-		{socialLinks}
 		on:logout={() => authorize(false)}
 	/>
 
 	<Content
+		{pageDataObject}
 		on:submitFooter={submitFooter}
 		on:update={updateData}
 		on:logout={() => authorize(false)}
@@ -200,15 +203,16 @@
 
 	<SecondaryPanel
 		{participants}
-		{participateLink} />
+		participateLink={lastLink} />
 </div>
 
 <ConfirmExit />
 <ConfirmDelete />
+
 <FooterEditor
 	bind:this={footerEditor}
 	id="footer-dialog"
-	open={$isFooterEditorOpen}
+	pageData={pageDataObject}
 />
 
 <style>

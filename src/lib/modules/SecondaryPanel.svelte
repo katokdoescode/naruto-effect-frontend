@@ -2,7 +2,7 @@
 	import LangSwitch from '$lib/modules/LangSwitch.svelte';
 	import SecondNav from '$lib/modules/SecondNav.svelte';
 	import ThemeSwitch from '$lib/modules/ThemeSwitch.svelte';
-	import { _ } from 'svelte-i18n';
+	import { locale } from 'svelte-i18n';
 
 	export let participants = [];
 	export let participateLink = null;
@@ -21,11 +21,13 @@
 		{participants} />
 
 	<div class="wrapper">
-		<a
-			class="service-link"
-			href={participateLink}>
-			{$_('participate')}
-		</a>
+		{#if participateLink}
+			<a
+				class="service-link"
+				href={participateLink.link}>
+				{participateLink.name[$locale]}
+			</a>
+		{/if}
 	</div>
 </aside>
 

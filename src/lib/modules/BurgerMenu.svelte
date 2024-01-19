@@ -18,8 +18,8 @@
 	const authorized = getContext('authorized');
 	const isFooterEditorOpen = getContext('isFooterEditorOpen');
 
-	/** @type{SocialLinkLocale[]} */
-	export let socialLinks = null;
+	/** @type{PageLinkLocale[]} */
+	export let pageLinks = null;
 
 	/** @type {string} */
 	export let participateLink = null;
@@ -33,9 +33,9 @@
 	id="burger-menu"
 	class="burger-menu"
 	{...$$props}>
-	{#if socialLinks}
+	{#if pageLinks}
 		<ul class="links-list">
-			{#each socialLinks as { link, name }}
+			{#each pageLinks as { link, name }}
 				<li>
 					<a
 						href={link}

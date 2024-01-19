@@ -17,8 +17,7 @@
 
 	export let practices;
 	export let participants;
-	export let participateLink;
-	export let socialLinks;
+	export let pageLinks;
 
 	$: isBurgerMenuOpened = false;
 	$: isMainMenuOpened = false;
@@ -117,8 +116,7 @@
 			{#if isBurgerMenuOpened}
 				<BurgerMenu
 					aria-hidden="false"
-					{participateLink}
-					{socialLinks}
+					{pageLinks}
 					on:logout={() => dispatch('logout')}
 				/>
 			{/if}
