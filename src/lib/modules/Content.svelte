@@ -5,6 +5,9 @@
 	import ShadowWrapper from './ShadowWrapper.svelte';
 	const dispatch = createEventDispatcher();
 
+	/**@type{MainPageData} */
+	export let pageDataObject = null;
+
 	const isEditingState = getContext('isEditingState');
 	isEditingState.set(false);
 </script>
@@ -21,7 +24,11 @@
 	</ShadowWrapper>
 
 	<slot name="login" />
-	<Footer />
+	<Footer
+		copyright={pageDataObject?.copyright}
+		year={pageDataObject?.year}
+		on:submitFooter={() => dispatch('submitFooter')}
+	/>
 </section>
 
 <style scoped>

@@ -1,32 +1,69 @@
 <script>
 	import Button from '$lib/ui/Button.svelte';
-	import { getContext } from 'svelte';
-	import { _ } from 'svelte-i18n';
+	import { createEventDispatcher, getContext } from 'svelte';
+	import { _, locale } from 'svelte-i18n';
+	const dispatch = createEventDispatcher();
+
+	/** @type{LocaleObject} */
+	export let copyright = null;
+
+	/**@type{string|number}*/
+	export let year = new Date().getFullYear();
+
+	const isFooterEditorOpen = getContext('isFooterEditorOpen');
+	const footerEditorState = getContext('footerEditorState');
 	const authorized = getContext('authorized');
+
+	function showFooterEditor() {
+		isFooterEditorOpen.set(true);
+	}
+
+	function hideFooterEditor() {
+		isFooterEditorOpen.set(false);
+	}
+
+	function submitFooterForm() {
+		dispatch('submitFooter');
+	}
 </script>
 
 {#if $authorized}
 	<div class="edit no-desktop">
 		<Button
 			color="gray"
-			on:click={() => alert('Редактировать!')}>
+			on:click={showFooterEditor}>
 			{$_('button.edit')}
 		</Button>
 	</div>
 {/if}
 <footer class="copyright">
-	<span class="year">2023</span>
+	<span class="year">{year}</span>
 	<span class="disclaimer">
-		{$_('copyright')}
+		{#if copyright}
+			{copyright[$locale]}
+		{/if}
 	</span>
 
 	{#if $authorized}
 		<div class="edit no-mobile">
-			<Button
-				color="gray"
-				on:click={() => alert('Редактировать!')}>
-				{$_('button.edit')}
-			</Button>
+			{#if $isFooterEditorOpen}
+				<Button
+					color="gray"
+					on:click={submitFooterForm}>
+					{$_(`button.${$footerEditorState}`)}
+				</Button>
+				<Button
+					color="red"
+					on:click={hideFooterEditor}>
+					{$_('button.cancel')}
+				</Button>
+			{:else}
+				<Button
+					color="gray"
+					on:click={showFooterEditor}>
+					{$_('button.edit')}
+				</Button>
+			{/if}
 		</div>
 	{/if}
 </footer>
@@ -52,5 +89,8 @@
 
 	.copyright .edit {
 		align-self: center;
+		display: flex;
+		gap: 1em;
+		flex-direction: column;
 	}
 </style>

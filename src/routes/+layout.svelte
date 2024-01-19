@@ -5,6 +5,7 @@
 	import MainPanel from '$lib/modules/MainPanel.svelte';
 	import MobileHeader from '$lib/modules/MobileHeader.svelte';
 	import SecondaryPanel from '$lib/modules/SecondaryPanel.svelte';
+	import FooterEditor from '$lib/modules/hokage/FooterEditor.svelte';
 	import ConfirmDelete from '$lib/modules/hokage/modals/ConfirmDelete.svelte';
 	import ConfirmExit from '$lib/modules/hokage/modals/ConfirmExit.svelte';
 	import { handleKeydown, handleKeyup } from '$lib/utils/keyboardHandler';
@@ -27,12 +28,18 @@
 	const confirmModalDecision = writable();
 	const isShowDeleteModal = writable();
 	const deleteModalDecision = writable();
+	const isFooterEditorOpen = writable(false);
+	const footerEditorState = writable('save');
 
+	let footerEditor;
 	let practices = data?.practices || [];
 	let participants = data?.participants || [];
-	let socialLinks = data?.pageData?.socialLinks || [];
-	let participateLink = data?.pageData?.participateLink || [];
+	let pageLinks = data?.pageData?.pageLinks || [];
 	let loginPhrase = data?.loginPhrase || undefined;
+	let pageDataObject = data?.pageData || null;
+
+	$: firstTwoLinks = pageLinks?.slice(0, 2);
+	$: lastLink = pageLinks?.slice(2, 3)[0];
 
 	/**
 	 * Control authorization data
@@ -116,6 +123,10 @@
 		}
 	}
 
+	function submitFooter() {
+		footerEditor.submit();
+	}
+
 	onMount(() => {
 		const settedLocale = localStorage.getItem('userLang');
 		if (settedLocale) locale.set(settedLocale);
@@ -145,6 +156,8 @@
 	setContext('confirmModalDecision', confirmModalDecision);
 	setContext('isShowDeleteModal', isShowDeleteModal);
 	setContext('deleteModalDecision', deleteModalDecision);
+	setContext('isFooterEditorOpen', isFooterEditorOpen);
+	setContext('footerEditorState', footerEditorState);
 
 	$: if ($combo) {
 		open = true;
@@ -162,20 +175,22 @@
 
 <div class="screen main-layout">
 	<MainPanel
-		{practices}
-		{socialLinks} />
+		pageLinks={firstTwoLinks}
+		{practices} />
 
 	<MobileHeader
+		pageLinks={firstTwoLinks}
 		{participants}
-		{participateLink}
 		{practices}
-		{socialLinks}
 		on:logout={() => authorize(false)}
 	/>
 
 	<Content
+		{pageDataObject}
+		on:submitFooter={submitFooter}
 		on:update={updateData}
-		on:logout={() => authorize(false)}>
+		on:logout={() => authorize(false)}
+	>
 		<slot />
 		<svelte:fragment slot="login">
 			<Login
@@ -188,11 +203,17 @@
 
 	<SecondaryPanel
 		{participants}
-		{participateLink} />
+		participateLink={lastLink} />
 </div>
 
 <ConfirmExit />
 <ConfirmDelete />
+
+<FooterEditor
+	bind:this={footerEditor}
+	id="footer-dialog"
+	pageData={pageDataObject}
+/>
 
 <style>
 	.main-layout {

@@ -4,6 +4,9 @@
 	/** @type {boolean} */
 	export let simple = false;
 
+	/** @type {boolean} */
+	export let round = false;
+
 	/** @type {string} */
 	export let value = '';
 
@@ -25,14 +28,23 @@
 	/** @type {string} */
 	export let nativeClass = '';
 
+	export function focus() {
+		element.focus();
+	}
+
+	let element;
+
 	const dispatch = createEventDispatcher();
 	$: dispatch('input', value);
-	$: classes = `${nativeClass} input simple`;
+	$: classes = `${nativeClass} input ${simple ? 'simple' : ''} ${
+		round ? 'round' : ''
+	}`;
 </script>
 
-{#if !simple}
+{#if !simple && !round}
 	<label class="input">
 		<input
+			bind:this={element}
 			{id}
 			name={id}
 			class="real-input"
@@ -40,6 +52,7 @@
 			{placeholder}
 			{type}
 			{value}
+			{...$$restProps}
 		/>
 
 		<span class="label">
@@ -56,11 +69,13 @@
 	</label>
 {:else}
 	<input
+		bind:this={element}
 		{id}
 		name={id}
 		class={classes}
 		{placeholder}
-		bind:value />
+		bind:value
+	/>
 {/if}
 
 <style scoped>
@@ -82,6 +97,16 @@
 		width: 100%;
 		font-size: 1em;
 		background: inherit;
+	}
+
+	.input.round {
+		border-radius: 8px;
+		padding: 5px 8px;
+		background-color: var(--color-bg-main);
+		color: var(--color-main);
+		font-size: 1em;
+		box-sizing: border-box;
+		border: none;
 	}
 
 	.label {

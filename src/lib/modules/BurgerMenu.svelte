@@ -5,6 +5,7 @@
 	import LangSwitch from './LangSwitch.svelte';
 	import ThemeSwitch from './ThemeSwitch.svelte';
 	import SignOut from './hokage/SignOut.svelte';
+
 	/**
 	 * [ ] Спрашивать пользователя хочет ли он действительно уйти со страницы
 	 * [ ] На главной странице не показывать кнопки удалить и публикация
@@ -13,22 +14,28 @@
 	 */
 
 	const dispatch = createEventDispatcher();
-	const authorized = getContext('authorized');
 
-	/** @type{SocialLinkLocale[]} */
-	export let socialLinks = null;
+	const authorized = getContext('authorized');
+	const isFooterEditorOpen = getContext('isFooterEditorOpen');
+
+	/** @type{PageLinkLocale[]} */
+	export let pageLinks = null;
 
 	/** @type {string} */
 	export let participateLink = null;
+
+	function showFooterEditor() {
+		isFooterEditorOpen.set(true);
+	}
 </script>
 
 <div
 	id="burger-menu"
 	class="burger-menu"
 	{...$$props}>
-	{#if socialLinks}
+	{#if pageLinks}
 		<ul class="links-list">
-			{#each socialLinks as { link, name }}
+			{#each pageLinks as { link, name }}
 				<li>
 					<a
 						href={link}
@@ -52,7 +59,7 @@
 		<Button
 			color="gray"
 			nativeClasses="burger-edit"
-			on:click={() => alert('Редактировать!')}
+			on:click={showFooterEditor}
 		>
 			{$_('button.edit')}
 		</Button>

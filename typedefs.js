@@ -39,18 +39,10 @@
  */
 
 /**
- * @exports SocialLinkLocale
- * @typedef SocialLinkLocale
+ * @exports PageLinkLocale
+ * @typedef PageLinkLocale
  * @type {object}
  * @property {LocaleObject} name
- * @property {string} link
- */
-
-/**
- * @exports SocialLink
- * @typedef SocialLink
- * @type {object}
- * @property {string} name
  * @property {string} link
  */
 
@@ -63,8 +55,9 @@
  * @property {string} videoLink
  * @property {LocaleObject} text
  * @property {SeoData} seo
- * @property {SocialLinkLocale[]} socialLinks
- * @property {string} participateLink
+ * @property {PageLinkLocale[]} pageLinks
+ * @property {LocaleObject} copyright
+ * @property {string|number} year
  */
 
 /**

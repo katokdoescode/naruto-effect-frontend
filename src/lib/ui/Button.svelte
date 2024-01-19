@@ -26,6 +26,8 @@
 	/** @type {string} */
 	export let nativeClasses = '';
 
+	let button;
+
 	$: classes = `button ${active ? 'active' : ''}`;
 
 	$: if (color !== 'transparent' && styleType === 'none') {
@@ -45,6 +47,14 @@
 		dispatch('click', event);
 	}
 
+	function blur(event) {
+		dispatch('blur', event);
+	}
+
+	export function nativeClick() {
+		button.click();
+	}
+
 	/**
 	 * Removes colors from classes array
 	 * @param {string[]} classes
@@ -62,17 +72,20 @@
 		{id}
 		class={classes}
 		{...$$restProps}
-		{href}>
+		{href}
+		on:blur={blur}>
 		<slot />
 	</a>
 {:else}
 	<button
+		bind:this={button}
 		{id}
 		class={classes}
 		{disabled}
 		{type}
 		{...$$restProps}
 		on:click={click}
+		on:blur={blur}
 	>
 		<slot />
 	</button>
