@@ -20,12 +20,12 @@ export async function POST() {
 	function asyncTimer(duration) {
 		return new Promise((resolve) => {
 			setTimeout(() => {
-				resolve({ success: false });
+				resolve({ success: true });
 			}, duration);
 		});
 	}
 
-	const response = await asyncTimer(5000);
+	const response = await asyncTimer(2000);
 	return json(response);
 
 	/** @type {MainPageData&XanoError} */

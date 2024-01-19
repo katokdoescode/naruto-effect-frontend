@@ -26,6 +26,8 @@
 	/** @type {string} */
 	export let nativeClasses = '';
 
+	let button;
+
 	$: classes = `button ${active ? 'active' : ''}`;
 
 	$: if (color !== 'transparent' && styleType === 'none') {
@@ -43,6 +45,10 @@
 
 	function click(event) {
 		dispatch('click', event);
+	}
+
+	export function nativeClick() {
+		button.click();
 	}
 
 	/**
@@ -67,6 +73,7 @@
 	</a>
 {:else}
 	<button
+		bind:this={button}
 		{id}
 		class={classes}
 		{disabled}

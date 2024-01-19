@@ -49,6 +49,7 @@
 	.textarea {
 		border: none;
 		width: 100%;
+		min-height: 2em;
 		resize: none;
 		overflow-y: hidden;
 		background: inherit;

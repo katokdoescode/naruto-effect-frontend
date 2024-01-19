@@ -28,7 +28,10 @@
 	const confirmModalDecision = writable();
 	const isShowDeleteModal = writable();
 	const deleteModalDecision = writable();
+	const isFooterEditorOpen = writable(false);
+	const footerEditorState = writable('save');
 
+	let footerEditor;
 	let practices = data?.practices || [];
 	let participants = data?.participants || [];
 	let socialLinks = data?.pageData?.socialLinks || [];
@@ -117,6 +120,10 @@
 		}
 	}
 
+	function submitFooter() {
+		footerEditor.submit();
+	}
+
 	onMount(() => {
 		const settedLocale = localStorage.getItem('userLang');
 		if (settedLocale) locale.set(settedLocale);
@@ -146,6 +153,8 @@
 	setContext('confirmModalDecision', confirmModalDecision);
 	setContext('isShowDeleteModal', isShowDeleteModal);
 	setContext('deleteModalDecision', deleteModalDecision);
+	setContext('isFooterEditorOpen', isFooterEditorOpen);
+	setContext('footerEditorState', footerEditorState);
 
 	$: if ($combo) {
 		open = true;
@@ -175,8 +184,10 @@
 	/>
 
 	<Content
+		on:submitFooter={submitFooter}
 		on:update={updateData}
-		on:logout={() => authorize(false)}>
+		on:logout={() => authorize(false)}
+	>
 		<slot />
 		<svelte:fragment slot="login">
 			<Login
@@ -194,7 +205,11 @@
 
 <ConfirmExit />
 <ConfirmDelete />
-<FooterEditor />
+<FooterEditor
+	bind:this={footerEditor}
+	id="footer-dialog"
+	open={$isFooterEditorOpen}
+/>
 
 <style>
 	.main-layout {

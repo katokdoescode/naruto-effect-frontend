@@ -21,7 +21,7 @@
 	</ShadowWrapper>
 
 	<slot name="login" />
-	<Footer />
+	<Footer on:submitFooter={() => dispatch('submitFooter')} />
 </section>
 
 <style scoped>
