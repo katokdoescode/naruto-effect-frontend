@@ -7,10 +7,10 @@ export const ColorSchemes = {
 export const Routes = {
 	LOGIN: 'auth/login',
 	USER: 'auth/me',
-	PRACTICES: 'practice',
-	PARTICIPANTS: 'participant',
+	PRACTICES: 'practices',
+	PARTICIPANTS: 'participants',
 	DOCUMENTS: 'document',
-	MAIN_PAGE: 'mainpage',
+	MAIN_PAGE: 'common',
 	CV: 'cv'
 };
 

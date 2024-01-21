@@ -1,15 +1,30 @@
-import { VITE_BFF_BASE_URL } from '$env/static/private';
 import { Routes } from '$lib/constants';
+import { supabase } from '$lib/supabaseClient.js';
 import { createError } from '$lib/utils/errors';
 import { json } from '@sveltejs/kit';
 
 export async function GET() {
-	const url = VITE_BFF_BASE_URL + Routes.CV;
-	const pageData = await fetch(url).then((res) => res.json());
+	const { data: cv, error } = await supabase.from(Routes.CV).select();
 
-	if (pageData?.length) {
-		return json({ success: true, data: pageData[0] });
+	if (!error && cv) {
+		return json({ success: true, data: cv });
 	} else {
-		return json(createError(false, 'Something went wrong. Try again later.'));
+		return json(createError(false, error.message));
+	}
+}
+
+export async function PATCH({ request }) {
+	/** @type{CvData} */
+	const data = await request.json();
+
+	const { error } = await supabase
+		.from(Routes.CV)
+		.update(data)
+		.eq(data.id.toString());
+
+	if (!error && data) {
+		return json({ success: true, data });
+	} else {
+		return json(createError(false, error.message));
 	}
 }

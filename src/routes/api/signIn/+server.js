@@ -1,34 +1,31 @@
-import { VITE_ADMIN_EMAIL, VITE_BFF_BASE_URL } from '$env/static/private';
-import { Routes } from '$lib/constants/index.js';
+import { VITE_ADMIN_EMAIL } from '$env/static/private';
+import { supabase } from '$lib/supabaseClient.js';
 import { createError } from '$lib/utils/errors.js';
-import { FetchData } from '$lib/utils/fetchData.js';
 import { validateUserData } from '$lib/utils/validate.js';
 import { json } from '@sveltejs/kit';
 
 export async function POST({ cookies, request }) {
-	const data = await request.formData();
+	const formData = await request.formData();
 
 	const userData = {
-		email: VITE_ADMIN_EMAIL,
-		password: data.get('password') || ''
+		email: VITE_ADMIN_EMAIL || 'a@a.com',
+		password: formData.get('password').toString() || 'asd'
 	};
 
-	if (!validateUserData(userData))
+	if (!validateUserData(userData)) {
 		return json({
 			success: false,
 			errorMessage: 'Fill the fields'
 		});
+	}
 
-	const url = VITE_BFF_BASE_URL + Routes.LOGIN;
-	const { authToken } = await fetch(
-		url,
-		new FetchData({ data: userData })
-	).then((res) => res.json());
+	const { data, error } = await supabase.auth.signInWithPassword(userData);
+	const { session: authToken } = data;
 
-	if (authToken) {
-		cookies.set('authToken', authToken, { path: '/' });
-		return json({ success: true });
-	} else {
+	if (error || !authToken) {
 		return json(createError(false, 'Email or password is not correct.'));
+	} else {
+		cookies.set('authToken', authToken.access_token, { path: '/' });
+		return json({ success: true });
 	}
 }

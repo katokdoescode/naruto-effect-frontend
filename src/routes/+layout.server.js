@@ -1,27 +1,19 @@
 import { VITE_LOGIN_PHRASE } from '$env/static/private';
-import { error } from '@sveltejs/kit';
+import { supabase } from '$lib/supabaseClient';
 
 /** @type {import('./$types').LayoutServerLoad} */
-export async function load({ cookies, fetch }) {
+export async function load({ cookies }) {
 	const authToken = cookies.get('authToken');
 
 	/** @type { {data: Practices} } */
-	const { data: practices } = await fetch('/api/practices').then((res) =>
-		res.json()
-	);
+	const { data: practices } = await supabase.from('practices').select();
 
 	/** @type { {data: Participants} } */
-	const { data: participants } = await fetch('/api/participants').then((res) =>
-		res.json()
-	);
+	const { data: participants } = await supabase.from('participants').select();
 
-	const {
-		data: pageData,
-		success,
-		errorMessage
-	} = await fetch('/api/mainPage').then((res) => res.json());
-
-	if (!success) error(500, errorMessage);
+	/** @type{ {data: MainPageData[] } } */
+	const common = await supabase.from('common').select();
+	const pageData = common.data[0];
 
 	const data = {
 		authorized: !!authToken,
