@@ -13,6 +13,7 @@
 	const isEditingState = getContext('isEditingState');
 	const editingPageStatus = getContext('editingPageStatus');
 	const contentPage = getContext('contentPage');
+	const cvPage = getContext('cvPage');
 	const practiceData = getContext('practiceData');
 	const participantData = getContext('participantData');
 
@@ -103,6 +104,16 @@
 							method: 'updateParticipants',
 							data: pick(participant, ['id', 'isVisible', 'slug', 'name'])
 						});
+					}
+				};
+
+			case '/cv':
+				return {
+					route: '/api/cv',
+					method: 'PATCH',
+					data: JSON.stringify($cvPage),
+					onSuccess: function (data) {
+						return data;
 					}
 				};
 

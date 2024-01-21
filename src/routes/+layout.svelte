@@ -21,6 +21,7 @@
 	const isEditingState = writable();
 	const editingPageStatus = writable();
 	const contentPage = writable();
+	const cvPage = writable();
 	const practiceData = writable();
 	const participantData = writable();
 	const appColorScheme = writable();
@@ -150,6 +151,7 @@
 	setContext('isEditingState', isEditingState);
 	setContext('editingPageStatus', editingPageStatus);
 	setContext('contentPage', contentPage);
+	setContext('cvPage', cvPage);
 	setContext('practiceData', practiceData);
 	setContext('participantData', participantData);
 	setContext('appColorScheme', appColorScheme);
