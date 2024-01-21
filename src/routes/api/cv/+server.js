@@ -20,7 +20,7 @@ export async function PATCH({ request }) {
 	const { error } = await supabase
 		.from(Routes.CV)
 		.update(data)
-		.eq(data.id.toString());
+		.eq('id', data.id.toString());
 
 	if (!error && data) {
 		return json({ success: true, data });

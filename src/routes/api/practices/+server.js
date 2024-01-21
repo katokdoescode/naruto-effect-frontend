@@ -40,7 +40,7 @@ export async function PATCH({ request }) {
 	const { error } = await supabase
 		.from(Routes.PRACTICES)
 		.update(data)
-		.eq(data.id.toString());
+		.eq('id', data.id.toString());
 
 	if (!error && data) {
 		return json({ success: true, data });
@@ -56,7 +56,7 @@ export async function DELETE({ request }) {
 	const { error } = await supabase
 		.from(Routes.PRACTICES)
 		.delete()
-		.eq(data.id.toString());
+		.eq('id', data.id.toString());
 
 	if (!error && data) {
 		return json({ success: true, data });

@@ -6,19 +6,19 @@
 	import { getContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
 
-	export let data;
-
-	/** @type {Participant} */
-	let participant = data?.participant;
-
 	const isEditingState = getContext('isEditingState');
 	const authorized = getContext('authorized');
 	const participantData = getContext('participantData');
 
 	const slugger = new CarSlugger();
 
+	export let data;
+
+	/** @type {Participant} */
+	$: participant = data?.participant;
+
 	/** @type{Participant} */
-	let localValue = participant;
+	$: localValue = participant;
 
 	$: localValue.slug = Object.values(localValue.name).find(Boolean)
 		? slugger.getSlug(Object.values(localValue.name).find(Boolean))

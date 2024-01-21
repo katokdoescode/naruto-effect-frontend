@@ -1,26 +1,27 @@
+import { Routes } from '$lib/constants';
+import { supabase } from '$lib/supabaseClient';
 import { error } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageServerLoad} */
-export async function load({ params, fetch, cookies }) {
+export async function load({ params, cookies }) {
 	const isAuthenticated = !!cookies.get('authToken');
 	const { slug } = params;
 
-	/** @type {{data: Participant}&AppErrorType} */
-	const res = await fetch('/api/participants/' + slug).then((res) =>
-		res.json()
-	);
+	const { data: participant, error: participantError } = await supabase
+		.from(Routes.PARTICIPANTS)
+		.select()
+		.eq('slug', slug)
+		.eq(isAuthenticated ? '' : 'isVisible', true)
+		.limit(1)
+		.single();
 
-	/** @type { {data: Participants} } */
-	const { data: participants } = await fetch('/api/participants').then((res) =>
-		res.json()
-	);
+	const { data: participants, error: participantsError } = await supabase
+		.from(Routes.PARTICIPANTS)
+		.select('id, isVisible, slug, name')
+		.eq(isAuthenticated ? '' : 'isVisible', true);
 
-	/** @type {Participant} */
-	const participant = res.data;
-
-	if (!participant) throw error(404, res.errorMessage);
-	if (!participant?.isVisible && !isAuthenticated)
-		throw error(404, 'Participant not found');
+	if (participantError) throw error(404, participantError.message);
+	if (participantsError) console.error('Participants was not loaded');
 
 	return { participant, participants };
 }

@@ -24,7 +24,7 @@ export async function PATCH({ request }) {
 	const { error } = await supabase
 		.from(Routes.MAIN_PAGE)
 		.update(data)
-		.eq(data.id.toString());
+		.eq('id', data.id.toString());
 
 	if (!error && data) {
 		return json({ success: true, data });

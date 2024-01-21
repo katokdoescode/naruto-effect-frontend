@@ -1,22 +1,36 @@
 import { VITE_LOGIN_PHRASE } from '$env/static/private';
+import { Routes } from '$lib/constants';
 import { supabase } from '$lib/supabaseClient';
 
 /** @type {import('./$types').LayoutServerLoad} */
 export async function load({ cookies }) {
-	const authToken = cookies.get('authToken');
+	const isAuthenticated = !!cookies.get('authToken');
 
-	/** @type { {data: Practices} } */
-	const { data: practices } = await supabase.from('practices').select();
+	const { data: practices, error: practicesError } = await supabase
+		.from(Routes.PRACTICES)
+		.select('id, isVisible, slug, title')
+		.eq(isAuthenticated ? '' : 'isVisible', true);
 
-	/** @type { {data: Participants} } */
-	const { data: participants } = await supabase.from('participants').select();
+	const { data: participants, error: participantsError } = await supabase
+		.from(Routes.PARTICIPANTS)
+		.select('id, isVisible, slug, name')
+		.eq(isAuthenticated ? '' : 'isVisible', true);
 
-	/** @type{ {data: MainPageData[] } } */
-	const common = await supabase.from('common').select();
-	const pageData = common.data[0];
+	const { data: pageData, error: pageDataError } = await supabase
+		.from('common')
+		.select()
+		.limit(1)
+		.single();
+
+	if (practicesError || participantsError || pageDataError) {
+		console.error('Some data was not loaded:');
+		console.error('practices', practicesError.message);
+		console.error('participants', participantsError.message);
+		console.error('pageData', pageDataError.message);
+	}
 
 	const data = {
-		authorized: !!authToken,
+		authorized: isAuthenticated,
 		practices,
 		participants,
 		pageData,

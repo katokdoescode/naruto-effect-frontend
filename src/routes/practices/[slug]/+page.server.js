@@ -1,20 +1,38 @@
+import { Routes } from '$lib/constants';
+import { supabase } from '$lib/supabaseClient.js';
 import { error } from '@sveltejs/kit';
+import { locales } from 'svelte-i18n';
 
 /** @type {import('./$types').PageServerLoad} */
-export async function load({ params, fetch, cookies }) {
+export async function load({ params, cookies }) {
 	const isAuthenticated = !!cookies.get('authToken');
-
 	const { slug } = params;
+	let localesList = [];
 
-	/** @type{{data: Practice}&AppErrorType} */
-	const res = await fetch('/api/practices/' + slug).then((res) => res.json());
+	locales.subscribe((locale) => {
+		localesList = locale;
+	});
 
-	/** @type {Practice} */
-	const practice = res.data;
+	if (localesList.length) {
+		localesList = localesList.map((locale) => `slug->>${locale}.eq.${slug}`);
+	} else {
+		throw error(500, 'Something went wrong with slugs');
+	}
 
-	if (!practice) throw error(404, res.errorMessage);
-	if (!practice?.isVisible && !isAuthenticated)
-		throw error(404, 'Practice not found');
+	const { data: practice, error: supabaseError } = await supabase
+		.from(Routes.PRACTICES)
+		.select()
+		.or(localesList.join())
+		.limit(1)
+		.single();
 
-	return { practice };
+	const { data: practices, error: practicesError } = await supabase
+		.from(Routes.PRACTICES)
+		.select('id, isVisible, slug, title')
+		.eq(isAuthenticated ? '' : 'isVisible', true);
+
+	if (supabaseError) throw error(404, supabaseError.message);
+	if (practicesError) console.error('Practices was not loaded.');
+
+	return { practice, practices };
 }

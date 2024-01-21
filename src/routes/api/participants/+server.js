@@ -8,12 +8,13 @@ export async function GET({ cookies }) {
 
 	const { data: participants, error } = await supabase
 		.from(Routes.PARTICIPANTS)
-		.select('id, isVisible, slug, name');
+		.select('id, isVisible, slug, name')
+		.eq(isAuthenticated ? '' : 'isVisible', true);
 
 	if (!error && participants) {
 		return json({
 			success: true,
-			data: participants.filter(({ isVisible }) => isAuthenticated || isVisible)
+			data: participants
 		});
 	} else {
 		return json(createError(false, error.message));
@@ -40,7 +41,7 @@ export async function PATCH({ request }) {
 	const { error } = await supabase
 		.from(Routes.PARTICIPANTS)
 		.update(data)
-		.eq(data.id.toString());
+		.eq('id', data.id.toString());
 
 	if (!error && data) {
 		return json({ success: true, data });
@@ -56,7 +57,7 @@ export async function DELETE({ request }) {
 	const { error } = await supabase
 		.from(Routes.PARTICIPANTS)
 		.delete()
-		.eq(data.id.toString());
+		.eq('id', data.id.toString());
 
 	if (!error && data) {
 		return json({ success: true, data });

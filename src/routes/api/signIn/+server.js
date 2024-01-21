@@ -8,8 +8,8 @@ export async function POST({ cookies, request }) {
 	const formData = await request.formData();
 
 	const userData = {
-		email: VITE_ADMIN_EMAIL || 'a@a.com',
-		password: formData.get('password').toString() || 'asd'
+		email: VITE_ADMIN_EMAIL || '',
+		password: formData.get('password').toString() || ''
 	};
 
 	if (!validateUserData(userData)) {
@@ -19,13 +19,15 @@ export async function POST({ cookies, request }) {
 		});
 	}
 
-	const { data, error } = await supabase.auth.signInWithPassword(userData);
-	const { session: authToken } = data;
+	const {
+		data: { session: authToken },
+		error
+	} = await supabase.auth.signInWithPassword(userData);
 
-	if (error || !authToken) {
-		return json(createError(false, 'Email or password is not correct.'));
-	} else {
+	if (!error && authToken) {
 		cookies.set('authToken', authToken.access_token, { path: '/' });
 		return json({ success: true });
+	} else {
+		return json(createError(false, 'Email or password is not correct.'));
 	}
 }

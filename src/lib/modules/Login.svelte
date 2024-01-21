@@ -93,6 +93,12 @@
 		align-items: center;
 	}
 
+	@media (width <= 1018px) {
+		.login-dialog[open] {
+			width: 95%;
+		}
+	}
+
 	.login-dialog .wrapper {
 		transform: translateY(-50%);
 		display: flex;
