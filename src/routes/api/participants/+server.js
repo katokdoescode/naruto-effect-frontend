@@ -35,13 +35,13 @@ export async function POST({ request }) {
 }
 
 export async function PATCH({ request }) {
-	/** @type {Practice} */
+	/** @type {Participant} */
 	const data = await request.json();
 
 	const { error } = await supabase
 		.from(Routes.PARTICIPANTS)
 		.update(data)
-		.eq('id', data.id.toString());
+		.eq('id', data.id);
 
 	if (!error && data) {
 		return json({ success: true, data });
@@ -57,7 +57,7 @@ export async function DELETE({ request }) {
 	const { error } = await supabase
 		.from(Routes.PARTICIPANTS)
 		.delete()
-		.eq('id', data.id.toString());
+		.eq('id', data.id);
 
 	if (!error && data) {
 		return json({ success: true, data });

@@ -5,11 +5,8 @@ export const ColorSchemes = {
 };
 
 export const Routes = {
-	LOGIN: 'auth/login',
-	USER: 'auth/me',
 	PRACTICES: 'practices',
 	PARTICIPANTS: 'participants',
-	DOCUMENTS: 'document',
 	MAIN_PAGE: 'common',
 	CV: 'cv'
 };

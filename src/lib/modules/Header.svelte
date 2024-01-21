@@ -21,7 +21,7 @@
 	</div>
 
 	{#if $authorized}
-		<ToggleEditMode on:save={() => dispatch('save')} />
+		<ToggleEditMode on:update={({ detail }) => dispatch('update', detail)} />
 	{/if}
 </header>
 
