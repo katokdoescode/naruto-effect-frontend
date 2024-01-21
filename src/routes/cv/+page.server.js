@@ -1,12 +1,15 @@
-/** @type {import('./$types').PageServerLoad} */
-export async function load({ fetch }) {
-	/** @type { {data: CvData} } */
-	const { data: cvData } = await fetch('/api/cv').then((res) => res.json());
+import { Routes } from '$lib/constants';
+import { supabase } from '$lib/supabaseClient';
+import { error } from '@sveltejs/kit';
 
-	/** @type { {data: Participants} } */
-	const { data: participants } = await fetch('/api/participants').then((res) =>
-		res.json()
-	);
+export async function load() {
+	const { data: cvData, error: cvError } = await supabase
+		.from(Routes.CV)
+		.select()
+		.limit(1)
+		.single();
 
-	return { cvData, participants };
+	if (cvError) throw error(404, cvError.message);
+
+	return { cvData };
 }

@@ -15,7 +15,10 @@
 <section
 	id="panel-content"
 	class="panel">
-	<Header on:logout={() => dispatch('logout')} />
+	<Header
+		on:update={({ detail }) => dispatch('update', detail)}
+		on:logout={() => dispatch('logout')}
+	/>
 
 	<ShadowWrapper noPads>
 		<main class="main-page-content">

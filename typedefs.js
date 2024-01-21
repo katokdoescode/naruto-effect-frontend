@@ -64,6 +64,7 @@
  * @exports CvData
  * @typedef CvData
  * @type {object}
+ * @property {number} id
  * @property {LocaleObject} title
  * @property {LocaleObject} text
  */
@@ -75,15 +76,6 @@
  * @property {boolean} success
  * @property {string} errorMessage
  * @property {undefined} data
- */
-
-/**
- * @exports XanoError
- * @typedef XanoError
- * @type {object}
- * @property {'error'} status
- * @property {string} code
- * @property {string} message
  */
 
 /**

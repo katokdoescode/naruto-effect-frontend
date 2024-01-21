@@ -134,6 +134,7 @@
 		locale.subscribe((lang) => {
 			document.querySelector('html').lang = lang;
 			localStorage.setItem('userLang', lang);
+			document.cookie = `lang=${lang}; path=/`;
 		});
 
 		initHandlers();

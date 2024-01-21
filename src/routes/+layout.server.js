@@ -1,30 +1,36 @@
 import { VITE_LOGIN_PHRASE } from '$env/static/private';
-import { error } from '@sveltejs/kit';
+import { Routes } from '$lib/constants';
+import { supabase } from '$lib/supabaseClient';
 
 /** @type {import('./$types').LayoutServerLoad} */
-export async function load({ cookies, fetch }) {
-	const authToken = cookies.get('authToken');
+export async function load({ cookies }) {
+	const isAuthenticated = !!cookies.get('authToken');
 
-	/** @type { {data: Practices} } */
-	const { data: practices } = await fetch('/api/practices').then((res) =>
-		res.json()
-	);
+	const { data: practices, error: practicesError } = await supabase
+		.from(Routes.PRACTICES)
+		.select('id, isVisible, slug, title')
+		.eq(isAuthenticated ? '' : 'isVisible', true);
 
-	/** @type { {data: Participants} } */
-	const { data: participants } = await fetch('/api/participants').then((res) =>
-		res.json()
-	);
+	const { data: participants, error: participantsError } = await supabase
+		.from(Routes.PARTICIPANTS)
+		.select('id, isVisible, slug, name')
+		.eq(isAuthenticated ? '' : 'isVisible', true);
 
-	const {
-		data: pageData,
-		success,
-		errorMessage
-	} = await fetch('/api/mainPage').then((res) => res.json());
+	const { data: pageData, error: pageDataError } = await supabase
+		.from('common')
+		.select()
+		.limit(1)
+		.single();
 
-	if (!success) error(500, errorMessage);
+	if (practicesError || participantsError || pageDataError) {
+		console.error('Some data was not loaded:');
+		console.error('practices', practicesError.message);
+		console.error('participants', participantsError.message);
+		console.error('pageData', pageDataError.message);
+	}
 
 	const data = {
-		authorized: !!authToken,
+		authorized: isAuthenticated,
 		practices,
 		participants,
 		pageData,

@@ -1,17 +1,14 @@
-import { VITE_BFF_BASE_URL } from '$env/static/private';
 import { Routes } from '$lib/constants/index.js';
+import { supabase } from '$lib/supabaseClient.js';
 import { createError } from '$lib/utils/errors';
 import { json } from '@sveltejs/kit';
 
 export async function GET({ cookies }) {
 	const isAuthenticated = !!cookies.get('authToken');
-	const url = VITE_BFF_BASE_URL + Routes.PRACTICES;
 
-	/** @type {Practices&XanoError} **/
-	const practices = await fetch(url).then((res) => res.json());
-
-	if (practices.message)
-		return json(createError(false, 'Something went wrong. Try again later.'));
+	const { data: practices, error } = await supabase
+		.from(Routes.PRACTICES)
+		.select('id, isVisible, slug, title');
 
 	if (practices) {
 		return json({
@@ -19,90 +16,51 @@ export async function GET({ cookies }) {
 			data: practices.filter(({ isVisible }) => isAuthenticated || isVisible)
 		});
 	} else {
-		return json(createError(false, 'Something went wrong. Try again later.'));
+		return json(createError(false, error.message));
 	}
 }
 
-export async function POST({ request, cookies }) {
+export async function POST({ request }) {
 	/** @type {Practice} */
 	const data = await request.json();
-	const authToken = cookies.get('authToken');
-	const url = VITE_BFF_BASE_URL + Routes.PRACTICES;
 
-	const requestOptions = {
-		method: 'POST',
-		headers: {
-			Authorization: authToken,
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(data)
-	};
+	const { error } = await supabase.from(Routes.PRACTICES).insert(data);
 
-	/** @type {Practice&XanoError} */
-	const practice = await fetch(url, requestOptions).then((res) => res.json());
-
-	if (practice.message) {
-		return json(createError(false, practice.message));
-	}
-
-	if (practice) {
-		return json({ success: true, data: practice });
+	if (!error && data) {
+		return json({ success: true, data });
 	} else {
-		return json(createError(false, 'Something went wrong. Try again later.'));
+		return json(createError(false, error.message));
 	}
 }
 
-export async function PATCH({ request, cookies }) {
+export async function PATCH({ request }) {
 	/** @type {Practice} */
 	const data = await request.json();
-	const authToken = cookies.get('authToken');
-	const url = VITE_BFF_BASE_URL + Routes.PRACTICES + `/${data.id}`;
 
-	const requestOptions = {
-		method: 'PATCH',
-		headers: {
-			Authorization: authToken,
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(data)
-	};
+	const { error } = await supabase
+		.from(Routes.PRACTICES)
+		.update(data)
+		.eq('id', data.id);
 
-	/** @type {Practice&XanoError} */
-	const practice = await fetch(url, requestOptions).then((res) => res.json());
-
-	if (practice.message) {
-		return json(createError(false, practice.message));
-	}
-
-	if (practice) {
-		return json({ success: true, data: practice });
+	if (!error && data) {
+		return json({ success: true, data });
 	} else {
-		return json(createError(false, 'Something went wrong. Try again later.'));
+		return json(createError(false, error.message));
 	}
 }
 
-export async function DELETE({ request, cookies }) {
+export async function DELETE({ request }) {
 	/** @type {Practice} */
-	const { id } = await request.json();
-	const authToken = cookies.get('authToken');
-	const url = VITE_BFF_BASE_URL + Routes.PRACTICES + `/${id}`;
+	const data = await request.json();
 
-	const requestOptions = {
-		method: 'DELETE',
-		headers: {
-			Authorization: authToken,
-			'Content-Type': 'application/json'
-		}
-	};
+	const { error } = await supabase
+		.from(Routes.PRACTICES)
+		.delete()
+		.eq('id', data.id);
 
-	/** @type {null|XanoError} */
-	const practice = await fetch(url, requestOptions).then((res) => res.json());
-
-	if (!practice) {
-		return json({ success: true });
-	}
-
-	if (practice.message) {
-		return json(createError(false, practice.message));
+	if (!error && data) {
+		return json({ success: true, data });
+	} else {
+		return json(createError(false, error.message));
 	}
 }

@@ -1,24 +1,32 @@
-import { VITE_BFF_BASE_URL } from '$env/static/private';
-import { Routes } from '$lib/constants/index.js';
+import { supabase } from '$lib/supabaseClient.js';
 import { createError } from '$lib/utils/errors.js';
 import { json } from '@sveltejs/kit';
+import { locales } from 'svelte-i18n';
 
 export async function GET({ params }) {
 	const { slug } = params;
-	const url = VITE_BFF_BASE_URL + Routes.PRACTICES + '/' + slug;
+	let localesList = [];
 
-	const multiResponse = await fetch(url).then((res) => res.json());
+	locales.subscribe((locale) => {
+		localesList = locale;
+	});
 
-	if (multiResponse?.status === 'error') {
-		return json(createError(false, multiResponse.message));
+	if (localesList.length) {
+		localesList = localesList.map((locale) => `slug->>${locale}.eq.${slug}`);
+	} else {
+		return json(createError(false, 'Can not receive locales'));
 	}
 
-	/** @type {Practice} */
-	const practice = Object.values(multiResponse).find((x) => x) || undefined;
+	const { data: practice, error } = await supabase
+		.from('practices')
+		.select()
+		.or(localesList.join())
+		.limit(1)
+		.single();
 
-	if (practice) {
+	if (!error && practice) {
 		return json({ success: true, data: practice });
 	} else {
-		return json(createError(false, 'Something went wrong. Try again later.'));
+		return json(createError(false, error.message));
 	}
 }

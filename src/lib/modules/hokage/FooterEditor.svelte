@@ -47,7 +47,7 @@
 		footerEditorState.set('loading');
 
 		/** @type {{success: boolean, data: MainPageData}} */
-		const response = await fetch('/api/common', {
+		const response = await fetch('/api/mainPage', {
 			method: 'PATCH',
 			body: JSON.stringify(pageData)
 		}).then((res) => res.json());
