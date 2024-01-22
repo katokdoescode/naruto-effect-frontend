@@ -3,8 +3,12 @@
 	"singleQuote": true,
 	"trailingComma": "none",
 	"printWidth": 80,
+	"svelteSortOrder": "options-scripts-markup-styles",
+	"svelteStrictMode": false,
+	"svelteBracketNewLine": true,
+	"svelteAllowShorthand": true,
+	"svelteIndentScriptAndStyle": true,
 	"plugins": ["prettier-plugin-svelte"],
-	"pluginSearchDirs": ["."],
 	"overrides": [
 		{
 			"files": "*.svelte",
