@@ -5,21 +5,29 @@
 	import { _ } from 'svelte-i18n';
 	import ToggleEditMode from './ToggleEditMode.svelte';
 
-	let route = '';
-	let isMainPage = false;
-	let isPracticePage = false;
-	let isParticipantPage = false;
-	let isCvPage = false;
-
-	$: route = $page.route.id;
-	$: isMainPage = route === '/';
-	$: isPracticePage = route.includes('practices');
-	$: isParticipantPage = route.includes('participants');
-	$: isCvPage = route.includes('cv');
-	$: isCreating = route.includes('create');
-
+	const participantData = getContext('participantData');
+	const practiceData = getContext('practiceData');
 	const isEditingState = getContext('isEditingState');
 	const editingPageStatus = getContext('editingPageStatus');
+
+	let checked = false;
+
+	$: route = $page.route.id || '';
+	$: isPracticePage = route?.includes('practices') || '';
+	$: isParticipantsPage = route?.includes('participants') || '';
+	$: isMainPage = route === '/' || '';
+	$: isCvPage = route?.includes('cv') || '';
+	$: isCreating = route?.includes('create') || '';
+
+	$: {
+		if (isParticipantsPage) {
+			checked = $participantData?.isVisible;
+		}
+
+		if (isPracticePage) {
+			checked = $practiceData?.isVisible;
+		}
+	}
 
 	async function deletePractice(id) {
 		await fetch('/api/practices', {
@@ -70,10 +78,27 @@
 		}
 
 		if (
-			isParticipantPage &&
+			isParticipantsPage &&
 				window.confirm($_('messages.confirm.participant.delete'))
 		) {
 			deleteParticipant($page.data.participant.id);
+		}
+	}
+
+	function check({ target }) {
+		const { checked } = target;
+		if (isPracticePage) {
+			practiceData.set({
+				...$practiceData,
+				isVisible: checked
+			});
+		}
+
+		if (isParticipantsPage) {
+			participantData.set({
+				...$participantData,
+				isVisible: checked
+			});
 		}
 	}
 </script>
@@ -85,13 +110,18 @@
 		<div class="button-wrapper">
 			<Button
 				color="white"
-				on:click={cancelEditing}>Отмена</Button>
+				on:click={cancelEditing}
+			>{$_('button.cancel')}</Button
+			>
 		</div>
 
 		<label>
 			{#if !isMainPage && !isCvPage}
-				<input type="checkbox" />
-				<span>Сделать видимым</span>
+				<input
+					type="checkbox"
+					bind:checked
+					on:input={check} />
+				<span>{$_('mainMenu.settings.publicity')}</span>
 			{/if}
 		</label>
 
@@ -99,7 +129,9 @@
 			{#if !isMainPage && !isCvPage && !isCreating}
 				<Button
 					color="red"
-					on:click={deleteEntity}>Удалить</Button>
+					on:click={deleteEntity}
+				>{$_('button.delete')}</Button
+				>
 			{/if}
 		</div>
 	{/if}

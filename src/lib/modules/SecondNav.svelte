@@ -13,31 +13,12 @@
 	const participantData = getContext('participantData');
 	const practiceData = getContext('practiceData');
 
-	const isParticipantsPage = $page.url.pathname.includes('/participants');
-	const isPracticePage = $page.url.pathname.includes('/practices');
+	let checked = false;
 
-	let checked = isParticipantsPage
-		? $participantData?.isVisible || false
-		: isPracticePage
-		? $practiceData?.isVisible || false
-		: false;
-
-	let isVisible = false;
-
-	$: pageName = $page.url.pathname.split('/')[1];
-	$: isMainPage = pageName === '';
-	$: isVisible = checked;
-
-	$: if (isParticipantsPage)
-		participantData.set({
-			...$participantData,
-			isVisible
-		});
-	else if (isPracticePage)
-		practiceData.set({
-			...$practiceData,
-			isVisible
-		});
+	$: route = $page.route.id || '';
+	$: isPracticePage = route?.includes('practices') || '';
+	$: isParticipantsPage = route?.includes('participants') || '';
+	$: isMainPage = route === '/' || '';
 
 	$: visibleParticipants = participants
 		? participants
@@ -54,6 +35,33 @@
 				return a.name[$locale] - b.name[$locale]; // Sort participants by localized name [a-z]
 			})
 		: [];
+
+	$: {
+		if (isParticipantsPage) {
+			checked = $participantData?.isVisible;
+		}
+
+		if (isPracticePage) {
+			checked = $practiceData?.isVisible;
+		}
+	}
+
+	function check({ target }) {
+		const { checked } = target;
+		if (isPracticePage) {
+			practiceData.set({
+				...$practiceData,
+				isVisible: checked
+			});
+		}
+
+		if (isParticipantsPage) {
+			participantData.set({
+				...$participantData,
+				isVisible: checked
+			});
+		}
+	}
 </script>
 
 <nav
@@ -67,7 +75,8 @@
 				<label class="checkbox">
 					<input
 						type="checkbox"
-						bind:checked />
+						bind:checked
+						on:input={check} />
 					<span>{$_('mainMenu.settings.publicity')}</span>
 				</label>
 			</div>

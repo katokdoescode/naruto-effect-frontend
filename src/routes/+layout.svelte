@@ -115,10 +115,10 @@
 	}
 
 	function readAnchorTag() {
-		const { hash } = $page.url;
+		const { search } = $page.url;
 
-		if (!hash || !loginPhrase) return;
-		if (hash === `#${loginPhrase}`) {
+		if (!search || !loginPhrase) return;
+		if (search === `?${loginPhrase}`) {
 			open = true;
 		}
 	}
