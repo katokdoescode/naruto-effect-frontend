@@ -24,8 +24,10 @@
 	"mainMenu": {
 		"practices": "Practices",
 		"practices.new": "Adding new practice",
+		"practices.edit": "Editing practice",
 		"participants": "Participants",
 		"participants.new": "Adding new participant",
+		"participants.edit": "Editing new participant",
 		"settings": "Settings",
 		"settings.publicity": "Page is visible on the site",
 		"cv": {
@@ -51,7 +53,9 @@
 		"auto": "Auto",
 		"dark": "Dark",
 		"dont": "don't do it",
-		"ok": "I see"
+		"ok": "I see",
+		"yes": "Yes",
+		"continue": "Continue creating"
 	},
 	"placeholder": {
 		"mainPage": {
@@ -77,6 +81,7 @@
 		"confirm": {
 			"delete": "Are we sure we're deleting it?",
 			"exit": "Save it before you leave?",
+			"exitCreating": "Leave creation page?",
 			"participant": {
 				"delete": "Really want to delete participant's page"
 			},

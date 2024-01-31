@@ -1,4 +1,5 @@
 <script>
+	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
 	import Button from '$lib/ui/Button.svelte';
@@ -17,6 +18,8 @@
 
 	$: pageName = $page.url.pathname.split('/')[1];
 	$: isMainPage = pageName === '';
+	$: isCreatingMode = $page.url.pathname.includes('/create');
+	$: localePostfix = isCreatingMode ? 'new' : 'edit';
 
 	async function cancelCreating() {
 		isShowConfirmExitModal.set(true);
@@ -26,14 +29,16 @@
 			if (decision === undefined) return;
 
 			if (!decision) {
-				if ($page.url.pathname.includes('/create')) {
+				if (isCreatingMode) {
 					isEditingState.set(false);
-					window.location.assign('/');
+					goto('/');
 				}
 				isEditingState.set(false);
 			} else {
-				needSave.set(true);
-				isEditingState.set(false);
+				if (!isCreatingMode) {
+					needSave.set(true);
+					isEditingState.set(false);
+				}
 			}
 		});
 	}
@@ -63,7 +68,7 @@
 	{#if $authorized}
 		{#if $isEditingState && !isMainPage}
 			<div class="edit-title-wrapper">
-				<h2 class="title">{$_(`mainMenu.${pageName}.new`)}:</h2>
+				<h2 class="title">{$_(`mainMenu.${pageName}.${localePostfix}`)}:</h2>
 				<Button
 					color="gray"
 					on:click={cancelCreating}>

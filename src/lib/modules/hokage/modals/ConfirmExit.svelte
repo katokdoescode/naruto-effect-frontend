@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/stores';
 	import Button from '$lib/ui/Button.svelte';
 	import { getContext } from 'svelte';
 	import { _ } from 'svelte-i18n';
@@ -10,7 +11,10 @@
 	let open = false;
 	let message = '';
 
-	$: message = $_('messages.confirm.exit');
+	$: isCreatingMode = $page.url.pathname.includes('/create');
+	$: message = isCreatingMode
+		? $_('messages.confirm.exitCreating')
+		: $_('messages.confirm.exit');
 	$: open = $isShowConfirmExitModal;
 
 	$: if (!open)
@@ -33,15 +37,28 @@
 	{message}
 	{open}>
 	<svelte:fragment slot="buttons">
-		<Button
-			color="gray"
-			on:click={cancel}>
-			{$_('button.dont')}
-		</Button>
-		<Button
-			color="gray"
-			on:click={confirm}>
-			{$_('button.save')}
-		</Button>
+		{#if isCreatingMode}
+			<Button
+				color="gray"
+				on:click={confirm}>
+				{$_('button.dont')}
+			</Button>
+			<Button
+				color="gray"
+				on:click={cancel}>
+				{$_('button.yes')}
+			</Button>
+		{:else}
+			<Button
+				color="gray"
+				on:click={cancel}>
+				{$_('button.dont')}
+			</Button>
+			<Button
+				color="gray"
+				on:click={confirm}>
+				{$_('button.save')}
+			</Button>
+		{/if}
 	</svelte:fragment>
 </Modal>
