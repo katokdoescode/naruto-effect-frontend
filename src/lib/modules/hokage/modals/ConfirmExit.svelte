@@ -13,6 +13,9 @@
 	$: message = $_('messages.confirm.exit');
 	$: open = $isShowConfirmExitModal;
 
+	$: if (!open)
+		confirmModalDecision.set(new Promise((resolve) => resolve(undefined)));
+
 	async function cancel() {
 		confirmModalDecision.set(new Promise((resolve) => resolve(false)));
 

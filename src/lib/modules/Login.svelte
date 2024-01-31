@@ -62,19 +62,27 @@
 				</svelte:fragment>
 			</Input>
 
-			<Button
-				styleType="login"
-				type="submit">
-				{isLoading ? `${$_('signingIn')}...` : $_('signIn')}
-			</Button>
-		</form>
-		<form
-			class="close-dialog"
-			method="dialog"
-			on:submit={closeModal}>
-			<Button
-				styleType="login"
-				type="submit">{$_('close')}</Button>
+			<div class="buttons">
+				<form
+					id="close-login-dialog"
+					class="close-dialog"
+					method="dialog"
+					on:submit={closeModal}
+				>
+					<Button
+						color="white"
+						form="close-login-dialog"
+						styleType="login"
+						type="submit">{$_('close')}</Button
+					>
+				</form>
+
+				<Button
+					styleType="login"
+					type="submit">
+					{isLoading ? `${$_('signingIn')}...` : $_('signIn')}
+				</Button>
+			</div>
 		</form>
 	</div>
 </dialog>
@@ -96,6 +104,9 @@
 	@media (width <= 1018px) {
 		.login-dialog[open] {
 			width: 95%;
+			box-shadow:
+				-150px 0px 0px 30px var(--color-bg-main),
+				150px 0px 0px 30px var(--color-bg-main);
 		}
 	}
 
@@ -110,10 +121,9 @@
 		font-size: var(--font-heading-size);
 	}
 
-	.close-dialog {
-		position: absolute;
-		top: -100%;
-		right: 0;
+	.buttons {
+		display: flex;
+		justify-content: space-between;
 	}
 
 	.login-form {

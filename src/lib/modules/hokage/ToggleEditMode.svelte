@@ -15,6 +15,11 @@
 	const contentPage = getContext('contentPage');
 	const practiceData = getContext('practiceData');
 	const participantData = getContext('participantData');
+	const needSave = getContext('needSave');
+
+	needSave.subscribe((save) => {
+		if (save) saveContent();
+	});
 
 	async function saveContent() {
 		editingPageStatus.set('loading');

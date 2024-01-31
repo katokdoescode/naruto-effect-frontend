@@ -30,7 +30,7 @@
 
 	$: classes = `button ${active ? 'active' : ''}`;
 
-	$: if (color !== 'transparent' && styleType === 'none') {
+	$: if (color !== 'transparent') {
 		classes = [
 			...removeColorsFromClass(classes.split(' ')),
 			'bordered',
@@ -142,10 +142,15 @@
 		color: var(--color-bg-main);
 	}
 
+	.button.bordered.white {
+		border-color: var(--color-main);
+		background-color: var(--color-bg-main);
+		color: var(--color-main);
+	}
+
 	.button.login {
 		border-radius: 6px;
-		border: none;
-		padding: 10px 23px;
+		padding: 8px 18px;
 		background-color: var(--color-main);
 		color: var(--color-bg-main);
 		text-transform: lowercase;

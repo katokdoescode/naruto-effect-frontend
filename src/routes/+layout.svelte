@@ -1,4 +1,5 @@
 <script>
+	import { beforeNavigate, goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Content from '$lib/modules/Content.svelte';
 	import Login from '$lib/modules/Login.svelte';
@@ -16,6 +17,10 @@
 	/** @type {MainLayoutData} */
 	export let data;
 
+	/** @type {string}*/
+	let whereToGo;
+
+	const needSave = writable(false);
 	const combo = writable();
 	const authorized = writable();
 	const isEditingState = writable();
@@ -41,6 +46,8 @@
 	$: firstTwoLinks = pageLinks?.slice(0, 2);
 	$: lastLink = pageLinks?.slice(2, 3)[0];
 
+	$: canNavigate = false;
+
 	/**
 	 * Control authorization data
 	 * @param {boolean} state
@@ -63,8 +70,7 @@
 				participants = data;
 			});
 
-		// Remove hash after successful login
-		history.replaceState('', document.title, window.location.pathname);
+		cleanAddressLine();
 	}
 
 	/**
@@ -92,9 +98,16 @@
 		methods[method](data);
 	}
 
+	function cleanAddressLine() {
+		// Remove hash after successful login
+		history.replaceState('', document.title, window.location.pathname);
+	}
+
 	function closeLoginModal() {
 		combo.set(false);
 		open = false;
+		// Remove hash after successful login
+		cleanAddressLine();
 	}
 
 	function logoController() {
@@ -145,6 +158,7 @@
 		destroyHandlers;
 	});
 
+	setContext('needSave', needSave);
 	setContext('authorized', authorized);
 	setContext('combo', combo);
 	setContext('isEditingState', isEditingState);
@@ -166,6 +180,33 @@
 	$: open = false;
 	$: authorized.set(data?.authorized || false);
 	$: readAnchorTag();
+
+	confirmModalDecision.subscribe(async (d) => {
+		const decision = await d;
+		if (decision === undefined) return;
+		if (whereToGo) {
+			if (decision) {
+				needSave.set(true);
+				canNavigate = true;
+				goto(whereToGo);
+			} else {
+				needSave.set(false);
+				canNavigate = true;
+				goto(whereToGo);
+			}
+		}
+	});
+
+	beforeNavigate(async (event) => {
+		if (!canNavigate && $isEditingState) {
+			event.cancel();
+			whereToGo = event.to.url.href;
+			isShowConfirmExitModal.set(true);
+		} else {
+			canNavigate = false;
+			isEditingState.set(false);
+		}
+	});
 </script>
 
 <svelte:head>

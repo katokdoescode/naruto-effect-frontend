@@ -27,7 +27,10 @@
 		"participants": "Participants",
 		"participants.new": "Adding new participant",
 		"settings": "Settings",
-		"settings.publicity": "Page is visible on the site"
+		"settings.publicity": "Page is visible on the site",
+		"cv": {
+			"new": "Edit CV page"
+		}
 	},
 	"participate": "Participate",
 	"hokagemode": "Hokagemode",

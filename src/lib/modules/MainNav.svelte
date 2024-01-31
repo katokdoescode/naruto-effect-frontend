@@ -10,16 +10,32 @@
 	/** @type {PageLinkLocale[]}*/
 	export let pageLinks = [];
 	const authorized = getContext('authorized');
+	const needSave = getContext('needSave');
 	const isEditingState = getContext('isEditingState');
+	const isShowConfirmExitModal = getContext('isShowConfirmExitModal');
+	const confirmModalDecision = getContext('confirmModalDecision');
 
 	$: pageName = $page.url.pathname.split('/')[1];
 	$: isMainPage = pageName === '';
 
-	function cancelCreating() {
-		isEditingState.set(false);
-		if ($page.url.pathname.includes('/create')) {
-			window.location.assign('/');
-		}
+	async function cancelCreating() {
+		isShowConfirmExitModal.set(true);
+
+		confirmModalDecision.subscribe(async (d) => {
+			const decision = await d;
+			if (decision === undefined) return;
+
+			if (!decision) {
+				if ($page.url.pathname.includes('/create')) {
+					isEditingState.set(false);
+					window.location.assign('/');
+				}
+				isEditingState.set(false);
+			} else {
+				needSave.set(true);
+				isEditingState.set(false);
+			}
+		});
 	}
 
 	$: visiblePractices = practices

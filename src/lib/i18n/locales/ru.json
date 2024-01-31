@@ -27,7 +27,10 @@
 		"participants.new": "Добавляем нового/новую практиканта/практикантку",
 		"participants": "Участники",
 		"settings": "Настройки",
-		"settings.publicity": "Запись видна на сайте"
+		"settings.publicity": "Запись видна на сайте",
+		"cv": {
+			"new": "Редактировать страницу CV"
+		}
 	},
 	"participate": "Принять участие",
 	"hokagemode": "Режим хокаге",

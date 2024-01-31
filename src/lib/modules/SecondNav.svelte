@@ -19,6 +19,7 @@
 	$: isPracticePage = route?.includes('practices') || '';
 	$: isParticipantsPage = route?.includes('participants') || '';
 	$: isMainPage = route === '/' || '';
+	$: isCVPage = route === '/cv';
 
 	$: visibleParticipants = participants
 		? participants
@@ -69,7 +70,7 @@
 	class="second-nav"
 	{...$$restProps}>
 	{#if $authorized}
-		{#if $isEditingState && !isMainPage}
+		{#if $isEditingState && !isMainPage && !isCVPage}
 			<div class="edit-title-wrapper">
 				<h2 class="title">{$_('mainMenu.settings')}:</h2>
 				<label class="checkbox">
@@ -80,7 +81,7 @@
 					<span>{$_('mainMenu.settings.publicity')}</span>
 				</label>
 			</div>
-		{:else}
+		{:else if !isCVPage}
 			<div class="edit-title-wrapper">
 				<h2 class="title">{$_('mainMenu.participants')}:</h2>
 				<Button
@@ -89,6 +90,8 @@
 					{$_('button.add')}
 				</Button>
 			</div>
+		{:else}
+			<div class="edit-title-wrapper"></div>
 		{/if}
 	{:else}
 		<h2 class="title">{$_('mainMenu.participants')}:</h2>
