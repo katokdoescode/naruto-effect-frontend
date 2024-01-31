@@ -13,6 +13,9 @@
 	$: message = $_('messages.confirm.delete');
 	$: open = $isShowDeleteModal;
 
+	$: if (!open)
+		deleteModalDecision.set(new Promise((resolve) => resolve(undefined)));
+
 	async function cancel() {
 		deleteModalDecision.set(new Promise((resolve) => resolve(false)));
 

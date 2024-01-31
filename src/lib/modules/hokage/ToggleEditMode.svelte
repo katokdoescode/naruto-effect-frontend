@@ -16,10 +16,33 @@
 	const practiceData = getContext('practiceData');
 	const participantData = getContext('participantData');
 	const needSave = getContext('needSave');
+	const isShowDeleteModal = getContext('isShowDeleteModal');
+	const deleteModalDecision = getContext('deleteModalDecision');
 
 	needSave.subscribe((save) => {
 		if (save) saveContent();
 	});
+
+	async function deleteContent() {
+		editingPageStatus.set('loading');
+
+		const response = await fetch(url().route, {
+			method: 'DELETE',
+			body: url().data
+		}).then((data) => data.json());
+
+		if (response.success) {
+			isEditingState.set(false);
+			editingPageStatus.set('success');
+			setTimeout(() => {
+				editingPageStatus.set(null);
+				window.location.assign('/');
+			}, 2500);
+		} else {
+			editingPageStatus.set('error');
+			setTimeout(() => editingPageStatus.set(null), 3500);
+		}
+	}
 
 	async function saveContent() {
 		editingPageStatus.set('loading');
@@ -116,6 +139,16 @@
 		}
 	};
 
+	function deleteEntity() {
+		isShowDeleteModal.set(true);
+		deleteModalDecision.subscribe(async (d) => {
+			const decision = await d;
+			if (decision === undefined) return;
+
+			if (decision) deleteContent();
+		});
+	}
+
 	$: btnStatus = function () {
 		if ($editingPageStatus) {
 			return $editingPageStatus;
@@ -146,6 +179,14 @@
 		on:click={toggleEditMode}>
 		{$_(`button.${btnStatus()}`)}
 	</Button>
+
+	{#if $isEditingState}
+		<Button
+			color="red"
+			on:click={deleteEntity}>
+			{$_(`button.delete`)}
+		</Button>
+	{/if}
 </div>
 
 <style scoped>
