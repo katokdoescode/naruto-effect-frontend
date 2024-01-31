@@ -14,6 +14,7 @@ export async function load({ cookies }) {
 	const { data: participants, error: participantsError } = await supabase
 		.from(Routes.PARTICIPANTS)
 		.select('id, isVisible, slug, name')
+		.order('slug')
 		.eq(isAuthenticated ? '' : 'isVisible', true);
 
 	const { data: pageData, error: pageDataError } = await supabase

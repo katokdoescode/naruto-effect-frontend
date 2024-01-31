@@ -9,6 +9,7 @@ export async function GET({ cookies }) {
 	const { data: participants, error } = await supabase
 		.from(Routes.PARTICIPANTS)
 		.select('id, isVisible, slug, name')
+		.order('slug')
 		.eq(isAuthenticated ? '' : 'isVisible', true);
 
 	if (!error && participants) {

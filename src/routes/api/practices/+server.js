@@ -8,12 +8,13 @@ export async function GET({ cookies }) {
 
 	const { data: practices, error } = await supabase
 		.from(Routes.PRACTICES)
-		.select('id, isVisible, slug, title');
+		.select('id, isVisible, slug, title')
+		.eq(isAuthenticated ? '' : 'isVisible', true);
 
 	if (practices) {
 		return json({
 			success: true,
-			data: practices.filter(({ isVisible }) => isAuthenticated || isVisible)
+			data: practices.sort((a, b) => a.title - b.title)
 		});
 	} else {
 		return json(createError(false, error.message));

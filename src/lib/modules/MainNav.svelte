@@ -42,7 +42,7 @@
 		? practices
 			.filter(({ isVisible }) => Boolean(isVisible))
 			.sort((a, b) => {
-				return a.title[$locale] - b.title[$locale]; // Sort practices by localized title [a-z]
+				return a.title[$locale].localeCompare(b.title[$locale]); // Sort practices by localized title [a-z]
 			})
 		: [];
 
@@ -50,7 +50,7 @@
 		? practices
 			.filter(({ isVisible }) => Boolean(!isVisible))
 			.sort((a, b) => {
-				return a.title[$locale] - b.title[$locale]; // Sort practices by localized title [a-z]
+				return b.title[$locale].localeCompare(b.title[$locale]); // Sort practices by localized title [a-z]
 			})
 		: [];
 </script>
