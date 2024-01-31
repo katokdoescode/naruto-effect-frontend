@@ -109,7 +109,7 @@
 							class:disabled={!menuItem?.isVisible || false}
 							data-sveltekit-keepfocus
 							href={`/participants/${menuItem.slug}`}
-						>{menuItem.name[$locale]}</a
+						>{menuItem.name[$locale] || $_('empty.participant')}</a
 						>
 					</li>
 				{/each}
@@ -120,7 +120,7 @@
 							class:active={$page.url.pathname.includes(menuItem.slug)}
 							data-sveltekit-keepfocus
 							href={`/participants/${menuItem.slug}`}
-						>{menuItem.name[$locale]}</a
+						>{menuItem.name[$locale] || $_('empty.participant')}</a
 						>
 					</li>
 				{/each}

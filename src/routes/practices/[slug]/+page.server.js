@@ -34,5 +34,8 @@ export async function load({ params, cookies }) {
 	if (supabaseError) throw error(404, supabaseError.message);
 	if (practicesError) console.error('Practices was not loaded.');
 
-	return { practice, practices };
+	return {
+		practice: { ...practice, originalSlug: structuredClone(practice.slug) },
+		practices
+	};
 }

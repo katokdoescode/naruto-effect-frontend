@@ -25,6 +25,8 @@ export async function POST({ request }) {
 	/** @type {Practice} */
 	const data = await request.json();
 
+	delete data.originalSlug;
+
 	const { error } = await supabase.from(Routes.PRACTICES).insert(data);
 
 	if (!error && data) {
@@ -37,6 +39,8 @@ export async function POST({ request }) {
 export async function PATCH({ request }) {
 	/** @type {Practice} */
 	const data = await request.json();
+
+	delete data.originalSlug;
 
 	const { error } = await supabase
 		.from(Routes.PRACTICES)
@@ -53,6 +57,8 @@ export async function PATCH({ request }) {
 export async function DELETE({ request }) {
 	/** @type {Practice} */
 	const data = await request.json();
+
+	delete data.originalSlug;
 
 	const { error } = await supabase
 		.from(Routes.PRACTICES)

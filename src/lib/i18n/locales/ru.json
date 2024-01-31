@@ -33,6 +33,10 @@
 		}
 	},
 	"participate": "Принять участие",
+	"empty": {
+		"participant": "<Безымянный>",
+		"practice": "<Без названия>"
+	},
 	"hokagemode": "Режим хокаге",
 	"button": {
 		"edit": "Редактировать",

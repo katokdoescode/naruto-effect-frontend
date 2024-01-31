@@ -33,6 +33,10 @@
 		}
 	},
 	"participate": "Participate",
+	"empty": {
+		"participant": "<No name>",
+		"practice": "<Without name>"
+	},
 	"hokagemode": "Hokagemode",
 	"button": {
 		"edit": "Edit",

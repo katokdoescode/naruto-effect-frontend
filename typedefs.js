@@ -84,6 +84,7 @@
  * @type {object}
  * @property {number} id
  * @property {LocaleObject} slug
+ * @property {LocaleObject} originalSlug
  * @property {LocaleObject} title
  * @property {LocaleObject} subtitle
  * @property {string} videoLink

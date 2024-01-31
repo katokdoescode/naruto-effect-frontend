@@ -41,7 +41,6 @@
 	$: visiblePractices = practices
 		? practices
 			.filter(({ isVisible }) => Boolean(isVisible))
-			.filter(({ title }) => title[$locale])
 			.sort((a, b) => {
 				return a.title[$locale].localeCompare(b.title[$locale]); // Sort practices by localized title [a-z]
 			})
@@ -97,7 +96,7 @@
 							href={`/practices/${menuItem.slug[$locale]}`}
 							hreflang={$locale}
 						>
-							{menuItem.title[$locale]}
+							{menuItem.title[$locale] || $_('empty.practice')}
 						</a>
 					</li>
 				{/each}
@@ -110,7 +109,7 @@
 							href={`/practices/${menuItem.slug[$locale]}`}
 							hreflang={$locale}
 						>
-							{menuItem.title[$locale]}
+							{menuItem.title[$locale] || $_('empty.practice')}
 						</a>
 					</li>
 				{/each}

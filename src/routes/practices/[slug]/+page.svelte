@@ -24,7 +24,6 @@
 	/** @type{Practice} */
 	let localValue;
 	$: localValue = practice;
-	$: practiceClone = structuredClone(practice);
 
 	$: if (localValue)
 		Object.entries(localValue.title).forEach(([key, value]) => {
@@ -32,7 +31,7 @@
 		});
 
 	$: practiceData.set(clean(localValue));
-	$: localizedSlug = practiceClone.slug[$locale];
+	$: localizedSlug = practice?.originalSlug[$locale] || undefined;
 	$: route = $page.params.slug;
 	$: if (isMounted && route !== localizedSlug) {
 		goto(`/practices/${localizedSlug}`, { replaceState: false });
