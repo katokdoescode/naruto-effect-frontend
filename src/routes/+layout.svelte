@@ -54,6 +54,7 @@
 	 */
 	async function authorize(state) {
 		authorized.set(state);
+		combo.set(false);
 
 		if (state) closeLoginModal();
 		else isEditingState.set(false);

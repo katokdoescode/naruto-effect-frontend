@@ -41,6 +41,7 @@
 	$: visiblePractices = practices
 		? practices
 			.filter(({ isVisible }) => Boolean(isVisible))
+			.filter(({ title }) => title[$locale])
 			.sort((a, b) => {
 				return a.title[$locale].localeCompare(b.title[$locale]); // Sort practices by localized title [a-z]
 			})
@@ -49,8 +50,9 @@
 	$: disabledPractices = practices
 		? practices
 			.filter(({ isVisible }) => Boolean(!isVisible))
+			.filter(({ title }) => title[$locale])
 			.sort((a, b) => {
-				return b.title[$locale].localeCompare(b.title[$locale]); // Sort practices by localized title [a-z]
+				return a.title[$locale].localeCompare(b.title[$locale]); // Sort practices by localized title [a-z]
 			})
 		: [];
 </script>

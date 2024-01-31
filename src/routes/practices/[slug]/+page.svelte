@@ -1,10 +1,12 @@
 <script>
 	/* eslint-disable svelte/no-at-html-tags */
+	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 	import YouTube from '$lib/modules/YouTube.svelte';
 	import PracticeEditor from '$lib/modules/hokage/PracticeEditor.svelte';
 	import { clean } from '$lib/utils/objectsTools.js';
 	import { CarSlugger } from '@katokdoescode/car-slugger';
-	import { getContext } from 'svelte';
+	import { getContext, onMount } from 'svelte';
 	import { locale } from 'svelte-i18n';
 
 	const authorized = getContext('authorized');
@@ -14,6 +16,7 @@
 	const slugger = new CarSlugger();
 
 	export let data;
+	let isMounted = false;
 
 	/** @type {Practice} */
 	$: practice = data?.practice;
@@ -21,6 +24,7 @@
 	/** @type{Practice} */
 	let localValue;
 	$: localValue = practice;
+	$: practiceClone = structuredClone(practice);
 
 	$: if (localValue)
 		Object.entries(localValue.title).forEach(([key, value]) => {
@@ -28,6 +32,15 @@
 		});
 
 	$: practiceData.set(clean(localValue));
+	$: localizedSlug = practiceClone.slug[$locale];
+	$: route = $page.params.slug;
+	$: if (isMounted && route !== localizedSlug) {
+		goto(`/practices/${localizedSlug}`, { replaceState: false });
+	}
+
+	onMount(() => {
+		isMounted = true;
+	});
 </script>
 
 {#if $authorized && $isEditingState}
