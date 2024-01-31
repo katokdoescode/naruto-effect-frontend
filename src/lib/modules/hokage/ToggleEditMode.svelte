@@ -9,6 +9,9 @@
 
 	let route;
 	$: route = $page.route.id;
+	$: isMainPage = route === '/' || '';
+	$: isCVPage = route === '/cv';
+	$: canDelete = !(isMainPage || isCVPage) && $isEditingState;
 
 	const isEditingState = getContext('isEditingState');
 	const editingPageStatus = getContext('editingPageStatus');
@@ -180,7 +183,7 @@
 		{$_(`button.${btnStatus()}`)}
 	</Button>
 
-	{#if $isEditingState}
+	{#if canDelete}
 		<Button
 			color="red"
 			on:click={deleteEntity}>
