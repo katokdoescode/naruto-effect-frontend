@@ -49,19 +49,19 @@
 		position: absolute;
 		background-color: var(--color-main);
 		color: var(--color-bg-main);
-		width: 30%;
+		width: 100%;
 		border-radius: 15px;
 		padding: 1em;
 		bottom: 100px;
-		left: 53%;
+		max-width: 558px;
+		left: 50%;
 		transform: translateX(-50%);
+		box-sizing: border-box;
 	}
 
 	@media (width <= 1018px) {
 		.cookie {
 			width: 90%;
-			left: 50%;
-			transform: translateX(-50%);
 		}
 	}
 
