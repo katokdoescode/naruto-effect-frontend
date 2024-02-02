@@ -1,4 +1,5 @@
 <script>
+	import CookieModal from '$lib/modules/CookieModal.svelte';
 	import Button from '$lib/ui/Button.svelte';
 	import { createEventDispatcher, getContext } from 'svelte';
 	import { _, locale } from 'svelte-i18n';
@@ -37,6 +38,7 @@
 	</div>
 {/if}
 <footer class="copyright">
+	<CookieModal />
 	<span class="year">{year}</span>
 	<span class="disclaimer">
 		{#if copyright}
