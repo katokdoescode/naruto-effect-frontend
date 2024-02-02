@@ -44,10 +44,11 @@
 		localStorage.setItem('colorScheme', scheme);
 		const darkModePreference = window.matchMedia(
 			'(prefers-color-scheme: dark)'
-		);
+		)?.matches;
 		const lightModePreference = window.matchMedia(
 			'(prefers-color-scheme: light)'
-		);
+		)?.matches;
+
 		const prefersColorScheme = darkModePreference
 			? 'dark'
 			: lightModePreference
