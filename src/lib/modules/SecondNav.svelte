@@ -81,7 +81,7 @@
 					<span>{$_('mainMenu.settings.publicity')}</span>
 				</label>
 			</div>
-		{:else if !isCVPage}
+		{:else if !$isEditingState}
 			<div class="edit-title-wrapper">
 				<h2 class="title">{$_('mainMenu.participants')}:</h2>
 				<Button
