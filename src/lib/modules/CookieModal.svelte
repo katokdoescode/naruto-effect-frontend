@@ -49,10 +49,20 @@
 		position: absolute;
 		background-color: var(--color-main);
 		color: var(--color-bg-main);
-		width: 100%;
+		width: 30%;
 		border-radius: 15px;
 		padding: 1em;
-		top: -140%;
+		bottom: 100px;
+		left: 53%;
+		transform: translateX(-50%);
+	}
+
+	@media (width <= 1018px) {
+		.cookie {
+			width: 90%;
+			left: 50%;
+			transform: translateX(-50%);
+		}
 	}
 
 	.cookie .wrapper {
