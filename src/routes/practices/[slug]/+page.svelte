@@ -34,7 +34,8 @@
 	$: localizedSlug = practice?.originalSlug[$locale] || undefined;
 	$: route = $page.params.slug;
 	$: if (isMounted && route !== localizedSlug) {
-		goto(`/practices/${localizedSlug}`, { replaceState: false });
+		if (localizedSlug)
+			goto(`/practices/${localizedSlug}`, { replaceState: false });
 	}
 
 	onMount(() => {

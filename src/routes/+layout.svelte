@@ -11,7 +11,7 @@
 	import ConfirmDelete from '$lib/modules/hokage/modals/ConfirmDelete.svelte';
 	import ConfirmExit from '$lib/modules/hokage/modals/ConfirmExit.svelte';
 	import { handleKeydown, handleKeyup } from '$lib/utils/keyboardHandler';
-	import { onDestroy, onMount, setContext } from 'svelte';
+	import { onMount, setContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
 	import { writable } from 'svelte/store';
 
@@ -124,11 +124,6 @@
 		window.addEventListener('keyup', handleKeyup);
 	}
 
-	function destroyHandlers() {
-		window.removeEventListener('keydown', handleKeydown);
-		window.removeEventListener('keyup', handleKeyup);
-	}
-
 	function readAnchorTag() {
 		const { search } = $page.url;
 
@@ -154,10 +149,6 @@
 
 		initHandlers();
 		logoController();
-	});
-
-	onDestroy(() => {
-		destroyHandlers;
 	});
 
 	setContext('needSave', needSave);

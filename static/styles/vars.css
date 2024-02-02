@@ -13,8 +13,8 @@
 	--min-center-section-width: 407px;
 
 	/* SECONDARY SECTION */
-	--max-right-section-width: 225px;
-	--min-right-section-width: 154px;
+	--max-right-section-width: 279px;
+	--min-right-section-width: 215px;
 
 	/* MAIN PAGE SIZES */
 	--initial-padding-top: 50px;
@@ -32,11 +32,11 @@
 	/* MAIN TEXT */
 	--font-main-family: 'Gilroy', Tahoma, sans-serif;
 	--font-main-weight: 300;
-	--font-size-main: clamp(12px, 1.5vw, 16px);
+	--font-size-main: clamp(12px, 2vw, 16px);
 
 	/* HEADING */
 	--font-heading-weight: 800;
-	--font-heading-size: clamp(20px, 1.5vw, 25px);
+	--font-heading-size: clamp(20px, 2vw, 25px);
 
 	/* MENUS */
 	--font-menu-weight: 800;

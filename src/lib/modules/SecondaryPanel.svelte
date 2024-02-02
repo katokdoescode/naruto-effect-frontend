@@ -33,6 +33,7 @@
 
 <style>
 	#panel-second {
+		flex: 1;
 		display: grid;
 		grid-template-rows: max-content minmax(0, 1fr) max-content;
 

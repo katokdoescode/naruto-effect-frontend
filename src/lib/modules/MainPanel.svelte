@@ -20,6 +20,7 @@
 
 <style>
 	#panel-main {
+		flex: 1;
 		display: grid;
 		grid-template-rows: max-content minmax(0, 1fr) max-content;
 		min-width: var(--min-left-section-width);

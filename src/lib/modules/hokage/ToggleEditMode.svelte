@@ -11,7 +11,9 @@
 	$: route = $page.route.id;
 	$: isMainPage = route === '/' || '';
 	$: isCVPage = route === '/cv';
-	$: canDelete = !(isMainPage || isCVPage) && $isEditingState;
+	$: isCreatingMode = $page.url.pathname.includes('/create');
+	$: canDelete =
+		!(isMainPage || isCVPage) && $isEditingState && !isCreatingMode;
 
 	const isEditingState = getContext('isEditingState');
 	const editingPageStatus = getContext('editingPageStatus');
