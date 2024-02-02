@@ -17,6 +17,7 @@
 
 	const isEditingState = getContext('isEditingState');
 	const editingPageStatus = getContext('editingPageStatus');
+	const cvPage = getContext('cvPage');
 	const contentPage = getContext('contentPage');
 	const practiceData = getContext('practiceData');
 	const participantData = getContext('participantData');
@@ -86,6 +87,15 @@
 					route: '/api/mainPage',
 					method: 'PATCH',
 					data: JSON.stringify($contentPage),
+					onSuccess: function (data) {
+						return data;
+					}
+				};
+			case '/cv':
+				return {
+					route: '/api/cv',
+					method: 'PATCH',
+					data: JSON.stringify($cvPage),
 					onSuccess: function (data) {
 						return data;
 					}

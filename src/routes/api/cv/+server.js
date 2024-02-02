@@ -17,6 +17,9 @@ export async function PATCH({ request }) {
 	/** @type{CvData} */
 	const data = await request.json();
 
+	// @ts-ignore
+	delete data.videoLink;
+
 	const { error } = await supabase
 		.from(Routes.CV)
 		.update(data)

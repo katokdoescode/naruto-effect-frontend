@@ -31,7 +31,7 @@
 		"settings": "Settings",
 		"settings.publicity": "Page is visible on the site",
 		"cv": {
-			"new": "Edit CV page"
+			"edit": "Edit CV page"
 		}
 	},
 	"participate": "Participate",
