@@ -21,6 +21,18 @@
 	$: contentPage.set(localValue);
 </script>
 
+<svelte:head>
+	{#if $isEditingState}
+		<title>Main page data: {pageData?.title[$locale] || ''}</title>
+	{:else}
+		<title>{pageData?.title[$locale] || ''}</title>
+	{/if}
+
+	<meta
+		name="description"
+		content={pageData?.description[$locale] || ''} />
+</svelte:head>
+
 {#if $isEditingState}
 	<PageEditor bind:localValue />
 {:else}

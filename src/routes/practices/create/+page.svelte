@@ -22,7 +22,8 @@
 		subtitle: { en: '', ru: '' },
 		description: { en: '', ru: '' },
 		videoLink: '',
-		isVisible: false
+		isVisible: false,
+		originalSlug: { en: '', ru: '' }
 	};
 
 	$: Object.entries(localValue.title).forEach(([key, value]) => {
@@ -31,6 +32,12 @@
 
 	$: practiceData.set(clean(localValue));
 </script>
+
+<svelte:head>
+	{#if $authorized && $isEditingState}
+		<title>Creating new practice</title>
+	{/if}
+</svelte:head>
 
 {#if $authorized}
 	<PracticeEditor bind:localValue />

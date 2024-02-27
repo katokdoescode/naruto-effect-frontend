@@ -43,6 +43,18 @@
 	});
 </script>
 
+<svelte:head>
+	{#if $authorized && $isEditingState}
+		<title>Editing practice: {practice.title[$locale]}</title>
+	{:else}
+		<title>{practice.title[$locale]}</title>
+	{/if}
+
+	<meta
+		name="description"
+		content={practice.subtitle[$locale]} />
+</svelte:head>
+
 {#if $authorized && $isEditingState}
 	<PracticeEditor bind:localValue />
 {:else}

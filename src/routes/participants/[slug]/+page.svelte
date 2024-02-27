@@ -27,6 +27,18 @@
 	$: participantData.set(clean(localValue));
 </script>
 
+<svelte:head>
+	{#if $authorized && $isEditingState}
+		<title>Editing participant: {participant.name[$locale]}</title>
+	{:else}
+		<title>{participant.name[$locale]}</title>
+	{/if}
+
+	<meta
+		name="description"
+		content={participant.title[$locale]} />
+</svelte:head>
+
 {#if $authorized && $isEditingState}
 	<ParticipantEditor bind:localValue />
 {:else}

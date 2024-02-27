@@ -57,6 +57,7 @@
  * @property {SeoData} seo
  * @property {PageLinkLocale[]} pageLinks
  * @property {LocaleObject} copyright
+ * @property {LocaleObject} description
  * @property {string|number} year
  */
 
