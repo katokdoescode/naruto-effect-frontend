@@ -6,6 +6,7 @@
 
 	import { getContext } from 'svelte';
 
+	/** @type{string | 'light'|'dark'|'auto'} */
 	let scheme;
 	let isMounted = false;
 	const availableSchemes = Object.values(ColorSchemes);

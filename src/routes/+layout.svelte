@@ -3,6 +3,7 @@
 	import { page } from '$app/stores';
 	import Content from '$lib/modules/Content.svelte';
 	import CookieModal from '$lib/modules/CookieModal.svelte';
+	import FavIcons from '$lib/modules/FavIcons.svelte';
 	import Login from '$lib/modules/Login.svelte';
 	import MainPanel from '$lib/modules/MainPanel.svelte';
 	import MobileHeader from '$lib/modules/MobileHeader.svelte';
@@ -209,6 +210,8 @@
 		<script src="/scripts/tinymce/tinymce.min.js"></script>
 	{/if}
 </svelte:head>
+
+<FavIcons />
 
 <div class="screen main-layout">
 	<MainPanel
