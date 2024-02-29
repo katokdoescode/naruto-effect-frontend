@@ -6,6 +6,7 @@ import { supabase } from '$lib/supabaseClient';
 export async function load({ cookies }) {
 	const isAuthenticated = !!cookies.get('authToken');
 
+	/** @type {SupabasePracticesPartial} */
 	const { data: practices, error: practicesError } = await supabase
 		.from(Routes.PRACTICES)
 		.select('id, isVisible, slug, title')

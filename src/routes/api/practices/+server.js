@@ -6,15 +6,18 @@ import { json } from '@sveltejs/kit';
 export async function GET({ cookies }) {
 	const isAuthenticated = !!cookies.get('authToken');
 
-	const { data: practices, error } = await supabase
+	/** @type{SupabasePracticesPartial} */
+	const response = await supabase
 		.from(Routes.PRACTICES)
 		.select('id, isVisible, slug, title')
 		.eq(isAuthenticated ? '' : 'isVisible', true);
 
+	const { data: practices, error } = response;
+
 	if (practices) {
 		return json({
 			success: true,
-			data: practices.sort((a, b) => a.title - b.title)
+			data: practices
 		});
 	} else {
 		return json(createError(false, error.message));
@@ -27,10 +30,17 @@ export async function POST({ request }) {
 
 	delete data.originalSlug;
 
-	const { error } = await supabase.from(Routes.PRACTICES).insert(data);
+	/** @type{SupabasePractice} */
+	const response = await supabase
+		.from(Routes.PRACTICES)
+		.insert(data)
+		.select()
+		.single();
 
-	if (!error && data) {
-		return json({ success: true, data });
+	const { error, data: practice, status } = response;
+
+	if (!error && data && status === 201) {
+		return json({ success: true, data: practice });
 	} else {
 		return json(createError(false, error.message));
 	}
@@ -42,13 +52,18 @@ export async function PATCH({ request }) {
 
 	delete data.originalSlug;
 
-	const { error } = await supabase
+	/** @type {SupabasePractice} */
+	const response = await supabase
 		.from(Routes.PRACTICES)
 		.update(data)
-		.eq('id', data.id);
+		.eq('id', data.id)
+		.select()
+		.single();
 
-	if (!error && data) {
-		return json({ success: true, data });
+	const { error, data: practice, status } = response;
+
+	if (!error && practice && status === 200) {
+		return json({ success: true, data: practice });
 	} else {
 		return json(createError(false, error.message));
 	}
@@ -60,13 +75,13 @@ export async function DELETE({ request }) {
 
 	delete data.originalSlug;
 
-	const { error } = await supabase
+	const { error, status } = await supabase
 		.from(Routes.PRACTICES)
 		.delete()
 		.eq('id', data.id);
 
-	if (!error && data) {
-		return json({ success: true, data });
+	if (!error && data && status === 204) {
+		return json({ success: true });
 	} else {
 		return json(createError(false, error.message));
 	}

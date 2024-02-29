@@ -19,6 +19,7 @@ export async function load({ params, cookies }) {
 		throw error(500, 'Something went wrong with slugs');
 	}
 
+	/** @type {SupabasePractice} */
 	const { data: practice, error: supabaseError } = await supabase
 		.from(Routes.PRACTICES)
 		.select()
@@ -26,6 +27,7 @@ export async function load({ params, cookies }) {
 		.limit(1)
 		.single();
 
+	/** @type {SupabasePracticesPartial} */
 	const { data: practices, error: practicesError } = await supabase
 		.from(Routes.PRACTICES)
 		.select('id, isVisible, slug, title')

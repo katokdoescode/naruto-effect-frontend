@@ -6,6 +6,33 @@
  */
 
 /**
+ * @exports SupabaseError
+ * @typedef {object} SupabaseError
+ * @property {string} message
+ * @property {string} code
+ * @property {string|null} details
+ * @property {string|null} hint
+ */
+
+/**
+ * @exports SupabaseSingleResponse
+ * @typedef {Object} SupabaseSingleResponse
+ * @property {object} data
+ * @property {number} status
+ * @property {string} statusText
+ * @property {SupabaseError|null} error
+ */
+
+/**
+ * @exports SupabaseMultiResponse
+ * @typedef {Object} SupabaseMultiResponse
+ * @property {Array} data
+ * @property {number} status
+ * @property {string} statusText
+ * @property {SupabaseError|null} error
+ */
+
+/**
  * @exports Practices
  * @typedef Practices
  * @type {Array<Practice>}
@@ -81,20 +108,60 @@
 
 /**
  * @exports Practice
- * @typedef Practice
- * @type {object}
+ * @typedef {object} Practice
  * @property {number} id
  * @property {LocaleObject} slug
- * @property {LocaleObject} originalSlug
  * @property {LocaleObject} title
- * @property {LocaleObject} subtitle
- * @property {string} videoLink
- * @property {LocaleObject} description
  * @property {boolean} isVisible
+ * @property {LocaleObject|undefined?} originalSlug
+ * @property {LocaleObject|undefined?} subtitle
+ * @property {string|undefined?} videoLink
+ * @property {LocaleObject|undefined?} description
+ */
+
+/**
+ * @exports PracticePartial
+ * @typedef {object} PracticePartial
+ * @property {number} id
+ * @property {LocaleObject} slug
+ * @property {LocaleObject} title
+ * @property {boolean} isVisible
+ */
+
+/**
+ * @exports SupabasePractice
+ * @typedef {object} SupabasePractice
+ * @property {Practice} data
+ * @property {number} status
+ * @property {string} statusText
+ * @property {SupabaseError|null} error
+ */
+
+/**
+ * @exports SupabasePractices
+ * @typedef {object} SupabasePractices
+ * @property {Practice[]} data
+ * @property {number} status
+ * @property {string} statusText
+ * @property {SupabaseError|null} error
+ */
+
+/**
+ * @exports SupabasePractices
+ * @typedef {object} SupabasePracticesPartial
+ * @property {PracticePartial[]} data
+ * @property {number} status
+ * @property {string} statusText
+ * @property {SupabaseError|null} error
  */
 
 /**
  * @exports MainLayoutData
  * @typedef MainLayoutData
- * @type {{ authorized: boolean, practices: Array<object>, participants: Array<object>, pageData: MainPageData, loginPhrase: string }}
+ * @type {object}
+ * @property {boolean} authorized
+ * @property {Practice[]} practices
+ * @property {Participant[]} participants
+ * @property {MainPageData} pageData,
+ * @property {string} loginPhrase
  */

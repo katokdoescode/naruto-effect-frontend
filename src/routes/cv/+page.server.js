@@ -2,6 +2,7 @@ import { Routes } from '$lib/constants';
 import { supabase } from '$lib/supabaseClient';
 import { error } from '@sveltejs/kit';
 
+/** @type {import('./$types').PageServerLoad} */
 export async function load() {
 	const { data: cvData, error: cvError } = await supabase
 		.from(Routes.CV)

@@ -4,6 +4,7 @@ import { appLocales } from '$lib/i18n';
 import matchLocale from '$lib/utils/matchLocale';
 import { locale, waitLocale } from 'svelte-i18n';
 
+/** @type {import('./$types').PageServerLoad} */
 export async function load() {
 	if (browser)
 		locale.set(
