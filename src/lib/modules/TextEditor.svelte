@@ -24,6 +24,8 @@
 	const appColorScheme = getContext('appColorScheme');
 	let skinUrl = `/styles/tinymce/Naruto/${$appColorScheme}`;
 
+	const apiKey = import.meta.env.VITE_TINYMCE_API_KEY;
+
 	let conf = {
 		height: inline ? 'max-content' : '100%',
 		toolbar: false,
@@ -65,6 +67,7 @@
 	{#key skinUrl}
 		<Editor
 			{id}
+			{apiKey}
 			{conf}
 			{disabled}
 			{inline}
