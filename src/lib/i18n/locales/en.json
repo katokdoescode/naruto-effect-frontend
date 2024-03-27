@@ -90,6 +90,7 @@
 				"delete": "Really want to delete practice's page"
 			}
 		},
-		"deleted": "Entry deleted"
+		"deleted": "Entry deleted",
+		"anotherLanguageOnly": "Sorry, there is no english version of this text yet. Here is it in russian:"
 	}
 }

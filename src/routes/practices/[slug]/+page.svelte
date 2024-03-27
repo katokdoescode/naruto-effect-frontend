@@ -2,12 +2,13 @@
 	/* eslint-disable svelte/no-at-html-tags */
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+	import AlertMessage from '$lib/modules/AlertMessage.svelte';
 	import YouTube from '$lib/modules/YouTube.svelte';
 	import PracticeEditor from '$lib/modules/hokage/PracticeEditor.svelte';
 	import { clean } from '$lib/utils/objectsTools.js';
 	import { CarSlugger } from '@katokdoescode/car-slugger';
 	import { getContext, onMount } from 'svelte';
-	import { locale } from 'svelte-i18n';
+	import { _, locale, locales } from 'svelte-i18n';
 
 	const authorized = getContext('authorized');
 	const practiceData = getContext('practiceData');
@@ -17,6 +18,11 @@
 
 	export let data;
 	let isMounted = false;
+
+	function getAnotherLocale() {
+		const [anotherLocale] = $locales.filter((loc) => loc !== $locale);
+		return anotherLocale;
+	}
 
 	/** @type {Practice} */
 	$: practice = data?.practice;
@@ -38,6 +44,10 @@
 			goto(`/practices/${localizedSlug}`, { replaceState: false });
 	}
 
+	$: isNotLocalized = !!(
+		!practice.title[$locale] || !practice.subtitle[$locale]
+	);
+
 	onMount(() => {
 		isMounted = true;
 	});
@@ -58,12 +68,48 @@
 {#if $authorized && $isEditingState}
 	<PracticeEditor bind:localValue />
 {:else}
-	<h1>{practice.title[$locale]}</h1>
-	<h2>{practice.subtitle[$locale]}</h2>
+	{#if isNotLocalized}
+		<div class="wrapper">
+			<h1>{practice.title[getAnotherLocale()]}</h1>
+			<h2>{practice.subtitle[getAnotherLocale()]}</h2>
+			<div class="alert">
+				<AlertMessage
+					message={$_('messages.anotherLanguageOnly')}
+					tag="p" />
+			</div>
+		</div>
+	{:else}
+		<h1>{practice.title[$locale]}</h1>
+		<h2>{practice.subtitle[$locale]}</h2>
+	{/if}
 
 	<YouTube link={practice.videoLink} />
 
 	<article class="main-article">
-		{@html practice.description[$locale]}
+		{#if isNotLocalized}
+			{@html practice.description[getAnotherLocale()]}
+		{:else}
+			{@html practice.description[$locale]}
+		{/if}
 	</article>
 {/if}
+
+<style scoped>
+	.wrapper {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.wrapper h1 {
+		order: 1;
+	}
+
+	.wrapper h2 {
+		order: 3;
+	}
+
+	.alert {
+		order: 2;
+		margin-bottom: 20px;
+	}
+</style>

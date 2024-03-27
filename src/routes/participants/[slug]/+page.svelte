@@ -1,10 +1,11 @@
 <script>
 	/* eslint-disable svelte/no-at-html-tags */
+	import AlertMessage from '$lib/modules/AlertMessage.svelte';
 	import ParticipantEditor from '$lib/modules/hokage/ParticipantEditor.svelte';
 	import { clean } from '$lib/utils/objectsTools.js';
 	import { CarSlugger } from '@katokdoescode/car-slugger';
 	import { getContext } from 'svelte';
-	import { locale } from 'svelte-i18n';
+	import { _, locale, locales } from 'svelte-i18n';
 
 	const isEditingState = getContext('isEditingState');
 	const authorized = getContext('authorized');
@@ -13,6 +14,11 @@
 	const slugger = new CarSlugger();
 
 	export let data;
+
+	function getAnotherLocale() {
+		const [anotherLocale] = $locales.filter((loc) => loc !== $locale);
+		return anotherLocale;
+	}
 
 	/** @type {Participant} */
 	$: participant = data?.participant;
@@ -25,6 +31,9 @@
 		: '';
 
 	$: participantData.set(clean(localValue));
+	$: isNotLocalized = !!(
+		!participant.name[$locale] || !participant.title[$locale]
+	);
 </script>
 
 <svelte:head>
@@ -41,6 +50,19 @@
 
 {#if $authorized && $isEditingState}
 	<ParticipantEditor bind:localValue />
+{:else if isNotLocalized}
+	<div class="wrapper">
+		<h1>{participant.name[getAnotherLocale()]}</h1>
+		<h2>{participant.title[getAnotherLocale()]}</h2>
+		<div class="alert">
+			<AlertMessage
+				message={$_('messages.anotherLanguageOnly')}
+				tag="p" />
+		</div>
+	</div>
+	<article class="main-article">
+		{@html participant.description[getAnotherLocale()]}
+	</article>
 {:else}
 	<h1>{participant.name[$locale]}</h1>
 	<h2>{participant.title[$locale]}</h2>
@@ -48,3 +70,23 @@
 		{@html participant.description[$locale]}
 	</article>
 {/if}
+
+<style scoped>
+	.wrapper {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.wrapper h1 {
+		order: 1;
+	}
+
+	.wrapper h2 {
+		order: 3;
+	}
+
+	.alert {
+		order: 2;
+		margin-bottom: 20px;
+	}
+</style>
