@@ -86,6 +86,7 @@
 				return {
 					route: '/api/mainPage',
 					method: 'PATCH',
+					rawData: $contentPage,
 					data: JSON.stringify($contentPage),
 					onSuccess: function (data) {
 						return data;
@@ -95,6 +96,7 @@
 				return {
 					route: '/api/cv',
 					method: 'PATCH',
+					rawData: $cvPage,
 					data: JSON.stringify($cvPage),
 					onSuccess: function (data) {
 						return data;
@@ -105,6 +107,7 @@
 				return {
 					route: '/api/practices',
 					method: 'POST',
+					rawData: $practiceData,
 					data: JSON.stringify($practiceData),
 					onSuccess: function (data) {
 						const slug = data.slug[$locale];
@@ -116,6 +119,7 @@
 				return {
 					route: '/api/practices',
 					method: 'PATCH',
+					rawData: $practiceData,
 					data: JSON.stringify($practiceData),
 					onSuccess: function (practice) {
 						dispatch('update', {
@@ -129,6 +133,7 @@
 				return {
 					route: '/api/participants',
 					method: 'POST',
+					rawData: $participantData,
 					data: JSON.stringify($participantData),
 					onSuccess: function (data) {
 						const slug = data.slug;
@@ -140,6 +145,7 @@
 				return {
 					route: '/api/participants',
 					method: 'PATCH',
+					rawData: $participantData,
 					data: JSON.stringify($participantData),
 					onSuccess: function (participant) {
 						dispatch('update', {
@@ -163,6 +169,22 @@
 			if (decision) deleteContent();
 		});
 	}
+
+	$: isTitleEmpty = !!(
+		url().rawData?.title &&
+			Object.values(url().rawData.title).some((value) => !value)
+	);
+	$: isSubtitleEmpty = !!(
+		url().rawData?.subtitle &&
+			Object.values(url().rawData.subtitle).some((value) => !value)
+	);
+	$: isNameEmpty = !!(
+		url().rawData?.name &&
+			Object.values(url().rawData.name).some((value) => !value)
+	);
+
+	$: isNotValid =
+		$isEditingState && (isTitleEmpty || isSubtitleEmpty || isNameEmpty);
 
 	$: btnStatus = function () {
 		if ($editingPageStatus) {
@@ -191,6 +213,7 @@
 <div class="row">
 	<Button
 		color={btnColor()}
+		disabled={isNotValid}
 		on:click={toggleEditMode}>
 		{$_(`button.${btnStatus()}`)}
 	</Button>
