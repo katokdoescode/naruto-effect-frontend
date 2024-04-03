@@ -174,17 +174,13 @@
 		url().rawData?.title &&
 			Object.values(url().rawData.title).some((value) => !value)
 	);
-	$: isSubtitleEmpty = !!(
-		url().rawData?.subtitle &&
-			Object.values(url().rawData.subtitle).some((value) => !value)
-	);
+
 	$: isNameEmpty = !!(
 		url().rawData?.name &&
 			Object.values(url().rawData.name).some((value) => !value)
 	);
 
-	$: isNotValid =
-		$isEditingState && (isTitleEmpty || isSubtitleEmpty || isNameEmpty);
+	$: isNotValid = $isEditingState && (isTitleEmpty || isNameEmpty);
 
 	$: btnStatus = function () {
 		if ($editingPageStatus) {
