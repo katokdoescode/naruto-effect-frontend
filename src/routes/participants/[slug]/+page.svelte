@@ -5,6 +5,7 @@
 	import { clean } from '$lib/utils/objectsTools.js';
 	import { CarSlugger } from '@katokdoescode/car-slugger';
 	import { getContext } from 'svelte';
+	import autoTranslate from '$lib/utils/autoTranslate.js';
 	import { _, locale, locales } from 'svelte-i18n';
 
 	const isEditingState = getContext('isEditingState');
@@ -15,10 +16,7 @@
 
 	export let data;
 
-	function getAnotherLocale() {
-		const [anotherLocale] = $locales.filter((loc) => loc !== $locale);
-		return anotherLocale;
-	}
+	$: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 
 	/** @type {Participant} */
 	$: participant = data?.participant;
@@ -31,9 +29,13 @@
 		: '';
 
 	$: participantData.set(clean(localValue));
-	$: isNotLocalized = !!(
-		!participant.name[$locale] || !participant.title[$locale]
-	);
+
+	$: isNotLocalized = !participant.name[$locale];
+
+	$: autoTranslatedName =
+		isNotLocalized && $locale === 'en'
+			? autoTranslate($locale, participant.name[anotherLocale])
+			: participant.name[anotherLocale];
 </script>
 
 <svelte:head>
@@ -52,8 +54,8 @@
 	<ParticipantEditor bind:localValue />
 {:else if isNotLocalized}
 	<div class="wrapper">
-		<h1>{participant.name[getAnotherLocale()]}</h1>
-		<h2>{participant.title[getAnotherLocale()]}</h2>
+		<h1>{autoTranslatedName}</h1>
+		<h2>{participant.title[$locale] || participant.title[anotherLocale]}</h2>
 		<div class="alert">
 			<AlertMessage
 				message={$_('messages.anotherLanguageOnly')}
@@ -61,7 +63,7 @@
 		</div>
 	</div>
 	<article class="main-article">
-		{@html participant.description[getAnotherLocale()]}
+		{@html participant.description[anotherLocale]}
 	</article>
 {:else}
 	<h1>{participant.name[$locale]}</h1>

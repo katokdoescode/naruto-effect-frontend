@@ -9,6 +9,7 @@
 	import { CarSlugger } from '@katokdoescode/car-slugger';
 	import { getContext, onMount } from 'svelte';
 	import { _, locale, locales } from 'svelte-i18n';
+	import autoTranslate from '$lib/utils/autoTranslate.js';
 
 	const authorized = getContext('authorized');
 	const practiceData = getContext('practiceData');
@@ -19,10 +20,7 @@
 	export let data;
 	let isMounted = false;
 
-	function getAnotherLocale() {
-		const [anotherLocale] = $locales.filter((loc) => loc !== $locale);
-		return anotherLocale;
-	}
+	$: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 
 	/** @type {Practice} */
 	$: practice = data?.practice;
@@ -44,9 +42,12 @@
 			goto(`/practices/${localizedSlug}`, { replaceState: false });
 	}
 
-	$: isNotLocalized = !!(
-		!practice.title[$locale] || !practice.subtitle[$locale]
-	);
+	$: isNotLocalized = !practice.title[$locale];
+
+	$: autoTranslatedTitle =
+		isNotLocalized && $locale === 'en'
+			? autoTranslate($locale, practice.title[anotherLocale])
+			: practice.title[anotherLocale];
 
 	onMount(() => {
 		isMounted = true;
@@ -70,8 +71,8 @@
 {:else}
 	{#if isNotLocalized}
 		<div class="wrapper">
-			<h1>{practice.title[getAnotherLocale()]}</h1>
-			<h2>{practice.subtitle[getAnotherLocale()]}</h2>
+			<h1>{autoTranslatedTitle}</h1>
+			<h2>{practice.subtitle[$locale] || practice.subtitle[anotherLocale]}</h2>
 			<div class="alert">
 				<AlertMessage
 					message={$_('messages.anotherLanguageOnly')}
@@ -87,7 +88,7 @@
 
 	<article class="main-article">
 		{#if isNotLocalized}
-			{@html practice.description[getAnotherLocale()]}
+			{@html practice.description[anotherLocale]}
 		{:else}
 			{@html practice.description[$locale]}
 		{/if}

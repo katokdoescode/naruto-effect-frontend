@@ -2,8 +2,10 @@
 	import { page } from '$app/stores';
 	import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
 	import Button from '$lib/ui/Button.svelte';
+	import autoTranslate from '$lib/utils/autoTranslate';
+	import isLinkActive from '$lib/utils/isLinkActive';
 	import { getContext } from 'svelte';
-	import { _, locale } from 'svelte-i18n';
+	import { _, locale, locales } from 'svelte-i18n';
 
 	/** @type {Participants} */
 	export let participants = [];
@@ -14,6 +16,19 @@
 	const practiceData = getContext('practiceData');
 
 	let checked = false;
+
+	/**
+	 * Automatically translates name
+	 * if name was not found on the english version
+	 *
+	 * @param {LocaleObject} name
+	 * @returns {string}
+	 */
+	function translateName(name) {
+		return $locale === 'en'
+			? autoTranslate($locale, name[anotherLocale])
+			: name[anotherLocale];
+	}
 
 	$: route = $page.route.id || '';
 	$: isPracticePage = route?.includes('practices') || '';
@@ -63,6 +78,8 @@
 			});
 		}
 	}
+
+	$: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 </script>
 
 <nav
@@ -109,7 +126,7 @@
 							class:disabled={!menuItem?.isVisible || false}
 							data-sveltekit-keepfocus
 							href={`/participants/${menuItem.slug}`}
-						>{menuItem.name[$locale] || $_('empty.participant')}</a
+						>{menuItem.name[$locale] || translateName(menuItem.name)}</a
 						>
 					</li>
 				{/each}
@@ -117,10 +134,10 @@
 					<li>
 						<a
 							class="disabled"
-							class:active={$page.url.pathname.includes(menuItem.slug)}
+							class:active={isLinkActive($page.url.pathname, menuItem.slug)}
 							data-sveltekit-keepfocus
 							href={`/participants/${menuItem.slug}`}
-						>{menuItem.name[$locale] || $_('empty.participant')}</a
+						>{menuItem.name[$locale] || translateName(menuItem.name)}</a
 						>
 					</li>
 				{/each}

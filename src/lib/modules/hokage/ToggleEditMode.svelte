@@ -170,17 +170,13 @@
 		});
 	}
 
-	$: isTitleEmpty = !!(
-		url().rawData?.title &&
-			Object.values(url().rawData.title).some((value) => !value)
-	);
-
-	$: isNameEmpty = !!(
-		url().rawData?.name &&
-			Object.values(url().rawData.name).some((value) => !value)
-	);
-
-	$: isNotValid = $isEditingState && (isTitleEmpty || isNameEmpty);
+	$: isTitleEmpty = !!(url().rawData?.title && !url().rawData.title[$locale]);
+	$: isNameEmpty = !!(url().rawData?.name && !url().rawData.name[$locale]);
+	$: isDescriptionNotEmpty =
+		url().rawData?.description &&
+		Object.values(url().rawData.description).some((v) => v);
+	$: isNotValid =
+		$isEditingState && (!isDescriptionNotEmpty || isTitleEmpty || isNameEmpty);
 
 	$: btnStatus = function () {
 		if ($editingPageStatus) {

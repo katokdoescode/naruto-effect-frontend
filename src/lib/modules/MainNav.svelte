@@ -3,8 +3,10 @@
 	import { page } from '$app/stores';
 	import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
 	import Button from '$lib/ui/Button.svelte';
+	import autoTranslate from '$lib/utils/autoTranslate';
+	import isLinkActive from '$lib/utils/isLinkActive';
 	import { getContext } from 'svelte';
-	import { _, locale } from 'svelte-i18n';
+	import { _, locale, locales } from 'svelte-i18n';
 
 	/** @type{Practices} */
 	export let practices = [];
@@ -20,6 +22,19 @@
 	$: isMainPage = pageName === '';
 	$: isCreatingMode = $page.url.pathname.includes('/create');
 	$: localePostfix = isCreatingMode ? 'new' : 'edit';
+
+	/**
+	 * Automatically translates name
+	 * if name was not found on the english version
+	 *
+	 * @param {LocaleObject} title
+	 * @returns {string}
+	 */
+	function translateTitle(title) {
+		return $locale === 'en'
+			? autoTranslate($locale, title[anotherLocale])
+			: title[anotherLocale];
+	}
 
 	async function cancelCreating() {
 		isShowConfirmExitModal.set(true);
@@ -59,6 +74,8 @@
 				return a.title[$locale].localeCompare(b.title[$locale]); // Sort practices by localized title [a-z]
 			})
 		: [];
+
+	$: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 </script>
 
 <nav
@@ -96,12 +113,15 @@
 				{#each visiblePractices as menuItem}
 					<li>
 						<a
-							class:active={$page.url.pathname.includes(menuItem.slug[$locale])}
+							class:active={isLinkActive(
+								$page.url.pathname,
+								menuItem.slug[$locale] || menuItem.slug[anotherLocale]
+							)}
 							data-sveltekit-keepfocus
-							href={`/practices/${menuItem.slug[$locale]}`}
+							href={`/practices/${menuItem.slug[$locale] || menuItem.slug[anotherLocale]}`}
 							hreflang={$locale}
 						>
-							{menuItem.title[$locale] || $_('empty.practice')}
+							{menuItem.title[$locale] || translateTitle(menuItem.title)}
 						</a>
 					</li>
 				{/each}
@@ -111,10 +131,10 @@
 							class="disabled"
 							class:active={$page.url.pathname.includes(menuItem.slug[$locale])}
 							data-sveltekit-keepfocus
-							href={`/practices/${menuItem.slug[$locale]}`}
+							href={`/practices/${menuItem.slug[$locale] || menuItem.slug[anotherLocale]}`}
 							hreflang={$locale}
 						>
-							{menuItem.title[$locale] || $_('empty.practice')}
+							{menuItem.title[$locale] || translateTitle(menuItem.title)}
 						</a>
 					</li>
 				{/each}
