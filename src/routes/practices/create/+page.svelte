@@ -23,7 +23,10 @@
 		description: { en: '', ru: '' },
 		videoLink: '',
 		isVisible: false,
-		originalSlug: { en: '', ru: '' }
+		originalSlug: { en: '', ru: '' },
+		bannerMode: 'image',
+		banner: { link: null, alt: null },
+		iframe: null
 	};
 
 	$: Object.entries(localValue.title).forEach(([key, value]) => {
