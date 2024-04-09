@@ -91,5 +91,17 @@
 		},
 		"deleted": "Entry deleted",
 		"anotherLanguageOnly": "Sorry, there is no english version of this text yet. Here is it in russian:"
+	},
+	"tabs": {
+		"options": {
+			"image": "Image",
+			"video": "Video"
+		},
+		"panel": {
+			"source": "Source",
+			"upload": "Upload",
+			"alternative": "Alt text",
+			"embed": "Embed code"
+		}
 	}
 }

@@ -3,6 +3,7 @@
 	import Input from '$lib/ui/Input.svelte';
 	import Textarea from '$lib/ui/Textarea.svelte';
 	import { BannerModes } from '$lib/constants';
+	import { _ } from 'svelte-i18n';
 
 	/** @type{string|null} */
 	export let link = null;
@@ -48,7 +49,7 @@
 				value={BannerModes.IMAGE}
 				bind:group={activeTab}
 			/>
-			<span>Изображение</span>
+			<span>{$_('tabs.options.image')}</span>
 		</label>
 
 		<label class="option">
@@ -63,7 +64,7 @@
 				value={BannerModes.VIDEO}
 				bind:group={activeTab}
 			/>
-			<span>Видео</span>
+			<span>{$_('tabs.options.video')}</span>
 		</label>
 	</div>
 
@@ -77,7 +78,7 @@
 			role="tabpanel"
 		>
 			<label for="image-link">
-				<span>источник</span>
+				<span>{$_('tabs.panel.source')}</span>
 				<div class="input-with-button">
 					<Input
 						id="image-link"
@@ -92,12 +93,12 @@
 						color={'gray'}
 						tabindex={activeTab !== BannerModes.IMAGE ? -1 : 0}
 					>
-						Загрузить
+						{$_('tabs.panel.upload')}
 					</Button>
 				</div>
 			</label>
 			<label for="image-alt">
-				<span>альтернативный текст</span>
+				<span>{$_('tabs.panel.alternative')}</span>
 				<div>
 					<Input
 						id="image-alt"
@@ -121,7 +122,7 @@
 			role="tabpanel"
 		>
 			<label for="embed-link">
-				<span>embed код видео</span>
+				<span>{$_('tabs.panel.embed')}</span>
 				<Textarea
 					id="embed-link"
 					bordered
