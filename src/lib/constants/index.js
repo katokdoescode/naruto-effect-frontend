@@ -41,3 +41,8 @@ export const Placeholder = {
 		ru: `<p>Тут такой длинный текст и все нужные ссылки для практиканта</p>`
 	}
 };
+
+export const BannerModes = {
+	IMAGE: 'image',
+	VIDEO: 'video'
+};

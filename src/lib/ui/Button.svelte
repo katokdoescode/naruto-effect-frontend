@@ -111,7 +111,6 @@
 
 	.button.bordered {
 		align-self: flex-start;
-		height: max-content;
 		border: 2px solid var(--color-gray);
 		border-radius: 6px;
 		padding: 0 21px;

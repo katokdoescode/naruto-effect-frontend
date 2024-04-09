@@ -66,8 +66,7 @@
 		},
 		"practice": {
 			"name": "Practice name",
-			"subtitle": "Subtitle",
-			"video": "Link on YouTube"
+			"subtitle": "Subtitle"
 		},
 		"participant": {
 			"name": "Given Name and Second name",

@@ -1,14 +1,15 @@
 <script>
 	import { Placeholder } from '$lib/constants';
 	import TextEditor from '$lib/modules/TextEditor.svelte';
-	import Input from '$lib/ui/Input.svelte';
+	import MediaHandler from '$lib/modules/hokage/MediaHandler.svelte';
 	import Textarea from '$lib/ui/Textarea.svelte';
 	import { createEventDispatcher } from 'svelte';
 	import { _, locale } from 'svelte-i18n';
 
+	const dispatch = createEventDispatcher();
+
 	/** @type {Practice} */
 	export let localValue;
-	const dispatch = createEventDispatcher();
 	$: dispatch('input', localValue);
 </script>
 
@@ -24,11 +25,11 @@
 	placeholder={$_('placeholder.practice.subtitle')}
 	bind:value={localValue.subtitle[$locale]}
 />
-<Input
-	id="practiceVideoLink"
-	placeholder={$_('placeholder.practice.video')}
-	simple
-	bind:value={localValue.videoLink}
+<MediaHandler
+	bind:link={localValue.banner.link}
+	bind:alt={localValue.banner.alt}
+	bind:iframe={localValue.iframe}
+	bind:activeTab={localValue.bannerMode}
 />
 <TextEditor
 	id="practiceDescription"

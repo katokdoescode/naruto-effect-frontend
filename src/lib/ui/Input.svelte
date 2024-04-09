@@ -7,6 +7,9 @@
 	/** @type {boolean} */
 	export let round = false;
 
+	/** @type {boolean} */
+	export let bordered = false;
+
 	/** @type {string} */
 	export let value = '';
 
@@ -36,9 +39,7 @@
 
 	const dispatch = createEventDispatcher();
 	$: dispatch('input', value);
-	$: classes = `${nativeClass} input ${simple ? 'simple' : ''} ${
-		round ? 'round' : ''
-	}`;
+	$: classes = `${nativeClass} input ${simple ? 'simple' : ''} ${round ? 'round' : ''} ${bordered ? 'bordered' : ''}`;
 </script>
 
 {#if !simple && !round}
@@ -74,6 +75,7 @@
 		name={id}
 		class={classes}
 		{placeholder}
+		{...$$restProps}
 		bind:value
 	/>
 {/if}
@@ -107,6 +109,14 @@
 		font-size: 1em;
 		box-sizing: border-box;
 		border: none;
+	}
+
+	.input.bordered {
+		border: 1px solid var(--color-main);
+	}
+
+	.input.bordered:focus-visible {
+		outline-offset: 2px;
 	}
 
 	.label {

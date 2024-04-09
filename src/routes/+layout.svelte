@@ -196,7 +196,7 @@
 	beforeNavigate(async (event) => {
 		if (!canNavigate && $isEditingState) {
 			event.cancel();
-			whereToGo = event.to.url.href;
+			whereToGo = event.to.url?.href;
 			isShowConfirmExitModal.set(true);
 		} else {
 			canNavigate = false;

@@ -8,6 +8,7 @@
 	import { clean } from '$lib/utils/objectsTools.js';
 	import { CarSlugger } from '@katokdoescode/car-slugger';
 	import { getContext, onMount } from 'svelte';
+	import { BannerModes } from '$lib/constants';
 	import { _, locale, locales } from 'svelte-i18n';
 	import autoTranslate from '$lib/utils/autoTranslate.js';
 
@@ -74,9 +75,7 @@
 			<h1>{autoTranslatedTitle}</h1>
 			<h2>{practice.subtitle[$locale] || practice.subtitle[anotherLocale]}</h2>
 			<div class="alert">
-				<AlertMessage
-					message={$_('messages.anotherLanguageOnly')}
-					tag="p" />
+				<AlertMessage message={$_('messages.anotherLanguageOnly')} />
 			</div>
 		</div>
 	{:else}
@@ -84,7 +83,16 @@
 		<h2>{practice.subtitle[$locale]}</h2>
 	{/if}
 
-	<YouTube link={practice.videoLink} />
+	{#if practice.bannerMode === BannerModes.IMAGE && practice.banner.link}
+		<div class="image-wrapper">
+			<img
+				alt={practice.banner.alt}
+				height="317"
+				src={practice.banner.link} />
+		</div>
+	{:else if practice.bannerMode === BannerModes.VIDEO && practice.iframe}
+		<YouTube markup={practice.iframe} />
+	{/if}
 
 	<article class="main-article">
 		{#if isNotLocalized}
@@ -112,5 +120,15 @@
 	.alert {
 		order: 2;
 		margin-bottom: 20px;
+	}
+
+	.image-wrapper {
+		width: 100%;
+	}
+
+	.image-wrapper img {
+		height: 317px;
+		width: auto;
+		object-fit: contain;
 	}
 </style>

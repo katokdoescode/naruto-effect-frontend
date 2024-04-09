@@ -1,5 +1,10 @@
 <script>
+	/* eslint-disable svelte/no-at-html-tags */
+	/** @type{string|null}*/
 	export let link = null;
+
+	/** @type{string|null}*/
+	export let markup = null;
 
 	function getLink(url) {
 		if (!url) return '';
@@ -24,4 +29,20 @@
 		title="YouTube video player"
 		width="100%"
 	/>
+{:else if markup}
+	<div class="player-wrapper">
+		{@html markup}
+	</div>
 {/if}
+
+<style scoped>
+	.player-wrapper {
+		width: 100%;
+		height: 317px;
+	}
+
+	:global(.player-wrapper iframe) {
+		width: inherit;
+		height: inherit;
+	}
+</style>

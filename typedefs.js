@@ -6,6 +6,18 @@
  */
 
 /**
+ * @exports BannerItem
+ * @typedef {object} BannerItem
+ * @property {string|null} link
+ * @property {string|null} alt
+ */
+
+/**
+ * @exports BannerModes
+ * @typedef {'image'|'video'} BannerModes
+ */
+
+/**
  * @exports SupabaseError
  * @typedef {object} SupabaseError
  * @property {string} message
@@ -117,6 +129,9 @@
  * @property {LocaleObject|undefined?} subtitle
  * @property {string|undefined?} videoLink
  * @property {LocaleObject|undefined?} description
+ * @property {string|undefined?} iframe
+ * @property {BannerItem} banner
+ * @property {BannerModes} bannerMode
  */
 
 /**
