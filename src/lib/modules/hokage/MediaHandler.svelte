@@ -1,9 +1,9 @@
 <script>
-	import Button from '$lib/ui/Button.svelte';
 	import Input from '$lib/ui/Input.svelte';
 	import Textarea from '$lib/ui/Textarea.svelte';
 	import { BannerModes } from '$lib/constants';
 	import { _ } from 'svelte-i18n';
+	import FileUploader from '$lib/modules/hokage/FileUploader.svelte';
 
 	/** @type{string|null} */
 	export let link = null;
@@ -89,12 +89,10 @@
 						type="text"
 						bind:value={link}
 					/>
-					<Button
-						color={'gray'}
+					<FileUploader
 						tabindex={activeTab !== BannerModes.IMAGE ? -1 : 0}
-					>
-						{$_('tabs.panel.upload')}
-					</Button>
+						bind:link
+					/>
 				</div>
 			</label>
 			<label for="image-alt">
@@ -215,7 +213,7 @@
 		flex: 4;
 	}
 
-	:global(.input-with-button button) {
+	:global(.input-with-button div) {
 		flex: 1;
 		height: 100%;
 	}

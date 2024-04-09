@@ -55,7 +55,9 @@
 		"dont": "don't do it",
 		"ok": "I see",
 		"yes": "Yes",
-		"continue": "Continue creating"
+		"continue": "Continue creating",
+		"uploading": "Uploading",
+		"upload": "Upload"
 	},
 	"cookie": "Site uses cookies",
 	"placeholder": {

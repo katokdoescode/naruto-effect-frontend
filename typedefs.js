@@ -105,6 +105,7 @@
  * @typedef CvData
  * @type {object}
  * @property {number} id
+ * @property {string|undefined?} videoLink
  * @property {LocaleObject} title
  * @property {LocaleObject} text
  */
@@ -127,7 +128,6 @@
  * @property {boolean} isVisible
  * @property {LocaleObject|undefined?} originalSlug
  * @property {LocaleObject|undefined?} subtitle
- * @property {string|undefined?} videoLink
  * @property {LocaleObject|undefined?} description
  * @property {string|undefined?} iframe
  * @property {BannerItem} banner

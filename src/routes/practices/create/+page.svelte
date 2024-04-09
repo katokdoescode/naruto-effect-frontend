@@ -21,7 +21,6 @@
 		title: { en: '', ru: '' },
 		subtitle: { en: '', ru: '' },
 		description: { en: '', ru: '' },
-		videoLink: '',
 		isVisible: false,
 		originalSlug: { en: '', ru: '' },
 		bannerMode: 'image',
