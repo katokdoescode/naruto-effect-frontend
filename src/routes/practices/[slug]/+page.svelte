@@ -129,6 +129,6 @@
 	.image-wrapper img {
 		height: 317px;
 		width: 100%;
-		object-fit: contain;
+		object-fit: cover;
 	}
 </style>
