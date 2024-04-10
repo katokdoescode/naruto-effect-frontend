@@ -2,7 +2,7 @@ import { supabase } from '$lib/supabaseClient.js';
 import { json } from '@sveltejs/kit';
 import { VITE_SUPABASE_BUCKET } from '$env/static/private';
 
-async function uploadFile(file, type, prefix = '') {
+async function uploadFile(file, type, prefix) {
 	const bucket = VITE_SUPABASE_BUCKET;
 	const fullPath = `${type}/${prefix ? prefix + '/' : ''}${file.name}`;
 	const { error } = await supabase.storage

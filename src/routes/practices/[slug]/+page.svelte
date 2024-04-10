@@ -128,7 +128,7 @@
 
 	.image-wrapper img {
 		height: 317px;
-		width: auto;
+		width: 100%;
 		object-fit: contain;
 	}
 </style>
