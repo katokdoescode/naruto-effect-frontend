@@ -151,7 +151,7 @@
 
 	.options .option {
 		color: var(--color-main);
-		font-size: var(--font-second-menu-size);
+		font-size: var(--buttons-text-size);
 		font-weight: normal;
 	}
 
@@ -198,7 +198,7 @@
 	}
 
 	.panel label span {
-		font-size: var(--font-size-main);
+		font-size: var(--labels-text-size);
 		font-weight: var(--font-main-weight);
 		text-transform: lowercase;
 	}

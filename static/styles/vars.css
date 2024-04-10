@@ -51,7 +51,10 @@
 	/* FOOTER */
 	--year-font-size: 18px;
 	--copyright-font-size: 11px;
+
+	/* INPUTS */
 	--buttons-text-size: 14px;
+	--labels-text-size: 12px;
 
 	/* TEXT LOGO */
 	--logo-font-size: 30px;
