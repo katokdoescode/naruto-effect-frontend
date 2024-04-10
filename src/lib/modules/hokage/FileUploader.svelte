@@ -1,6 +1,7 @@
 <script>
 	import Button from '$lib/ui/Button.svelte';
 	import { _ } from 'svelte-i18n';
+	import { page } from '$app/stores';
 
 	const acceptable = {
 		image: 'image/*'
@@ -48,6 +49,7 @@
 		const formData = new FormData();
 		formData.append('file', file, file.name);
 		formData.append('type', type);
+		formData.append('prefix', $page.params?.slug || null);
 		uploadFile(formData);
 	}
 
