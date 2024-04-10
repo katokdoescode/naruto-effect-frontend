@@ -74,7 +74,7 @@
 		place-items: center;
 		position: relative;
 		gap: 30px;
-		color: #949494;
+		color: var(--color-darkgray);
 		height: 94px;
 		margin-top: auto;
 	}
