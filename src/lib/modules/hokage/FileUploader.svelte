@@ -4,7 +4,7 @@
 	import { page } from '$app/stores';
 
 	const acceptable = {
-		image: 'image/*'
+		images: 'image/*'
 	};
 
 	/** @type{'images'} */
@@ -24,12 +24,16 @@
 	let input;
 
 	async function uploadFile(body) {
+		if (!body) return;
 		isLoading = true;
 
 		try {
 			const { url, error } = await (
 				await fetch('/api/files', { method: 'POST', body })
 			).json();
+			// eslint-disable-next-line no-console
+			console.debug(error);
+
 			if (error) {
 				status = 'error';
 			} else {
@@ -81,7 +85,7 @@
 		{id}
 		name={id}
 		class="input-file"
-		accept={acceptable.type}
+		accept={acceptable[type]}
 		type="file"
 		on:change={onUpload}
 	/>
