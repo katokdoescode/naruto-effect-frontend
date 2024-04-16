@@ -105,5 +105,8 @@
 			"alternative": "Alt text",
 			"embed": "Embed code"
 		}
+	},
+	"errors": {
+		"sizeLimit": "File size limit is 4mb."
 	}
 }

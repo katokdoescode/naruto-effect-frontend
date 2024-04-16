@@ -1,4 +1,5 @@
 <script>
+	import { fade } from 'svelte/transition';
 	import Button from '$lib/ui/Button.svelte';
 	import { _ } from 'svelte-i18n';
 	import { page } from '$app/stores';
@@ -19,6 +20,7 @@
 	/** @type{string|null} */
 	export let link;
 
+	let errorText;
 	let status;
 	let isLoading = false;
 	let input;
@@ -49,8 +51,22 @@
 	}
 
 	function onUpload({ target }) {
+		errorText = null;
 		const file = target.files[0];
 		const formData = new FormData();
+
+		if (file.size / 100000 > 4) {
+			status = 'error';
+			errorText = $_('errors.sizeLimit');
+			setTimeout(() => {
+				status = null;
+			}, 2500);
+			setTimeout(() => {
+				errorText = null;
+			}, 5000);
+			return;
+		}
+
 		formData.append('file', file, file.name);
 		formData.append('type', type);
 		formData.append('prefix', $page.params?.slug || null);
@@ -89,6 +105,12 @@
 		type="file"
 		on:change={onUpload}
 	/>
+	{#if errorText}
+		<span
+			class="error-text"
+			in:fade
+			out:fade>{errorText}</span>
+	{/if}
 </div>
 
 <style scoped>
@@ -108,5 +130,17 @@
 	:global(.file-uploader .visible-button) {
 		height: 100%;
 		width: 100%;
+	}
+
+	.file-uploader .error-text {
+		font-size: var(--font-second-menu-size);
+		background-color: var(--color-main);
+		color: var(--color-bg-main);
+		border-radius: 5px;
+		position: absolute;
+		border: none;
+		padding: 5px;
+		top: 120%;
+		left: 0;
 	}
 </style>
