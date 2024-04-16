@@ -20,10 +20,16 @@
 	/** @type{string|null} */
 	export let link;
 
+	/** @type{string|undefined}*/
 	let errorText;
+
+	/** @type{'success'|'error'|null}*/
 	let status;
-	let isLoading = false;
+
+	/** @type{HTMLInputElement}*/
 	let input;
+
+	let isLoading = false;
 
 	async function uploadFile(body) {
 		if (!body) return;
