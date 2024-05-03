@@ -61,7 +61,8 @@
 		const file = target.files[0];
 		const formData = new FormData();
 
-		if (file.size / 100000 > 4) {
+		// 4mb
+		if (file.size / 1000000 > 4) {
 			status = 'error';
 			errorText = $_('errors.sizeLimit');
 			setTimeout(() => {
