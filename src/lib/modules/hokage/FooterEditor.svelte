@@ -59,7 +59,7 @@
 			setTimeout(() => {
 				footerEditorState.set('save');
 				isFooterEditorOpen.set(false);
-			}, 3500);
+			}, 314);
 		} else {
 			footerEditorState.set('error');
 			setTimeout(() => {
