@@ -1,6 +1,7 @@
 <script>
 	import { page } from '$app/stores';
 	import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
+	import Switch from '$lib/modules/Switch.svelte';
 	import Button from '$lib/ui/Button.svelte';
 	import autoTranslate from '$lib/utils/autoTranslate';
 	import isLinkActive from '$lib/utils/isLinkActive';
@@ -62,19 +63,19 @@
 		}
 	}
 
-	function check({ target }) {
-		const { checked } = target;
+	function check(event) {
+		const { detail } = event;
 		if (isPracticePage) {
 			practiceData.set({
 				...$practiceData,
-				isVisible: checked
+				isVisible: detail
 			});
 		}
 
 		if (isParticipantsPage) {
 			participantData.set({
 				...$participantData,
-				isVisible: checked
+				isVisible: detail
 			});
 		}
 	}
@@ -90,11 +91,11 @@
 		{#if $isEditingState && !isMainPage && !isCVPage}
 			<div class="edit-title-wrapper">
 				<h2 class="title">{$_('mainMenu.settings')}:</h2>
+				<!-- svelte-ignore a11y-label-has-associated-control -->
 				<label class="checkbox">
-					<input
-						type="checkbox"
+					<Switch
 						bind:checked
-						on:input={check} />
+						on:change={check} />
 					<span>{$_('mainMenu.settings.publicity')}</span>
 				</label>
 			</div>
@@ -204,5 +205,17 @@
 		display: flex;
 		flex-direction: column;
 		gap: 12px;
+	}
+
+	.checkbox {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 11px;
+	}
+
+	.checkbox span {
+		font-size: var(--font-second-menu-heading-size);
+		font-weight: var(--font-menu-weight);
 	}
 </style>
