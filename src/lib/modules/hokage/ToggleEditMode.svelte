@@ -217,6 +217,7 @@
 	{#if canDelete}
 		<Button
 			color="red"
+			nativeClasses="no-mobile"
 			on:click={deleteEntity}>
 			{$_(`button.delete`)}
 		</Button>
