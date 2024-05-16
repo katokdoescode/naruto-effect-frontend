@@ -2,7 +2,18 @@ import { supabase } from '$lib/supabaseClient.js';
 import { json } from '@sveltejs/kit';
 import { VITE_SUPABASE_BUCKET } from '$env/static/private';
 
-async function uploadFile(file, type, prefix) {
+async function deleteFile(type, prefix, link) {
+	const url = new URL(link);
+	const paths = url.pathname.split('/');
+	const imageName = paths[paths.length - 1];
+	const fullPath = `${type}/${prefix ? prefix + '/' : ''}${imageName}`;
+	await supabase.storage.from(VITE_SUPABASE_BUCKET).remove([fullPath]);
+}
+
+/**
+ * @returns {Promise<{ url: string; error: object; }>}
+ */
+async function uploadFile(file, type, prefix, link) {
 	const bucket = VITE_SUPABASE_BUCKET;
 	const fullPath = `${type}/${prefix ? prefix + '/' : ''}${file.name}`;
 	const { error } = await supabase.storage
@@ -16,6 +27,7 @@ async function uploadFile(file, type, prefix) {
 		};
 	} else {
 		const { data } = supabase.storage.from(bucket).getPublicUrl(fullPath);
+		if (link && fullPath !== link) deleteFile(type, prefix, link);
 		return {
 			url: data.publicUrl,
 			error: null
@@ -30,7 +42,8 @@ export async function POST({ request }) {
 	const file = data.get('file');
 	const type = data.get('type');
 	const prefix = data.get('prefix');
+	const link = data.get('link');
 
-	const result = await uploadFile(file, type, prefix);
+	const result = await uploadFile(file, type, prefix, link);
 	return json(result);
 }

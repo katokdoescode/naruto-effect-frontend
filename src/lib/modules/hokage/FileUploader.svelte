@@ -31,6 +31,10 @@
 
 	let isLoading = false;
 
+	/**
+	 * Uploading file via API
+	 * @param {object|undefined} body
+	 */
 	async function uploadFile(body) {
 		if (!body) return;
 		isLoading = true;
@@ -39,8 +43,6 @@
 			const { url, error } = await (
 				await fetch('/api/files', { method: 'POST', body })
 			).json();
-			// eslint-disable-next-line no-console
-			console.debug(error);
 
 			if (error) {
 				status = 'error';
@@ -77,6 +79,7 @@
 		formData.append('file', file, file.name);
 		formData.append('type', type);
 		formData.append('prefix', $page.params?.slug || null);
+		formData.append('link', link);
 		uploadFile(formData);
 	}
 
