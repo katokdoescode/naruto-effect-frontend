@@ -98,6 +98,9 @@
  * @property {LocaleObject} copyright
  * @property {LocaleObject} description
  * @property {string|number} year
+ * @property {string|undefined?} iframe
+ * @property {BannerItem} banner
+ * @property {BannerModes} bannerMode
  */
 
 /**

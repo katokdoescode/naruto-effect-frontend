@@ -3,8 +3,8 @@ import { json } from '@sveltejs/kit';
 import { VITE_SUPABASE_BUCKET } from '$env/static/private';
 
 async function deleteFile(type, prefix, link) {
-	const url = new URL(link);
-	const paths = url.pathname.split('/');
+	if (!link) return;
+	const paths = link.split('/');
 	const imageName = paths[paths.length - 1];
 	const fullPath = `${type}/${prefix ? prefix + '/' : ''}${imageName}`;
 	await supabase.storage.from(VITE_SUPABASE_BUCKET).remove([fullPath]);

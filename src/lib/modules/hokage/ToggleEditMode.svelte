@@ -175,12 +175,12 @@
 		: true;
 	$: isTitleEmpty = !!(url().rawData?.title && !url().rawData.title[$locale]);
 	$: isNameEmpty = !!(url().rawData?.name && !url().rawData.name[$locale]);
-	$: isDescriptionNotEmpty =
-		url().rawData?.description &&
-		Object.values(url().rawData.description).some((v) => v);
+	$: isDescriptionEmpty =
+		!Object.values(url().rawData?.description).some((v) => v) &&
+		!Object.values(url().rawData?.text).some((v) => v);
 	$: isNotValid =
 		$isEditingState &&
-		(!isDescriptionNotEmpty || isTitleEmpty || isNameEmpty || !isImageValid);
+		(isDescriptionEmpty || isTitleEmpty || isNameEmpty || !isImageValid);
 
 	$: btnStatus = function () {
 		if ($editingPageStatus) {

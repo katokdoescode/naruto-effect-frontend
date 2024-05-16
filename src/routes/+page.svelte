@@ -1,5 +1,6 @@
 <script>
 	/* eslint-disable svelte/no-at-html-tags */
+	import { BannerModes } from '$lib/constants';
 	import YouTube from '$lib/modules/YouTube.svelte';
 	import PageEditor from '$lib/modules/hokage/PageEditor.svelte';
 
@@ -37,8 +38,29 @@
 	<PageEditor bind:localValue />
 {:else}
 	<h1>{pageData?.title[$locale] || ''}</h1>
-	<YouTube link={pageData?.videoLink || ''} />
+	{#if pageData.bannerMode === BannerModes.IMAGE && pageData.banner.link}
+		<div class="image-wrapper">
+			<img
+				alt={pageData.banner.alt}
+				height="317"
+				src={pageData.banner.link} />
+		</div>
+	{:else if pageData.bannerMode === BannerModes.VIDEO && pageData.iframe}
+		<YouTube markup={pageData.iframe} />
+	{/if}
 	<article class="main-article">
 		{@html pageData?.text[$locale] || ''}
 	</article>
 {/if}
+
+<style scoped>
+	.image-wrapper {
+		width: fit-content;
+	}
+
+	.image-wrapper img {
+		height: 317px;
+		width: 100%;
+		object-fit: contain;
+	}
+</style>
