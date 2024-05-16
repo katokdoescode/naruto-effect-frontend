@@ -157,8 +157,8 @@ h6,
 	text-wrap: balance;
 	font-size: var(--font-heading-size);
 	font-weight: var(--font-heading-weight);
-	margin: 0 0 5px 0;
-	padding: 10px 0 0;
+	margin: 20px 0;
+	padding: 0;
 }
 
 h2,
