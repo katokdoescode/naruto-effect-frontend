@@ -1,6 +1,7 @@
 :root {
 	--color-bg-main: rgba(26, 26, 26, 1);
 	--color-main: rgba(253, 255, 253, 1);
+	--color-gray: #808080;
 	--color-scheme: dark;
 
 	/* ICONS */

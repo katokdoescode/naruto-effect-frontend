@@ -176,7 +176,9 @@
 	$: isTitleEmpty = !!(url().rawData?.title && !url().rawData.title[$locale]);
 	$: isNameEmpty = !!(url().rawData?.name && !url().rawData.name[$locale]);
 	$: isDescriptionEmpty =
+		url().rawData?.description &&
 		!Object.values(url().rawData?.description).some((v) => v) &&
+		url().rawData?.text &&
 		!Object.values(url().rawData?.text).some((v) => v);
 	$: isNotValid =
 		$isEditingState &&
