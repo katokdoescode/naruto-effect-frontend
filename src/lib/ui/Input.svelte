@@ -13,6 +13,9 @@
 	/** @type {string} */
 	export let value = '';
 
+	/** @type {'white'|'black'|undefined} */
+	export let color;
+
 	/** @type {'text'|'password'|'phone'|'email'|'number' } */
 	export let type = 'text';
 
@@ -39,7 +42,7 @@
 
 	const dispatch = createEventDispatcher();
 	$: dispatch('input', value);
-	$: classes = `${nativeClass} input ${simple ? 'simple' : ''} ${round ? 'round' : ''} ${bordered ? 'bordered' : ''}`;
+	$: classes = `${nativeClass} input ${simple ? 'simple' : ''} ${round ? 'round' : ''} ${bordered ? 'bordered' : ''} ${color ? color : ''}`;
 </script>
 
 {#if !simple && !round}
@@ -117,6 +120,16 @@
 
 	.input.bordered:focus-visible {
 		outline-offset: 2px;
+	}
+
+	.input.white {
+		background-color: var(--color-white);
+		color: var(--color-black);
+	}
+
+	.input.black {
+		background-color: var(--color-black);
+		color: var(--color-white);
 	}
 
 	.label {

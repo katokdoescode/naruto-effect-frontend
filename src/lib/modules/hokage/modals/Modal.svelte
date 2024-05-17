@@ -29,11 +29,12 @@
 
 	.modal {
 		padding: 20px;
-		background-color: var(--color-main);
-		color: var(--color-bg-main);
+		box-sizing: border-box;
+		border: 2px solid var(--color-white);
+		background-color: var(--color-black);
+		color: var(--color-white);
 		max-width: 250px;
 		border-radius: 15px;
-		border: none;
 		animation: fade-out 0.2s ease-in;
 	}
 

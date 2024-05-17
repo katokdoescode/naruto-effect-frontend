@@ -85,6 +85,7 @@
 						<Input
 							bind:this={firstFocusElement}
 							id="first-link-title"
+							color="white"
 							placeholder="Заголовок ссылки 1"
 							round
 							type="text"
@@ -93,6 +94,7 @@
 
 						<Input
 							id="first-link-value"
+							color="white"
 							placeholder="Ссылка 1"
 							round
 							type="text"
@@ -103,6 +105,7 @@
 					<fieldset class="inputgroup">
 						<Input
 							id="second-link-title"
+							color="white"
 							placeholder="Заголовок ссылки 2"
 							round
 							type="text"
@@ -111,6 +114,7 @@
 
 						<Input
 							id="second-link-value"
+							color="white"
 							placeholder="Ссылка 2"
 							round
 							type="text"
@@ -121,6 +125,7 @@
 					<fieldset class="inputgroup wide">
 						<Input
 							id="year"
+							color="white"
 							inputmode="numeric"
 							placeholder="Год"
 							round
@@ -130,6 +135,7 @@
 
 						<Textarea
 							id="copyright"
+							color="white"
 							placeholder="Текст копирайта"
 							round
 							bind:value={pageData.copyright[$locale]}
@@ -139,6 +145,7 @@
 					<fieldset class="inputgroup">
 						<Input
 							id="participate-link-title"
+							color="white"
 							placeholder="Текст кнопки"
 							round
 							type="text"
@@ -147,6 +154,7 @@
 
 						<Input
 							id="participate-link-value"
+							color="white"
 							placeholder="Ссылка"
 							round
 							type="text"
@@ -202,16 +210,18 @@
 	}
 
 	.form-common {
-		background-color: var(--color-main);
+		background-color: var(--color-black);
 		border-radius: 15px;
 		margin: 0 auto;
+		box-sizing: border-box;
 		padding: 20px;
 		margin: 0 auto;
 		width: 100%;
 		box-sizing: border-box;
 		max-width: 1315px;
+		border: 2px solid var(--color-white);
 		box-shadow: 0px 4px 4px 0px
-			color-mix(in srgb, var(--color-main) 50%, var(--color-bg-main) 50%);
+			color-mix(in srgb, var(--color-black) 50%, var(--color-white) 50%);
 		overflow: auto;
 	}
 

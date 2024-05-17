@@ -22,6 +22,9 @@
 	/** @type {boolean} */
 	export let bordered = false;
 
+	/** @type {'white'|'black'|undefined} */
+	export let color;
+
 	let element;
 
 	/** Updates textarea height based on content */
@@ -37,7 +40,7 @@
 	$: if (element) updateHeight({ target: element });
 	$: classes = `${nativeClass} textarea ${round ? 'round' : ''} ${
 		bordered ? 'bordered' : ''
-	}`;
+	} ${color ? color : ''}`;
 </script>
 
 <textarea
@@ -84,5 +87,15 @@
 		color: var(--color-main);
 		font-size: 1em;
 		box-sizing: border-box;
+	}
+
+	.textarea.white {
+		background-color: var(--color-white);
+		color: var(--color-black);
+	}
+
+	.textarea.black {
+		background-color: var(--color-black);
+		color: var(--color-white);
 	}
 </style>
