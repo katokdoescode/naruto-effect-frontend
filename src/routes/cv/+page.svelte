@@ -1,5 +1,5 @@
 <script>
-	import PageEditor from '$lib/modules/hokage/PageEditor.svelte';
+	import CvPageEditor from '$lib/modules/hokage/CvPageEditor.svelte';
 	import { getContext } from 'svelte';
 	import { locale } from 'svelte-i18n';
 	/* eslint-disable svelte/no-at-html-tags */
@@ -17,7 +17,7 @@
 </script>
 
 {#if $isEditingState}
-	<PageEditor bind:localValue />
+	<CvPageEditor bind:localValue />
 {:else}
 	<h1>{cvData.title[$locale]}</h1>
 	<article class="main-article">
