@@ -13,7 +13,6 @@
 <style>
 	input {
 		--s: 31px;
-		--color: #808080;
 
 		height: var(--s);
 		padding: calc(var(--s) / 10);
@@ -23,7 +22,7 @@
 		background:
 			radial-gradient(farthest-side, var(--color-bg-main) 97%, transparent)
 				left/var(--s) 100% content-box no-repeat,
-			var(--color);
+			var(--color-gray);
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
