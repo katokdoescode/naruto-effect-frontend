@@ -10,7 +10,7 @@ export async function GET({ cookies }) {
 	const response = await supabase
 		.from(Routes.PRACTICES)
 		.select('id, isVisible, slug, title')
-		.in('isVisible', [false, ...(isAuthenticated ? [true] : [])]);
+		.in('isVisible', [true, ...(isAuthenticated ? [false] : [])]);
 
 	const { data: practices, error } = response;
 

@@ -19,13 +19,13 @@ export async function load({ cookies }) {
 	const { data: practices, error: practicesError } = await supabase
 		.from(Routes.PRACTICES)
 		.select('id, isVisible, slug, title')
-		.in('isVisible', [false, ...(isAuthenticated ? [true] : [])]);
+		.in('isVisible', [true, ...(isAuthenticated ? [false] : [])]);
 
 	const { data: participants, error: participantsError } = await supabase
 		.from(Routes.PARTICIPANTS)
 		.select('id, isVisible, slug, name')
 		.order('slug')
-		.in('isVisible', [false, ...(isAuthenticated ? [true] : [])]);
+		.in('isVisible', [true, ...(isAuthenticated ? [false] : [])]);
 
 	const { data: pageData, error: pageDataError } = await supabase
 		.from('common')

@@ -11,14 +11,14 @@ export async function load({ params, cookies }) {
 		.from(Routes.PARTICIPANTS)
 		.select()
 		.eq('slug', slug)
-		.in('isVisible', [false, ...(isAuthenticated ? [true] : [])])
+		.in('isVisible', [true, ...(isAuthenticated ? [false] : [])])
 		.limit(1)
 		.single();
 
 	const { data: participants, error: participantsError } = await supabase
 		.from(Routes.PARTICIPANTS)
 		.select('id, isVisible, slug, name')
-		.in('isVisible', [false, ...(isAuthenticated ? [true] : [])]);
+		.in('isVisible', [true, ...(isAuthenticated ? [false] : [])]);
 
 	if (participantError) throw error(404, participantError.message);
 	if (participantsError) console.error('Participants was not loaded');
