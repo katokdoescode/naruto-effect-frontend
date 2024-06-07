@@ -1,5 +1,5 @@
 <script>
-	import { beforeNavigate, goto } from '$app/navigation';
+	import { beforeNavigate, goto, replaceState } from '$app/navigation';
 	import { page } from '$app/stores';
 	import Content from '$lib/modules/Content.svelte';
 	import CookieModal from '$lib/modules/CookieModal.svelte';
@@ -64,14 +64,24 @@
 
 		await fetch('/api/practices')
 			.then((res) => res.json())
-			.then(({ data }) => {
-				practices = data;
+			.then((data) => {
+				if (!data.success) {
+					// eslint-disable-next-line no-console
+					console.error(data.errorMessage);
+				} else {
+					practices = data.data;
+				}
 			});
 
 		await fetch('/api/participants')
 			.then((res) => res.json())
-			.then(({ data }) => {
-				participants = data;
+			.then((data) => {
+				if (!data.success) {
+					// eslint-disable-next-line no-console
+					console.error(data.errorMessage);
+				} else {
+					participants = data.data;
+				}
 			});
 
 		cleanAddressLine();
@@ -104,7 +114,7 @@
 
 	function cleanAddressLine() {
 		// Remove hash after successful login
-		history.replaceState('', document.title, window.location.pathname);
+		replaceState('/', $page.state);
 	}
 
 	function closeLoginModal() {

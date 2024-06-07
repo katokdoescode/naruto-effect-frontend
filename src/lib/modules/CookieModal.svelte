@@ -46,13 +46,13 @@
 <style>
 	.cookie {
 		font-size: 16px;
-		position: absolute;
+		position: fixed;
 		background-color: var(--color-main);
 		color: var(--color-bg-main);
 		width: 100%;
 		border-radius: 15px;
 		padding: 1em;
-		bottom: 100px;
+		bottom: 1em;
 		max-width: 558px;
 		left: 50%;
 		transform: translateX(-50%);

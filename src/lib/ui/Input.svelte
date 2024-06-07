@@ -14,7 +14,7 @@
 	export let value = '';
 
 	/** @type {'white'|'black'|undefined} */
-	export let color;
+	export let color = undefined;
 
 	/** @type {'text'|'password'|'phone'|'email'|'number' } */
 	export let type = 'text';

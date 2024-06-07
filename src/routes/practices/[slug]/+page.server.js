@@ -31,7 +31,7 @@ export async function load({ params, cookies }) {
 	const { data: practices, error: practicesError } = await supabase
 		.from(Routes.PRACTICES)
 		.select('id, isVisible, slug, title')
-		.eq(isAuthenticated ? '' : 'isVisible', true);
+		.in('isVisible', [false, ...(isAuthenticated ? [true] : [])]);
 
 	if (supabaseError) throw error(404, supabaseError.message);
 	if (practicesError) console.error('Practices was not loaded.');

@@ -23,7 +23,7 @@
 	export let bordered = false;
 
 	/** @type {'white'|'black'|undefined} */
-	export let color;
+	export let color = undefined;
 
 	let element;
 

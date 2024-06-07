@@ -10,7 +10,7 @@ export async function GET({ cookies }) {
 		.from(Routes.PARTICIPANTS)
 		.select('id, isVisible, slug, name')
 		.order('slug')
-		.eq(isAuthenticated ? '' : 'isVisible', true);
+		.in('isVisible', [false, ...(isAuthenticated ? [true] : [])]);
 
 	if (!error && participants) {
 		return json({
