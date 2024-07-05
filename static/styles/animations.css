@@ -1,0 +1,105 @@
+@keyframes fill-fade {
+	from {
+		fill: transparent;
+	}
+
+	to {
+		fill: var(--color-main);
+	}
+}
+
+@keyframes flip {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(180deg);
+	}
+}
+
+@keyframes pop-up {
+	0% {
+		transform: scale(1);
+		opacity: 1;
+		background: radial-gradient(
+			circle,
+			var(--color-bg-main) 0%,
+			var(--color-bg-main) 35%,
+			transparent 100%
+		);
+	}
+
+	10% {
+		opacity: 1;
+		transform: scale(1.5);
+		background: radial-gradient(
+			circle,
+			var(--color-bg-main) 0%,
+			var(--color-bg-main) 35%,
+			transparent 100%
+		);
+	}
+
+	80% {
+		opacity: 1;
+		background: radial-gradient(
+			circle,
+			var(--color-bg-main) 0%,
+			var(--color-bg-main) 35%,
+			transparent 100%
+		);
+	}
+
+	100% {
+		transform: scale(0.5) rotate(20deg);
+		opacity: 0;
+		background-color: transparent;
+	}
+}
+
+@keyframes putting {
+	0% {
+		transform: translate(-175px, -70px);
+		opacity: 0;
+	}
+
+	30% {
+		transform: scale(1.5) translate(0, 0);
+		opacity: 1;
+	}
+
+	100% {
+		transform: scale(0.8) translate(0, 200px);
+		opacity: 0;
+	}
+}
+
+.star-dust {
+	--duration: 2s;
+}
+
+.star-dust.play .svg-elem-1 {
+	animation: fill-fade var(--duration) ease-in-out calc(var(--duration) * 0.1)
+		both infinite;
+}
+
+.star-dust.play .svg-elem-2 {
+	animation: fill-fade var(--duration) ease-in-out calc(var(--duration) * 0.2)
+		both infinite;
+}
+
+.star-dust.play .svg-elem-3 {
+	animation: fill-fade var(--duration) ease-in-out calc(var(--duration) * 0.4)
+		both infinite;
+}
+
+.star-dust.play .svg-elem-4 {
+	animation: fill-fade var(--duration) ease-in-out calc(var(--duration) * 0.6)
+		both infinite;
+}
+
+.star-dust.play .svg-elem-5 {
+	animation: fill-fade var(--duration) ease-in-out calc(var(--duration) * 0.8)
+		both infinite;
+}

@@ -114,6 +114,18 @@
  */
 
 /**
+ * @exports HatData
+ * @typedef HatData
+ * @type {object}
+ * @property {number?} [id]
+ * @property {string} name
+ * @property {string?} [createdAt]
+ * @property {string?} [password]
+ * @property {boolean?} [isPutting]
+ * @property {string[]} words
+ */
+
+/**
  * @exports AppErrorType
  * @typedef AppErrorType
  * @type {object}
@@ -168,6 +180,24 @@
  * @exports SupabasePractices
  * @typedef {object} SupabasePracticesPartial
  * @property {PracticePartial[]} data
+ * @property {number} status
+ * @property {string} statusText
+ * @property {SupabaseError|null} error
+ */
+
+/**
+ * @exports SupabaseHats
+ * @typedef {object} SupabaseHats
+ * @property {HatData[]} data
+ * @property {number} status
+ * @property {string} statusText
+ * @property {SupabaseError|null} error
+ */
+
+/**
+ * @exports SupabaseHatData
+ * @typedef {object} SupabaseHatData
+ * @property {HatData} data
  * @property {number} status
  * @property {string} statusText
  * @property {SupabaseError|null} error
