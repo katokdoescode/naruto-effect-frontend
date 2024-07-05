@@ -8,7 +8,8 @@ export const Routes = {
 	PRACTICES: 'practices',
 	PARTICIPANTS: 'participants',
 	MAIN_PAGE: 'common',
-	CV: 'cv'
+	CV: 'cv',
+	HAT: 'hat'
 };
 
 export const Placeholder = {

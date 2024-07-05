@@ -1,5 +1,6 @@
 @import 'fonts.css';
 @import 'vars.css';
+@import 'animations.css';
 
 :root {
 	color-scheme: var(--color-scheme);

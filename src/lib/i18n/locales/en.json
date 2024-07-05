@@ -57,7 +57,18 @@
 		"yes": "Yes",
 		"continue": "Continue creating",
 		"uploading": "Uploading",
-		"upload": "Upload"
+		"upload": "Upload",
+		"things": {
+			"hat": {
+				"put": "Put fant",
+				"get": "Get fant",
+				"showList": "Show list",
+				"start": "Start game",
+				"back": "Back to list",
+				"create": "Create 🎩",
+				"delete": "Delete hat"
+			}
+		}
 	},
 	"cookie": "Site uses cookies",
 	"placeholder": {
@@ -77,6 +88,13 @@
 		"cv": {
 			"title": "Title",
 			"description": "Text"
+		},
+		"things": {
+			"hat": {
+				"inputName": "Фант",
+				"name": "Name",
+				"password": "Password (optional)"
+			}
 		}
 	},
 	"messages": {
@@ -89,10 +107,29 @@
 			},
 			"practice": {
 				"delete": "Really want to delete practice's page"
+			},
+			"hat": {
+				"start": "Are you sure you wanna start? You'll not able to put new words",
+				"delete": "Are you sure you want to delete this?"
+			}
+		},
+		"prompt": {
+			"hat": {
+				"password": "This hat has password, type it 🧙‍♂️"
+			}
+		},
+		"error": {
+			"hat": {
+				"delete": "Error while deleting 🤷‍♀️"
 			}
 		},
 		"deleted": "Entry deleted",
-		"anotherLanguageOnly": "Sorry, there is no english version of this text yet. Here is it in russian:"
+		"anotherLanguageOnly": "Sorry, there is no english version of this text yet. Here is it in russian:",
+		"things": {
+			"hat": {
+				"noHats": "No hats, but you can create one."
+			}
+		}
 	},
 	"tabs": {
 		"options": {
@@ -108,5 +145,11 @@
 	},
 	"errors": {
 		"sizeLimit": "File size limit is 4mb."
+	},
+	"things": {
+		"hat": {
+			"title": "Hats:",
+			"create": "New hat"
+		}
 	}
 }
