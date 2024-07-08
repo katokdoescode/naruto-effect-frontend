@@ -160,7 +160,7 @@
 	</form>
 
 	<details class="fant-details">
-		<summary>{$_('button.things.hat.showList')}</summary>
+		<summary>{$_('button.things.hat.showList')} | {wordsCount} 🎟️</summary>
 
 		<ul class="fant-list">
 			{#each words as word, idx}
