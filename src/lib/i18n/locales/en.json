@@ -149,7 +149,15 @@
 	"things": {
 		"hat": {
 			"title": "Hats:",
-			"create": "New hat"
+			"create": "New hat",
+			"head": {
+				"title": "🧙‍♂️ Hats:",
+				"description": "Hats store what you put in them, but they can return it in a different order.",
+				"single": {
+					"title": "🎩 Hat –",
+					"description": "This is just a hat: you can put text in it, and it will return it randomly."
+				}
+			}
 		}
 	}
 }

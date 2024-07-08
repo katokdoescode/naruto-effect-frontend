@@ -1,22 +1,22 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 
-	/** @type{string} */
+	/** @type {string} */
 	export let value = '';
 
-	/** @type{string} */
+	/** @type {string} */
 	export let id;
 
-	/** @type{string} */
+	/** @type {string} */
 	export let placeholder = '';
 
-	/** @type{string} */
+	/** @type {string} */
 	export let nativeClass = '';
 
-	/** @type{boolean} */
-	export let resize = false;
+	/** @type {'none'|'both'|'horizontal'|'vertical'} */
+	export let resize = 'none';
 
-	/** @type{boolean} */
+	/** @type {boolean} */
 	export let round = false;
 
 	/** @type {boolean} */
@@ -27,27 +27,30 @@
 
 	let element;
 
+	export function clearValue() {
+		value = '';
+	}
+
 	/** Updates textarea height based on content */
-	function updateHeight({ target }) {
-		if (!target) return;
-		target.style.height = 'auto';
-		target.style.height = target.scrollHeight + 'px';
+	export function updateHeight() {
+		if (!element) return;
+		element.style.height = 'auto';
+		element.style.height = element.scrollHeight + 'px';
 	}
 
 	const dispatch = createEventDispatcher();
 
 	$: dispatch('input', value);
-	$: if (element) updateHeight({ target: element });
+	$: if (element) updateHeight();
 	$: classes = `${nativeClass} textarea ${round ? 'round' : ''} ${
 		bordered ? 'bordered' : ''
-	} ${color ? color : ''}`;
+	} ${color ? color : ''} ${resize ? resize : ''}`;
 </script>
 
 <textarea
 	bind:this={element}
 	{id}
 	class={classes}
-	class:resize
 	{placeholder}
 	bind:value
 	on:input={updateHeight}
@@ -68,7 +71,15 @@
 		outline-offset: -1px;
 	}
 
-	.textarea.resize {
+	.textarea.both {
+		resize: both;
+	}
+
+	.textarea.vertical {
+		resize: vertical;
+	}
+
+	.textarea.horizontal {
 		resize: both;
 	}
 

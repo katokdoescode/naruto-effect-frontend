@@ -80,6 +80,12 @@
 	}
 </script>
 
+<svelte:head>
+	<title>{$_('things.hat.head.title')}</title>
+	<meta
+		name="description"
+		content={$_('things.hat.head.description')} />
+</svelte:head>
 <h1>{$_('things.hat.title')}</h1>
 <ul class="col">
 	{#each hats as hat}

@@ -1,8 +1,8 @@
 <script>
 	import InlineIcon from '$lib/ui/InlineIcon.svelte';
 	import { createEventDispatcher } from 'svelte';
-
 	import { _ } from 'svelte-i18n';
+
 	export let wordsCount = 0;
 	export let showStars = false;
 	export let showItemPutting = false;

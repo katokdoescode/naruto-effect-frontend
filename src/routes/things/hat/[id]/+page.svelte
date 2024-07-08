@@ -1,10 +1,10 @@
 <script>
 	import Button from '$lib/ui/Button.svelte';
-	import Input from '$lib/ui/Input.svelte';
 	import Hat from '$lib/modules/things/Hat.svelte';
 	import { _ } from 'svelte-i18n';
 	import Fant from '$lib/modules/things/Fant.svelte';
 	import { onMount } from 'svelte';
+	import Textarea from '$lib/ui/Textarea.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data = undefined;
@@ -18,6 +18,7 @@
 	let isDeleting = false;
 	let words = hat?.words || [];
 	let wordsCount = words.length;
+	let fantInput;
 
 	async function deleteFant(id = undefined, shouldConfirm = false) {
 		if (
@@ -80,6 +81,10 @@
 			words = response.data.words;
 			wordsCount = words.length;
 			newFant = '';
+			if (fantInput) {
+				fantInput.clearValue();
+				fantInput.updateHeight();
+			}
 		} catch (e) {
 			console.error(e);
 		} finally {
@@ -116,6 +121,13 @@
 	});
 </script>
 
+<svelte:head>
+	<title>{$_('things.hat.head.single.title')} {hat.name}</title>
+	<meta
+		name="description"
+		content={$_('things.hat.head.single.description')} />
+</svelte:head>
+
 <a href="/things/hat">← {$_('button.things.hat.back')}</a>
 <h1>{hat.name}</h1>
 
@@ -124,10 +136,12 @@
 		name="hat"
 		class="fant-form"
 		on:submit|preventDefault>
-		<Input
+		<Textarea
+			bind:this={fantInput}
 			id="fant-name"
 			bordered={true}
 			placeholder={$_('placeholder.things.hat.inputName')}
+			resize="vertical"
 			round={true}
 			bind:value={newFant}
 		/>
@@ -162,9 +176,9 @@
 
 	<Button
 		color="black"
-		on:click={startGame}
-	>{$_('button.things.hat.start')}</Button
-	>
+		on:click={startGame}>
+		{$_('button.things.hat.start')}
+	</Button>
 {/if}
 
 <Hat
@@ -176,6 +190,8 @@
 
 {#if fantText}
 	<Fant text={fantText} />
+{:else}
+	<div class="empty-fant"></div>
 {/if}
 
 <style>
@@ -203,5 +219,9 @@
 		padding-top: 0.5lh;
 		padding-bottom: 0.5lh;
 		cursor: pointer;
+	}
+
+	.empty-fant {
+		min-height: 200px;
 	}
 </style>
