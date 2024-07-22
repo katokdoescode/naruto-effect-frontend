@@ -1,32 +1,25 @@
 <script>
-	import Button from '$lib/ui/Button.svelte';
-	import { createEventDispatcher, getContext } from 'svelte';
-	import { _, locale } from 'svelte-i18n';
-	import LangSwitch from './LangSwitch.svelte';
-	import ThemeSwitch from './ThemeSwitch.svelte';
-	import SignOut from './hokage/SignOut.svelte';
+import Button from '$lib/ui/Button.svelte';
+import { createEventDispatcher, getContext } from 'svelte';
+import { _, locale } from 'svelte-i18n';
+import LangSwitch from './LangSwitch.svelte';
+import ThemeSwitch from './ThemeSwitch.svelte';
+import SignOut from './hokage/SignOut.svelte';
 
-	/**
-	 * [ ] Спрашивать пользователя хочет ли он действительно уйти со страницы
-	 * [ ] На главной странице не показывать кнопки удалить и публикация
-	 * [ ] Добавить модалку
-	 * [ ] Добавить кнопку «Закрыть» на странице логина
-	 */
+const dispatch = createEventDispatcher();
 
-	const dispatch = createEventDispatcher();
+const authorized = getContext('authorized');
+const isFooterEditorOpen = getContext('isFooterEditorOpen');
 
-	const authorized = getContext('authorized');
-	const isFooterEditorOpen = getContext('isFooterEditorOpen');
+/** @type{PageLinkLocale[]} */
+export let pageLinks = null;
 
-	/** @type{PageLinkLocale[]} */
-	export let pageLinks = null;
+/** @type {string} */
+export let participateLink = null;
 
-	/** @type {string} */
-	export let participateLink = null;
-
-	function showFooterEditor() {
-		isFooterEditorOpen.set(true);
-	}
+function showFooterEditor() {
+	isFooterEditorOpen.set(true);
+}
 </script>
 
 <div

@@ -1,30 +1,31 @@
 <script>
-	import Button from '$lib/ui/Button.svelte';
-	import { onMount } from 'svelte';
-	import { _ } from 'svelte-i18n';
+import Button from '$lib/ui/Button.svelte';
+import { onMount } from 'svelte';
+import { _ } from 'svelte-i18n';
 
-	$: open = false;
+let open = false;
+$: open = false;
 
-	function confirmCookies() {
-		localStorage.setItem('agree-with-cookies', 'true');
-		closeModal();
-	}
+function confirmCookies() {
+	localStorage.setItem('agree-with-cookies', 'true');
+	closeModal();
+}
 
-	function closeModal() {
-		open = false;
-	}
-	function showModal() {
-		open = true;
-	}
+function closeModal() {
+	open = false;
+}
+function showModal() {
+	open = true;
+}
 
-	function mount() {
-		const isAgree = Boolean(localStorage.getItem('agree-with-cookies'));
+function mount() {
+	const isAgree = Boolean(localStorage.getItem('agree-with-cookies'));
 
-		if (isAgree) closeModal();
-		else showModal();
-	}
+	if (isAgree) closeModal();
+	else showModal();
+}
 
-	onMount(mount);
+onMount(mount);
 </script>
 
 {#if open}

@@ -1,8 +1,8 @@
 <script>
-	import TextEditor from '$lib/modules/TextEditor.svelte';
+import TextEditor from '$lib/modules/TextEditor.svelte';
 </script>
 
-<TextEditor id="mainEditor" />
+<TextEditor id="mainEditor" value="" />
 
 <style>
 	:global(.main-page-content) {

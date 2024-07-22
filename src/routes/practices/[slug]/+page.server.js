@@ -38,6 +38,6 @@ export async function load({ params, cookies }) {
 
 	return {
 		practice: { ...practice, originalSlug: structuredClone(practice.slug) },
-		practices
+		practices,
 	};
 }

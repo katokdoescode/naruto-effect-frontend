@@ -1,81 +1,82 @@
 <script>
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
-	import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
-	import Button from '$lib/ui/Button.svelte';
-	import autoTranslate from '$lib/utils/autoTranslate';
-	import isLinkActive from '$lib/utils/isLinkActive';
-	import { getContext } from 'svelte';
-	import { _, locale, locales } from 'svelte-i18n';
+import { goto } from '$app/navigation';
+import { page } from '$app/stores';
+import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
+import Button from '$lib/ui/Button.svelte';
+import autoTranslate from '$lib/utils/autoTranslate';
+import isLinkActive from '$lib/utils/isLinkActive';
+import { getContext } from 'svelte';
+import { _, locale, locales } from 'svelte-i18n';
 
-	/** @type{Practices} */
-	export let practices = [];
-	/** @type {PageLinkLocale[]}*/
-	export let pageLinks = [];
-	const authorized = getContext('authorized');
-	const needSave = getContext('needSave');
-	const isEditingState = getContext('isEditingState');
-	const isShowConfirmExitModal = getContext('isShowConfirmExitModal');
-	const confirmModalDecision = getContext('confirmModalDecision');
+/** @type{Practices} */
+export let practices = [];
+/** @type {PageLinkLocale[]}*/
+export let pageLinks = [];
+const authorized = getContext('authorized');
+const needSave = getContext('needSave');
+const isEditingState = getContext('isEditingState');
+const isShowConfirmExitModal = getContext('isShowConfirmExitModal');
+const confirmModalDecision = getContext('confirmModalDecision');
 
-	$: pageName = $page.url.pathname.split('/')[1];
-	$: isMainPage = pageName === '';
-	$: isCreatingMode = $page.url.pathname.includes('/create');
-	$: localePostfix = isCreatingMode ? 'new' : 'edit';
+$: pageName = $page.url.pathname.split('/')[1];
+$: isMainPage = pageName === '';
+$: isCreatingMode = $page.url.pathname.includes('/create');
+$: localePostfix = isCreatingMode ? 'new' : 'edit';
 
-	/**
-	 * Automatically translates name
-	 * if name was not found on the english version
-	 *
-	 * @param {LocaleObject} title
-	 * @returns {string}
-	 */
-	function translateTitle(title) {
-		return $locale === 'en'
-			? autoTranslate($locale, title[anotherLocale])
-			: title[anotherLocale];
-	}
+/**
+ * Automatically translates name
+ * if name was not found on the english version
+ *
+ * @param {LocaleObject} title
+ * @returns {string}
+ */
+function translateTitle(title) {
+	return $locale === 'en'
+		? autoTranslate($locale, title[anotherLocale])
+		: title[anotherLocale];
+}
 
-	async function cancelCreating() {
-		isShowConfirmExitModal.set(true);
+async function cancelCreating() {
+	isShowConfirmExitModal.set(true);
 
-		confirmModalDecision.subscribe(async (d) => {
-			const decision = await d;
-			if (decision === undefined) return;
+	confirmModalDecision.subscribe(async (d) => {
+		const decision = await d;
 
-			if (!decision) {
-				if (isCreatingMode) {
-					isEditingState.set(false);
-					goto('/');
-				}
+		if (decision === undefined) return;
+
+		if (!decision) {
+			if (isCreatingMode) {
 				isEditingState.set(false);
-			} else {
-				if (!isCreatingMode) {
-					needSave.set(true);
-					isEditingState.set(false);
-				}
+				goto('/');
 			}
-		});
-	}
+			isEditingState.set(false);
+		} else {
+			if (!isCreatingMode) {
+				needSave.set(true);
+				isEditingState.set(false);
+			}
+		}
+	})();
+}
 
-	$: visiblePractices = practices
-		? practices
+$: visiblePractices = practices
+	? practices
 			.filter(({ isVisible }) => Boolean(isVisible))
 			.sort((a, b) => {
 				return a.title[$locale].localeCompare(b.title[$locale]); // Sort practices by localized title [a-z]
 			})
-		: [];
+	: [];
 
-	$: disabledPractices = practices
-		? practices
+$: disabledPractices = practices
+	? practices
 			.filter(({ isVisible }) => Boolean(!isVisible))
 			.filter(({ title }) => title[$locale])
 			.sort((a, b) => {
 				return a.title[$locale].localeCompare(b.title[$locale]); // Sort practices by localized title [a-z]
 			})
-		: [];
+	: [];
 
-	$: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
+$: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 </script>
 
 <nav

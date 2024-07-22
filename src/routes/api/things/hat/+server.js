@@ -11,11 +11,10 @@ export async function GET() {
 	if (!error && hat) {
 		return json({
 			success: true,
-			data: hat
+			data: hat,
 		});
-	} else {
-		return json(createError(false, error.message));
 	}
+	return json(createError(false, error.message));
 }
 
 export async function POST({ request }) {
@@ -32,7 +31,6 @@ export async function POST({ request }) {
 
 	if (!error && data) {
 		return json({ success: true, data: hat });
-	} else {
-		return json(createError(false, error.message));
 	}
+	return json(createError(false, error.message));
 }

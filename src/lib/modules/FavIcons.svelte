@@ -1,9 +1,9 @@
 <script>
-	import { ColorSchemes } from '$lib/constants';
-	import { locale } from 'svelte-i18n';
-	$: formattedLocale = $locale.split('-').length
-		? $locale.split('-')[0]
-		: $locale;
+import { ColorSchemes } from '$lib/constants';
+import { locale } from 'svelte-i18n';
+$: formattedLocale = $locale.split('-').length
+	? $locale.split('-')[0]
+	: $locale;
 </script>
 
 <svelte:head>

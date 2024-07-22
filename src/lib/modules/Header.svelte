@@ -1,12 +1,12 @@
 <script>
-	import { page } from '$app/stores';
-	import SignOut from '$lib/modules/hokage/SignOut.svelte';
-	import { createEventDispatcher, getContext } from 'svelte';
-	import ToggleEditMode from './hokage/ToggleEditMode.svelte';
+import { page } from '$app/stores';
+import SignOut from '$lib/modules/hokage/SignOut.svelte';
+import { createEventDispatcher, getContext } from 'svelte';
+import ToggleEditMode from './hokage/ToggleEditMode.svelte';
 
-	const dispatch = createEventDispatcher();
+const dispatch = createEventDispatcher();
 
-	const authorized = getContext('authorized');
+const authorized = getContext('authorized');
 </script>
 
 <header class="content-header no-mobile">

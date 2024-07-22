@@ -1,9 +1,9 @@
 <script>
-	import InlineIcon from '$lib/ui/InlineIcon.svelte';
+import InlineIcon from '$lib/ui/InlineIcon.svelte';
 
-	export let text = '';
-	$: text = text.trim();
-	$: isLong = text.length > 20;
+export let text = '';
+$: text = text.trim();
+$: isLong = text.length > 20;
 </script>
 
 <div

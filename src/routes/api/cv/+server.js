@@ -8,9 +8,8 @@ export async function GET() {
 
 	if (!error && cv) {
 		return json({ success: true, data: cv });
-	} else {
-		return json(createError(false, error.message));
 	}
+	return json(createError(false, error.message));
 }
 
 export async function PATCH({ request }) {
@@ -26,7 +25,6 @@ export async function PATCH({ request }) {
 
 	if (!error && data) {
 		return json({ success: true, data });
-	} else {
-		return json(createError(false, error.message));
 	}
+	return json(createError(false, error.message));
 }

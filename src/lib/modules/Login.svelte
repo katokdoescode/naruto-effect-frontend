@@ -1,39 +1,39 @@
 <script>
-	import { enhance } from '$app/forms';
-	import Button from '$lib/ui/Button.svelte';
-	import Input from '$lib/ui/Input.svelte';
-	import { createEventDispatcher, getContext } from 'svelte';
-	import { _ } from 'svelte-i18n';
-	const dispatch = createEventDispatcher();
-	/**
-	 * @type {boolean}
-	 */
-	export let open = false;
-	const authorized = getContext('authorized');
-	let isLoading = false;
-	let errorMessage;
+import { enhance } from '$app/forms';
+import Button from '$lib/ui/Button.svelte';
+import Input from '$lib/ui/Input.svelte';
+import { createEventDispatcher, getContext } from 'svelte';
+import { _ } from 'svelte-i18n';
+const dispatch = createEventDispatcher();
+/**
+ * @type {boolean}
+ */
+export let open = false;
+const authorized = getContext('authorized');
+let isLoading = false;
+let errorMessage;
 
-	function closeModal() {
-		errorMessage = undefined;
-		isLoading = false;
-		open = false;
-		dispatch('close');
-	}
+function closeModal() {
+	errorMessage = undefined;
+	isLoading = false;
+	open = false;
+	dispatch('close');
+}
 
-	async function signIn() {
-		isLoading = true;
+async function signIn() {
+	isLoading = true;
 
-		return async ({ result }) => {
-			if (result.success) {
-				isLoading = false;
-				dispatch('success');
-				closeModal();
-			} else {
-				errorMessage = result.errorMessage;
-				isLoading = false;
-			}
-		};
-	}
+	return async ({ result }) => {
+		if (result.success) {
+			isLoading = false;
+			dispatch('success');
+			closeModal();
+		} else {
+			errorMessage = result.errorMessage;
+			isLoading = false;
+		}
+	};
+}
 </script>
 
 <dialog

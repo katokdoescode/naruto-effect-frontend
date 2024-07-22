@@ -1,11 +1,11 @@
 <script>
-	export let noTop = false;
-	export let noBottom = false;
-	export let noPads = false;
+export let noTop = false;
+export let noBottom = false;
+export let noPads = false;
 
-	$: classes = `shadow-wrapper ${noTop ? 'no-top' : ''} ${
-		noBottom ? 'no-bottom' : ''
-	} ${noPads ? 'no-pads' : ''}`;
+$: classes = `shadow-wrapper ${noTop ? 'no-top' : ''} ${
+	noBottom ? 'no-bottom' : ''
+} ${noPads ? 'no-pads' : ''}`;
 </script>
 
 <div class={classes}>

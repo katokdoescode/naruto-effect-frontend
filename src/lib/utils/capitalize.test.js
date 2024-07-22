@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import capitalize from './capitalize';
 
@@ -9,7 +9,7 @@ describe('capitalize', () => {
 
 	it('capitalizes the first letters of each word in a sentence', () => {
 		expect(capitalize('hello world! this is a test.')).toBe(
-			'Hello World! This Is A Test.'
+			'Hello World! This Is A Test.',
 		);
 	});
 
@@ -23,7 +23,7 @@ describe('capitalize', () => {
 
 	it('handles strings with multiple spaces correctly', () => {
 		expect(capitalize('hello   world!  this   is a test.')).toBe(
-			'Hello   World!  This   Is A Test.'
+			'Hello   World!  This   Is A Test.',
 		);
 	});
 

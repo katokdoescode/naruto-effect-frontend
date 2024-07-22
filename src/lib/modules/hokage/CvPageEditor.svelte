@@ -1,13 +1,13 @@
 <script>
-	import TextEditor from '$lib/modules/TextEditor.svelte';
-	import Textarea from '$lib/ui/Textarea.svelte';
-	import { createEventDispatcher } from 'svelte';
-	import { locale } from 'svelte-i18n';
+import TextEditor from '$lib/modules/TextEditor.svelte';
+import Textarea from '$lib/ui/Textarea.svelte';
+import { createEventDispatcher } from 'svelte';
+import { locale } from 'svelte-i18n';
 
-	/** @type {CvData} */
-	export let localValue;
-	const dispatch = createEventDispatcher();
-	$: dispatch('input', localValue);
+/** @type {CvData} */
+export let localValue;
+const dispatch = createEventDispatcher();
+$: dispatch('input', localValue);
 </script>
 
 <Textarea

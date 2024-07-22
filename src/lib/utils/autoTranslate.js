@@ -12,9 +12,10 @@ const slugger = new CarSlugger();
  */
 export default function (targetLang, text) {
 	let newString = '';
+	let lang = targetLang;
 
-	if (targetLang.includes('-')) {
-		targetLang = targetLang.split('-')[0];
+	if (lang.includes('-')) {
+		lang = lang.split('-')[0];
 	}
 
 	switch (targetLang) {

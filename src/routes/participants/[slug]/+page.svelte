@@ -1,41 +1,41 @@
 <script>
-	/* eslint-disable svelte/no-at-html-tags */
-	import AlertMessage from '$lib/modules/AlertMessage.svelte';
-	import ParticipantEditor from '$lib/modules/hokage/ParticipantEditor.svelte';
-	import { clean } from '$lib/utils/objectsTools.js';
-	import { CarSlugger } from '@katokdoescode/car-slugger';
-	import { getContext } from 'svelte';
-	import autoTranslate from '$lib/utils/autoTranslate.js';
-	import { _, locale, locales } from 'svelte-i18n';
+/* eslint-disable svelte/no-at-html-tags */
+import AlertMessage from '$lib/modules/AlertMessage.svelte';
+import ParticipantEditor from '$lib/modules/hokage/ParticipantEditor.svelte';
+import autoTranslate from '$lib/utils/autoTranslate.js';
+import { clean } from '$lib/utils/objectsTools.js';
+import { CarSlugger } from '@katokdoescode/car-slugger';
+import { getContext } from 'svelte';
+import { _, locale, locales } from 'svelte-i18n';
 
-	const isEditingState = getContext('isEditingState');
-	const authorized = getContext('authorized');
-	const participantData = getContext('participantData');
+const isEditingState = getContext('isEditingState');
+const authorized = getContext('authorized');
+const participantData = getContext('participantData');
 
-	const slugger = new CarSlugger();
+const slugger = new CarSlugger();
 
-	export let data;
+export let data;
 
-	$: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
+$: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 
-	/** @type {Participant} */
-	$: participant = data?.participant;
+/** @type {Participant} */
+$: participant = data?.participant;
 
-	/** @type{Participant} */
-	$: localValue = participant;
+/** @type{Participant} */
+$: localValue = participant;
 
-	$: localValue.slug = Object.values(localValue.name).find(Boolean)
-		? slugger.getSlug(Object.values(localValue.name).find(Boolean))
-		: '';
+$: localValue.slug = Object.values(localValue.name).find(Boolean)
+	? slugger.getSlug(Object.values(localValue.name).find(Boolean))
+	: '';
 
-	$: participantData.set(clean(localValue));
+$: participantData.set(clean(localValue));
 
-	$: isNotLocalized = !participant.name[$locale];
+$: isNotLocalized = !participant.name[$locale];
 
-	$: autoTranslatedName =
-		isNotLocalized && $locale === 'en'
-			? autoTranslate($locale, participant.name[anotherLocale])
-			: participant.name[anotherLocale];
+$: autoTranslatedName =
+	isNotLocalized && $locale === 'en'
+		? autoTranslate($locale, participant.name[anotherLocale])
+		: participant.name[anotherLocale];
 </script>
 
 <svelte:head>

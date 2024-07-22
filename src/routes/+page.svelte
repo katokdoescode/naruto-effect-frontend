@@ -1,25 +1,25 @@
 <script>
-	/* eslint-disable svelte/no-at-html-tags */
-	import { BannerModes } from '$lib/constants';
-	import YouTube from '$lib/modules/YouTube.svelte';
-	import PageEditor from '$lib/modules/hokage/PageEditor.svelte';
+/* eslint-disable svelte/no-at-html-tags */
+import { BannerModes } from '$lib/constants';
+import YouTube from '$lib/modules/YouTube.svelte';
+import PageEditor from '$lib/modules/hokage/PageEditor.svelte';
 
-	import { getContext } from 'svelte';
-	import { locale } from 'svelte-i18n';
+import { getContext } from 'svelte';
+import { locale } from 'svelte-i18n';
 
-	const isEditingState = getContext('isEditingState');
-	const contentPage = getContext('contentPage');
+const isEditingState = getContext('isEditingState');
+const contentPage = getContext('contentPage');
 
-	export let data;
+export let data;
 
-	/** @type {MainPageData} */
-	const pageData = data?.pageData;
+/** @type {MainPageData} */
+const pageData = data?.pageData;
 
-	contentPage.set(pageData);
+contentPage.set(pageData);
 
-	let localValue = pageData;
+let localValue = pageData;
 
-	$: contentPage.set(localValue);
+$: contentPage.set(localValue);
 </script>
 
 <svelte:head>
