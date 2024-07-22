@@ -34,5 +34,5 @@ jobs:
       - name: Run checks and tests
         run: |
           bun run check
-          bun run biome:check
-          bun run test:integration
+          bun run check:biome
+          bun run test:unit
