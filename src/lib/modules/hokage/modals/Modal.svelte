@@ -1,13 +1,13 @@
 <script>
-	export let open = false;
-	export let message = '';
+export let open = false;
+export let message = '';
 
-	let element;
+let element;
 
-	$: if (element) {
-		if (open) element.showModal();
-		else element.close();
-	}
+$: if (element) {
+	if (open) element.showModal();
+	else element.close();
+}
 </script>
 
 <dialog

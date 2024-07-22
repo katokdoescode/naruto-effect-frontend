@@ -1,72 +1,73 @@
 <script>
-	import Button from '$lib/ui/Button.svelte';
-	import Input from '$lib/ui/Input.svelte';
-	import Textarea from '$lib/ui/Textarea.svelte';
-	import { getContext } from 'svelte';
-	import { _, locale } from 'svelte-i18n';
-	const isFooterEditorOpen = getContext('isFooterEditorOpen');
-	const footerEditorState = getContext('footerEditorState');
+import Button from '$lib/ui/Button.svelte';
+import Input from '$lib/ui/Input.svelte';
+import Textarea from '$lib/ui/Textarea.svelte';
+import { getContext } from 'svelte';
+import { _, locale } from 'svelte-i18n';
+const isFooterEditorOpen = getContext('isFooterEditorOpen');
+const footerEditorState = getContext('footerEditorState');
 
-	export let nativeClasses = '';
-	export let id;
-	export let pageData;
+export let nativeClasses = '';
+export let id;
+export let pageData;
 
-	let firstFocusElement;
+let firstFocusElement;
+let open = false;
 
-	$: isReady =
-		!!pageData &&
-		[pageData.id, pageData.pageLinks, pageData.year, pageData.copyright].every(
-			(entry) => !!entry
-		);
-	$: open = $isFooterEditorOpen;
-	$: if (open && firstFocusElement) {
-		firstFocusElement.focus();
-	}
+$: isReady =
+	!!pageData &&
+	[pageData.id, pageData.pageLinks, pageData.year, pageData.copyright].every(
+		(entry) => !!entry,
+	);
+$: open = $isFooterEditorOpen;
+$: if (open && firstFocusElement) {
+	firstFocusElement.focus();
+}
 
-	let submitBtn;
+let submitBtn;
 
-	footerEditorState.set('save');
+footerEditorState.set('save');
 
-	/** @type {"transparent"|"gray"|"black"|"green"|"red"|"white"} Color of the button */
-	$: color =
-		$footerEditorState === 'success'
-			? 'green'
-			: $footerEditorState === 'error'
+/** @type {"transparent"|"gray"|"black"|"green"|"red"|"white"} Color of the button */
+$: color =
+	$footerEditorState === 'success'
+		? 'green'
+		: $footerEditorState === 'error'
 			? 'red'
 			: 'gray';
 
-	function blurLastElement() {
-		firstFocusElement.focus();
+function blurLastElement() {
+	firstFocusElement.focus();
+}
+
+export function submit() {
+	submitBtn.nativeClick();
+}
+
+async function submitForm() {
+	footerEditorState.set('loading');
+
+	/** @type {{success: boolean, data: MainPageData}} */
+	const response = await fetch('/api/mainPage', {
+		method: 'PATCH',
+		body: JSON.stringify(pageData),
+	}).then((res) => res.json());
+
+	if (response.success) {
+		pageData = response.data;
+
+		footerEditorState.set('success');
+		setTimeout(() => {
+			footerEditorState.set('save');
+			isFooterEditorOpen.set(false);
+		}, 314);
+	} else {
+		footerEditorState.set('error');
+		setTimeout(() => {
+			footerEditorState.set('save');
+		}, 3500);
 	}
-
-	export function submit() {
-		submitBtn.nativeClick();
-	}
-
-	async function submitForm() {
-		footerEditorState.set('loading');
-
-		/** @type {{success: boolean, data: MainPageData}} */
-		const response = await fetch('/api/mainPage', {
-			method: 'PATCH',
-			body: JSON.stringify(pageData)
-		}).then((res) => res.json());
-
-		if (response.success) {
-			pageData = response.data;
-
-			footerEditorState.set('success');
-			setTimeout(() => {
-				footerEditorState.set('save');
-				isFooterEditorOpen.set(false);
-			}, 314);
-		} else {
-			footerEditorState.set('error');
-			setTimeout(() => {
-				footerEditorState.set('save');
-			}, 3500);
-		}
-	}
+}
 </script>
 
 {#if open}

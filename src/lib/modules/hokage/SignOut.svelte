@@ -1,21 +1,21 @@
 <script>
-	import { enhance } from '$app/forms';
-	import Button from '$lib/ui/Button.svelte';
-	import { createEventDispatcher } from 'svelte';
-	import { _ } from 'svelte-i18n';
+import { enhance } from '$app/forms';
+import Button from '$lib/ui/Button.svelte';
+import { createEventDispatcher } from 'svelte';
+import { _ } from 'svelte-i18n';
 
-	/**@type{string}*/
-	export let nativeClass = '';
+/**@type{string}*/
+export let nativeClass = '';
 
-	const dispatch = createEventDispatcher();
+const dispatch = createEventDispatcher();
 
-	async function signOut() {
-		return async ({ result }) => {
-			if (result.success) {
-				dispatch('logout');
-			}
-		};
-	}
+async function signOut() {
+	return async ({ result }) => {
+		if (result.success) {
+			dispatch('logout');
+		}
+	};
+}
 </script>
 
 <div class={'signout ' + nativeClass}>

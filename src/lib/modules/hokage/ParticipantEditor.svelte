@@ -1,14 +1,14 @@
 <script>
-	import { Placeholder } from '$lib/constants';
-	import TextEditor from '$lib/modules/TextEditor.svelte';
-	import Textarea from '$lib/ui/Textarea.svelte';
-	import { createEventDispatcher } from 'svelte';
-	import { _, locale } from 'svelte-i18n';
+import { Placeholder } from '$lib/constants';
+import TextEditor from '$lib/modules/TextEditor.svelte';
+import Textarea from '$lib/ui/Textarea.svelte';
+import { createEventDispatcher } from 'svelte';
+import { _, locale } from 'svelte-i18n';
 
-	/** @type {Participant} */
-	export let localValue;
-	const dispatch = createEventDispatcher();
-	$: dispatch('input', localValue);
+/** @type {Participant} */
+export let localValue;
+const dispatch = createEventDispatcher();
+$: dispatch('input', localValue);
 </script>
 
 <Textarea

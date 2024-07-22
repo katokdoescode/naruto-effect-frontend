@@ -1,124 +1,124 @@
 <script>
-	import Button from '$lib/ui/Button.svelte';
-	import Hat from '$lib/modules/things/Hat.svelte';
-	import { _ } from 'svelte-i18n';
-	import Fant from '$lib/modules/things/Fant.svelte';
-	import { onMount } from 'svelte';
-	import Textarea from '$lib/ui/Textarea.svelte';
+import Fant from '$lib/modules/things/Fant.svelte';
+import Hat from '$lib/modules/things/Hat.svelte';
+import Button from '$lib/ui/Button.svelte';
+import Textarea from '$lib/ui/Textarea.svelte';
+import { onMount } from 'svelte';
+import { _ } from 'svelte-i18n';
 
-	/** @type {import('./$types').PageData} */
-	export let data = undefined;
+/** @type {import('./$types').PageData} */
+export let data = undefined;
 
-	/** @type {HatData|undefined} */
-	let hat = data.hat || undefined;
-	let hatIcon;
-	let fantText = '';
-	let newFant = '';
-	let isAdding = false;
-	let isDeleting = false;
-	let words = hat?.words || [];
-	let wordsCount = words.length;
-	let fantInput;
+/** @type {HatData|undefined} */
+let hat = data.hat || undefined;
+let hatIcon;
+let fantText = '';
+let newFant = '';
+let isAdding = false;
+let isDeleting = false;
+let words = hat?.words || [];
+let wordsCount = words.length;
+let fantInput;
 
-	async function deleteFant(id = undefined, shouldConfirm = false) {
-		if (
-			id === undefined ||
-			(shouldConfirm && !confirm($_('messages.confirm.hat.delete')))
-		) {
-			return;
-		}
+async function deleteFant(id = undefined, shouldConfirm = false) {
+	if (
+		id === undefined ||
+		(shouldConfirm && !confirm($_('messages.confirm.hat.delete')))
+	) {
+		return;
+	}
 
+	isDeleting = true;
+	try {
+		const newWords = words.filter((_, idx) => idx !== id);
+		const res = await fetch(`/api/things/hat/${hat.id}`, {
+			method: 'PATCH',
+			body: JSON.stringify({ words: newWords }),
+		});
+		const response = await res.json();
+		if (!response.success) throw new Error(response.errorMessage);
+		words = newWords;
+		wordsCount = words.length;
+	} catch (e) {
+		console.error(e);
+	} finally {
+		isDeleting = false;
+	}
+}
+
+async function getFant() {
+	if (wordsCount) {
+		fantText = null;
 		isDeleting = true;
+
+		const randomFantIdx = Math.floor(Math.random() * wordsCount);
+		const randomFant = words[randomFantIdx];
+
 		try {
-			const newWords = words.filter((_, idx) => idx !== id);
-			const res = await fetch('/api/things/hat/' + hat.id, {
-				method: 'PATCH',
-				body: JSON.stringify({ words: newWords })
-			});
-			const response = await res.json();
-			if (!response.success) throw new Error(response.errorMessage);
-			words = newWords;
-			wordsCount = words.length;
+			await deleteFant(randomFantIdx);
 		} catch (e) {
 			console.error(e);
 		} finally {
+			fantText = randomFant;
 			isDeleting = false;
 		}
 	}
+}
 
-	async function getFant() {
-		if (wordsCount) {
-			fantText = null;
-			isDeleting = true;
-
-			const randomFantIdx = Math.floor(Math.random() * wordsCount);
-			const randomFant = words[randomFantIdx];
-
-			try {
-				await deleteFant(randomFantIdx);
-			} catch (e) {
-				console.error(e);
-			} finally {
-				fantText = randomFant;
-				isDeleting = false;
-			}
-		}
-	}
-
-	async function putFant() {
-		if (!newFant && !hat?.isPutting) return;
-		isAdding = true;
-		try {
-			const res = await hatIcon.putItem(() => {
-				return fetch('/api/things/hat/' + hat.id, {
-					method: 'PATCH',
-					body: JSON.stringify({ words: [...words, newFant] })
-				});
-			});
-			const response = await res.json();
-			if (!response.success) throw new Error(response.errorMessage);
-
-			words = response.data.words;
-			wordsCount = words.length;
-			newFant = '';
-			if (fantInput) {
-				fantInput.clearValue();
-				fantInput.updateHeight();
-			}
-		} catch (e) {
-			console.error(e);
-		} finally {
-			isAdding = false;
-		}
-	}
-
-	async function startGame() {
-		if (!confirm($_('messages.confirm.hat.start'))) return;
-
-		try {
-			const res = await fetch('/api/things/hat/' + hat.id, {
+async function putFant() {
+	if (!newFant && !hat?.isPutting) return;
+	isAdding = true;
+	try {
+		const res = await hatIcon.putItem(() => {
+			return fetch(`/api/things/hat/${hat.id}`, {
 				method: 'PATCH',
-				body: JSON.stringify({ isPutting: false })
+				body: JSON.stringify({ words: [...words, newFant] }),
 			});
+		});
+		const response = await res.json();
+		if (!response.success) throw new Error(response.errorMessage);
 
-			const response = await res.json();
+		words = response.data.words;
+		wordsCount = words.length;
+		newFant = '';
+		if (fantInput) {
+			fantInput.clearValue();
+			fantInput.updateHeight();
+		}
+	} catch (e) {
+		console.error(e);
+	} finally {
+		isAdding = false;
+	}
+}
 
-			if (!response.success) throw new Error(response.errorMessage);
-			hat.isPutting = false;
-		} catch (e) {
-			console.error(e);
+async function startGame() {
+	if (!confirm($_('messages.confirm.hat.start'))) return;
+
+	try {
+		const res = await fetch(`/api/things/hat/${hat.id}`, {
+			method: 'PATCH',
+			body: JSON.stringify({ isPutting: false }),
+		});
+
+		const response = await res.json();
+
+		if (!response.success) throw new Error(response.errorMessage);
+		hat.isPutting = false;
+	} catch (e) {
+		console.error(e);
+	}
+}
+
+onMount(async () => {
+	if (hat.password) {
+		const userPass = prompt($_('messages.prompt.hat.password'));
+		if (userPass !== hat.password) {
+			window.location.assign('/things/hat');
+			return;
 		}
 	}
-
-	onMount(async () => {
-		if (hat.password) {
-			const userPass = prompt($_('messages.prompt.hat.password'));
-			if (userPass !== hat.password) {
-				window.location.assign('/things/hat');
-				return;
-			}
-		}
-	});
+});
 </script>
 
 <svelte:head>

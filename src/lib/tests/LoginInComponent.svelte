@@ -1,28 +1,28 @@
 <script>
-	import { enhance } from '$app/forms';
+import { enhance } from '$app/forms';
 
-	import Login from '$lib/modules/Login.svelte';
+import Login from '$lib/modules/Login.svelte';
 
-	export let data;
-	let authorized = data?.authorized;
+export let data;
+let authorized = data?.authorized;
 
-	let open = false;
+let open = false;
 
-	function openDialog() {
-		open = true;
-	}
+function openDialog() {
+	open = true;
+}
 
-	function signOut() {
-		return async ({ result }) => {
-			if (result.success) {
-				authorized = false;
-			}
-		};
-	}
+function signOut() {
+	return async ({ result }) => {
+		if (result.success) {
+			authorized = false;
+		}
+	};
+}
 
-	function authorize() {
-		authorized = true;
-	}
+function authorize() {
+	authorized = true;
+}
 </script>
 
 {#if authorized}

@@ -6,12 +6,12 @@ export async function POST({ cookies }) {
 	if (error) {
 		return json({
 			success: false,
-			errorMessage: error.message
+			errorMessage: error.message,
 		});
 	}
 
 	cookies.delete('authToken', { path: '/' });
 	return json({
-		success: true
+		success: true,
 	});
 }

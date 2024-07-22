@@ -9,7 +9,7 @@ export function handleKeydown(event) {
 	const requiredKeys = ['AltLeft', 'KeyM', 'KeyL'];
 
 	return requiredKeys.every(
-		(key, index) => Array.from(activeKeys)[index] === key
+		(key, index) => Array.from(activeKeys)[index] === key,
 	);
 }
 

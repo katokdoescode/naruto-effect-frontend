@@ -1,8 +1,8 @@
 <script>
-	import { browser } from '$app/environment';
-	import InlineIcon from '$lib/ui/InlineIcon.svelte';
-	import { _ } from 'svelte-i18n';
-	$: logoIdx = browser ? localStorage.getItem('logoIdx') || 1 : 1;
+import { browser } from '$app/environment';
+import InlineIcon from '$lib/ui/InlineIcon.svelte';
+import { _ } from 'svelte-i18n';
+$: logoIdx = browser ? localStorage.getItem('logoIdx') || 1 : 1;
 </script>
 
 <a

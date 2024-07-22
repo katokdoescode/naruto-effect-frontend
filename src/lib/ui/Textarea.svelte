@@ -1,50 +1,50 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
+import { createEventDispatcher } from 'svelte';
 
-	/** @type {string} */
-	export let value = '';
+/** @type {string} */
+export let value = '';
 
-	/** @type {string} */
-	export let id;
+/** @type {string} */
+export let id;
 
-	/** @type {string} */
-	export let placeholder = '';
+/** @type {string} */
+export let placeholder = '';
 
-	/** @type {string} */
-	export let nativeClass = '';
+/** @type {string} */
+export let nativeClass = '';
 
-	/** @type {'none'|'both'|'horizontal'|'vertical'} */
-	export let resize = 'none';
+/** @type {'none'|'both'|'horizontal'|'vertical'} */
+export let resize = 'none';
 
-	/** @type {boolean} */
-	export let round = false;
+/** @type {boolean} */
+export let round = false;
 
-	/** @type {boolean} */
-	export let bordered = false;
+/** @type {boolean} */
+export let bordered = false;
 
-	/** @type {'white'|'black'|undefined} */
-	export let color = undefined;
+/** @type {'white'|'black'|undefined} */
+export let color = undefined;
 
-	let element;
+let element;
 
-	export function clearValue() {
-		value = '';
-	}
+export function clearValue() {
+	value = '';
+}
 
-	/** Updates textarea height based on content */
-	export function updateHeight() {
-		if (!element) return;
-		element.style.height = 'auto';
-		element.style.height = element.scrollHeight + 'px';
-	}
+/** Updates textarea height based on content */
+export function updateHeight() {
+	if (!element) return;
+	element.style.height = 'auto';
+	element.style.height = `${element.scrollHeight}px`;
+}
 
-	const dispatch = createEventDispatcher();
+const dispatch = createEventDispatcher();
 
-	$: dispatch('input', value);
-	$: if (element) updateHeight();
-	$: classes = `${nativeClass} textarea ${round ? 'round' : ''} ${
-		bordered ? 'bordered' : ''
-	} ${color ? color : ''} ${resize ? resize : ''}`;
+$: dispatch('input', value);
+$: if (element) updateHeight();
+$: classes = `${nativeClass} textarea ${round ? 'round' : ''} ${
+	bordered ? 'bordered' : ''
+} ${color ? color : ''} ${resize ? resize : ''}`;
 </script>
 
 <textarea

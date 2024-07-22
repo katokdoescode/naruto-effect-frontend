@@ -1,33 +1,33 @@
 <script>
-	import Input from '$lib/ui/Input.svelte';
-	import Textarea from '$lib/ui/Textarea.svelte';
-	import { BannerModes } from '$lib/constants';
-	import { _ } from 'svelte-i18n';
-	import FileUploader from '$lib/modules/hokage/FileUploader.svelte';
+import { BannerModes } from '$lib/constants';
+import FileUploader from '$lib/modules/hokage/FileUploader.svelte';
+import Input from '$lib/ui/Input.svelte';
+import Textarea from '$lib/ui/Textarea.svelte';
+import { _ } from 'svelte-i18n';
 
-	/** @type{string|null} */
-	export let link = null;
+/** @type{string|null} */
+export let link = null;
 
-	/** @type{string|null} */
-	export let alt = null;
+/** @type{string|null} */
+export let alt = null;
 
-	/** @type{string|null} */
-	export let iframe = null;
+/** @type{string|null} */
+export let iframe = null;
 
-	/** @type{string} */
-	export let id = 'media-tablist-1';
+/** @type{string} */
+export let id = 'media-tablist-1';
 
-	/** @type {BannerModes} */
-	export let activeTab = 'image';
+/** @type {BannerModes} */
+export let activeTab = 'image';
 
-	function getPanelName(name = '') {
-		return `${id}-panel-${name}`;
-	}
+function getPanelName(name = '') {
+	return `${id}-panel-${name}`;
+}
 
-	const PanelNames = {
-		IMAGE: getPanelName(BannerModes.IMAGE),
-		VIDEO: getPanelName(BannerModes.VIDEO)
-	};
+const PanelNames = {
+	IMAGE: getPanelName(BannerModes.IMAGE),
+	VIDEO: getPanelName(BannerModes.VIDEO),
+};
 </script>
 
 <div

@@ -1,218 +1,220 @@
 <script>
-	import { beforeNavigate, goto, replaceState } from '$app/navigation';
-	import { page } from '$app/stores';
-	import Content from '$lib/modules/Content.svelte';
-	import CookieModal from '$lib/modules/CookieModal.svelte';
-	import FavIcons from '$lib/modules/FavIcons.svelte';
-	import Login from '$lib/modules/Login.svelte';
-	import MainPanel from '$lib/modules/MainPanel.svelte';
-	import MobileHeader from '$lib/modules/MobileHeader.svelte';
-	import SecondaryPanel from '$lib/modules/SecondaryPanel.svelte';
-	import FooterEditor from '$lib/modules/hokage/FooterEditor.svelte';
-	import ConfirmDelete from '$lib/modules/hokage/modals/ConfirmDelete.svelte';
-	import ConfirmExit from '$lib/modules/hokage/modals/ConfirmExit.svelte';
-	import { handleKeydown, handleKeyup } from '$lib/utils/keyboardHandler';
-	import { onMount, setContext } from 'svelte';
-	import { locale } from 'svelte-i18n';
-	import { writable } from 'svelte/store';
+import { beforeNavigate, goto, replaceState } from '$app/navigation';
+import { page } from '$app/stores';
+import Content from '$lib/modules/Content.svelte';
+import CookieModal from '$lib/modules/CookieModal.svelte';
+import FavIcons from '$lib/modules/FavIcons.svelte';
+import Login from '$lib/modules/Login.svelte';
+import MainPanel from '$lib/modules/MainPanel.svelte';
+import MobileHeader from '$lib/modules/MobileHeader.svelte';
+import SecondaryPanel from '$lib/modules/SecondaryPanel.svelte';
+import FooterEditor from '$lib/modules/hokage/FooterEditor.svelte';
+import ConfirmDelete from '$lib/modules/hokage/modals/ConfirmDelete.svelte';
+import ConfirmExit from '$lib/modules/hokage/modals/ConfirmExit.svelte';
+import { handleKeydown, handleKeyup } from '$lib/utils/keyboardHandler';
+import { onMount, setContext } from 'svelte';
+import { locale } from 'svelte-i18n';
+import { writable } from 'svelte/store';
 
-	/** @type {MainLayoutData} */
-	export let data;
+/** @type {MainLayoutData} */
+export let data;
 
-	/** @type {string}*/
-	let whereToGo;
+/** @type {string}*/
+let whereToGo;
 
-	const needSave = writable(false);
-	const combo = writable();
-	const authorized = writable();
-	const isEditingState = writable();
-	const editingPageStatus = writable();
-	const cvPage = writable();
-	const contentPage = writable();
-	const practiceData = writable();
-	const participantData = writable();
-	const appColorScheme = writable();
-	const isShowConfirmExitModal = writable();
-	const confirmModalDecision = writable();
-	const isShowDeleteModal = writable();
-	const deleteModalDecision = writable();
-	const isFooterEditorOpen = writable(false);
-	const footerEditorState = writable('save');
+let open = false;
 
-	let footerEditor;
-	let practices = data?.practices || [];
-	let participants = data?.participants || [];
-	let pageLinks = data?.pageData?.pageLinks || [];
-	let loginPhrase = data?.loginPhrase || undefined;
-	let pageDataObject = data?.pageData || null;
+const needSave = writable(false);
+const combo = writable();
+const authorized = writable();
+const isEditingState = writable();
+const editingPageStatus = writable();
+const cvPage = writable();
+const contentPage = writable();
+const practiceData = writable();
+const participantData = writable();
+const appColorScheme = writable();
+const isShowConfirmExitModal = writable();
+const confirmModalDecision = writable();
+const isShowDeleteModal = writable();
+const deleteModalDecision = writable();
+const isFooterEditorOpen = writable(false);
+const footerEditorState = writable('save');
 
-	$: firstTwoLinks = pageLinks?.slice(0, 2);
-	$: lastLink = pageLinks?.slice(2, 3)[0];
+let footerEditor;
+let practices = data?.practices || [];
+let participants = data?.participants || [];
+let pageLinks = data?.pageData?.pageLinks || [];
+let loginPhrase = data?.loginPhrase || undefined;
+let pageDataObject = data?.pageData || null;
 
-	$: canNavigate = false;
+$: firstTwoLinks = pageLinks?.slice(0, 2);
+$: lastLink = pageLinks?.slice(2, 3)[0];
 
-	/**
-	 * Control authorization data
-	 * @param {boolean} state
-	 */
-	async function authorize(state) {
-		authorized.set(state);
-		combo.set(false);
+$: canNavigate = false;
 
-		if (state) closeLoginModal();
-		else isEditingState.set(false);
+/**
+ * Control authorization data
+ * @param {boolean} state
+ */
+async function authorize(state) {
+	authorized.set(state);
+	combo.set(false);
 
-		await fetch('/api/practices')
-			.then((res) => res.json())
-			.then((data) => {
-				if (!data.success) {
-					// eslint-disable-next-line no-console
-					console.error(data.errorMessage);
-				} else {
-					practices = data.data;
-				}
-			});
+	if (state) closeLoginModal();
+	else isEditingState.set(false);
 
-		await fetch('/api/participants')
-			.then((res) => res.json())
-			.then((data) => {
-				if (!data.success) {
-					// eslint-disable-next-line no-console
-					console.error(data.errorMessage);
-				} else {
-					participants = data.data;
-				}
-			});
-
-		cleanAddressLine();
-	}
-
-	/**
-	 * Update data in page data array
-	 * @param {CustomEvent&{detail: {method: string, data: Participant|Practice}}} update
-	 */
-	function updateData(update) {
-		const { method, data } = update.detail;
-
-		const methods = {
-			/** @param {Practice} data */
-			updatePractices: function (data) {
-				practices = practices.map((practice) =>
-					practice.id === data.id ? data : practice
-				);
-			},
-			/** @param {Participant} data */
-			updateParticipants: function (data) {
-				participants = participants.map((participant) =>
-					participant.id === data.id ? data : participant
-				);
+	await fetch('/api/practices')
+		.then((res) => res.json())
+		.then((data) => {
+			if (!data.success) {
+				// eslint-disable-next-line no-console
+				console.error(data.errorMessage);
+			} else {
+				practices = data.data;
 			}
-		};
-
-		methods[method](data);
-	}
-
-	function cleanAddressLine() {
-		// Remove hash after successful login
-		replaceState('/', $page.state);
-	}
-
-	function closeLoginModal() {
-		combo.set(false);
-		open = false;
-		// Remove hash after successful login
-		cleanAddressLine();
-	}
-
-	function logoController() {
-		const idx = localStorage.getItem('logoIdx');
-		const logoIdx = idx ? Number(idx) : 0;
-		const newIdx = logoIdx < 10 ? logoIdx + 1 : 1;
-		localStorage.setItem('logoIdx', newIdx.toString());
-	}
-
-	function initHandlers() {
-		window.addEventListener('keydown', (e) => combo.set(handleKeydown(e)));
-		window.addEventListener('keyup', handleKeyup);
-	}
-
-	function readAnchorTag() {
-		const { search } = $page.url;
-
-		if (!search || !loginPhrase) return;
-		if (search === `?${loginPhrase}`) {
-			open = true;
-		}
-	}
-
-	function submitFooter() {
-		footerEditor.submit();
-	}
-
-	onMount(() => {
-		const settedLocale = localStorage.getItem('userLang');
-		if (settedLocale) locale.set(settedLocale);
-
-		locale.subscribe((lang) => {
-			document.querySelector('html').lang = lang;
-			localStorage.setItem('userLang', lang);
-			document.cookie = `lang=${lang}; path=/`;
 		});
 
-		initHandlers();
-		logoController();
-	});
+	await fetch('/api/participants')
+		.then((res) => res.json())
+		.then((data) => {
+			if (!data.success) {
+				// eslint-disable-next-line no-console
+				console.error(data.errorMessage);
+			} else {
+				participants = data.data;
+			}
+		});
 
-	setContext('needSave', needSave);
-	setContext('authorized', authorized);
-	setContext('combo', combo);
-	setContext('isEditingState', isEditingState);
-	setContext('editingPageStatus', editingPageStatus);
-	setContext('cvPage', cvPage);
-	setContext('contentPage', contentPage);
-	setContext('practiceData', practiceData);
-	setContext('participantData', participantData);
-	setContext('appColorScheme', appColorScheme);
-	setContext('isShowConfirmExitModal', isShowConfirmExitModal);
-	setContext('confirmModalDecision', confirmModalDecision);
-	setContext('isShowDeleteModal', isShowDeleteModal);
-	setContext('deleteModalDecision', deleteModalDecision);
-	setContext('isFooterEditorOpen', isFooterEditorOpen);
-	setContext('footerEditorState', footerEditorState);
+	cleanAddressLine();
+}
 
-	$: if ($combo) {
+/**
+ * Update data in page data array
+ * @param {CustomEvent&{detail: {method: string, data: Participant|Practice}}} update
+ */
+function updateData(update) {
+	const { method, data } = update.detail;
+
+	const methods = {
+		/** @param {Practice} data */
+		updatePractices: (data) => {
+			practices = practices.map((practice) =>
+				practice.id === data.id ? data : practice,
+			);
+		},
+		/** @param {Participant} data */
+		updateParticipants: (data) => {
+			participants = participants.map((participant) =>
+				participant.id === data.id ? data : participant,
+			);
+		},
+	};
+
+	methods[method](data);
+}
+
+function cleanAddressLine() {
+	// Remove hash after successful login
+	replaceState('/', $page.state);
+}
+
+function closeLoginModal() {
+	combo.set(false);
+	open = false;
+	// Remove hash after successful login
+	cleanAddressLine();
+}
+
+function logoController() {
+	const idx = localStorage.getItem('logoIdx');
+	const logoIdx = idx ? Number(idx) : 0;
+	const newIdx = logoIdx < 10 ? logoIdx + 1 : 1;
+	localStorage.setItem('logoIdx', newIdx.toString());
+}
+
+function initHandlers() {
+	window.addEventListener('keydown', (e) => combo.set(handleKeydown(e)));
+	window.addEventListener('keyup', handleKeyup);
+}
+
+function readAnchorTag() {
+	const { search } = $page.url;
+
+	if (!search || !loginPhrase) return;
+	if (search === `?${loginPhrase}`) {
 		open = true;
 	}
-	$: open = false;
-	$: authorized.set(data?.authorized || false);
-	$: readAnchorTag();
+}
 
-	confirmModalDecision.subscribe(async (d) => {
-		const decision = await d;
-		if (decision === undefined) return;
-		if (whereToGo) {
-			if (decision) {
-				needSave.set(true);
-				canNavigate = true;
-				goto(whereToGo);
-			} else {
-				needSave.set(false);
-				canNavigate = true;
-				goto(whereToGo);
-			}
-		}
+function submitFooter() {
+	footerEditor.submit();
+}
+
+onMount(() => {
+	const settedLocale = localStorage.getItem('userLang');
+	if (settedLocale) locale.set(settedLocale);
+
+	locale.subscribe((lang) => {
+		document.querySelector('html').lang = lang;
+		localStorage.setItem('userLang', lang);
+		document.cookie = `lang=${lang}; path=/`;
 	});
 
-	beforeNavigate(async (event) => {
-		if (!canNavigate && $isEditingState) {
-			event.cancel();
-			whereToGo = event.to.url?.href;
-			isShowConfirmExitModal.set(true);
+	initHandlers();
+	logoController();
+});
+
+setContext('needSave', needSave);
+setContext('authorized', authorized);
+setContext('combo', combo);
+setContext('isEditingState', isEditingState);
+setContext('editingPageStatus', editingPageStatus);
+setContext('cvPage', cvPage);
+setContext('contentPage', contentPage);
+setContext('practiceData', practiceData);
+setContext('participantData', participantData);
+setContext('appColorScheme', appColorScheme);
+setContext('isShowConfirmExitModal', isShowConfirmExitModal);
+setContext('confirmModalDecision', confirmModalDecision);
+setContext('isShowDeleteModal', isShowDeleteModal);
+setContext('deleteModalDecision', deleteModalDecision);
+setContext('isFooterEditorOpen', isFooterEditorOpen);
+setContext('footerEditorState', footerEditorState);
+
+$: if ($combo) {
+	open = true;
+}
+$: open = false;
+$: authorized.set(data?.authorized || false);
+$: readAnchorTag();
+
+confirmModalDecision.subscribe(async (d) => {
+	const decision = await d;
+	if (decision === undefined) return;
+	if (whereToGo) {
+		if (decision) {
+			needSave.set(true);
+			canNavigate = true;
+			goto(whereToGo);
 		} else {
-			canNavigate = false;
-			isEditingState.set(false);
+			needSave.set(false);
+			canNavigate = true;
+			goto(whereToGo);
 		}
-	});
+	}
+});
+
+beforeNavigate(async (event) => {
+	if (!canNavigate && $isEditingState) {
+		event.cancel();
+		whereToGo = event.to.url?.href;
+		isShowConfirmExitModal.set(true);
+	} else {
+		canNavigate = false;
+		isEditingState.set(false);
+	}
+});
 </script>
 
 <svelte:head>

@@ -1,86 +1,89 @@
 <script>
-	import { page } from '$app/stores';
-	import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
-	import Switch from '$lib/modules/Switch.svelte';
-	import Button from '$lib/ui/Button.svelte';
-	import autoTranslate from '$lib/utils/autoTranslate';
-	import isLinkActive from '$lib/utils/isLinkActive';
-	import { getContext } from 'svelte';
-	import { _, locale, locales } from 'svelte-i18n';
+import { page } from '$app/stores';
+import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
+import Switch from '$lib/modules/Switch.svelte';
+import Button from '$lib/ui/Button.svelte';
+import autoTranslate from '$lib/utils/autoTranslate';
+import isLinkActive from '$lib/utils/isLinkActive';
+import { getContext } from 'svelte';
+import { _, locale, locales } from 'svelte-i18n';
 
-	/** @type {Participants} */
-	export let participants = [];
+/** @type {Participants} */
+export let participants = [];
 
-	const authorized = getContext('authorized');
-	const isEditingState = getContext('isEditingState');
-	const participantData = getContext('participantData');
-	const practiceData = getContext('practiceData');
+const authorized = getContext('authorized');
+const isEditingState = getContext('isEditingState');
+const participantData = getContext('participantData');
+const practiceData = getContext('practiceData');
 
-	let checked = false;
+let checked = false;
 
-	/**
-	 * Automatically translates name
-	 * if name was not found on the english version
-	 *
-	 * @param {LocaleObject} name
-	 * @returns {string}
-	 */
-	function translateName(name) {
-		return $locale === 'en'
-			? autoTranslate($locale, name[anotherLocale])
-			: name[anotherLocale];
-	}
+/**
+ * Automatically translates name
+ * if name was not found on the english version
+ *
+ * @param {LocaleObject} name
+ * @returns {string}
+ */
+function translateName(name) {
+	return $locale === 'en'
+		? autoTranslate($locale, name[anotherLocale])
+		: name[anotherLocale];
+}
 
-	$: route = $page.route.id || '';
-	$: isPracticePage = route?.includes('practices') || '';
-	$: isParticipantsPage = route?.includes('participants') || '';
-	$: isMainPage = route === '/' || '';
-	$: isCVPage = route === '/cv';
+$: route = $page.route.id || '';
+$: isPracticePage = route?.includes('practices') || '';
+$: isParticipantsPage = route?.includes('participants') || '';
+$: isMainPage = route === '/' || '';
+$: isCVPage = route === '/cv';
 
-	$: visibleParticipants = participants
-		? participants
+$: visibleParticipants = participants
+	? participants
 			.filter(({ isVisible }) => Boolean(isVisible))
 			.sort((a, b) => {
 				return a.name[$locale] - b.name[$locale]; // Sort participants by localized name [a-z]
 			})
-		: [];
+	: [];
 
-	$: disabledParticipants = participants
-		? participants
+$: disabledParticipants = participants
+	? participants
 			.filter(({ isVisible }) => Boolean(!isVisible))
 			.sort((a, b) => {
 				return a.name[$locale] - b.name[$locale]; // Sort participants by localized name [a-z]
 			})
-		: [];
+	: [];
 
-	$: {
-		if (isParticipantsPage) {
-			checked = $participantData?.isVisible;
-		}
-
-		if (isPracticePage) {
-			checked = $practiceData?.isVisible;
-		}
+$: {
+	if (isParticipantsPage) {
+		checked = $participantData?.isVisible;
 	}
 
-	function check(event) {
-		const { detail } = event;
-		if (isPracticePage) {
-			practiceData.set({
-				...$practiceData,
-				isVisible: detail
-			});
-		}
+	if (isPracticePage) {
+		checked = $practiceData?.isVisible;
+	}
+}
 
-		if (isParticipantsPage) {
-			participantData.set({
-				...$participantData,
-				isVisible: detail
-			});
-		}
+/**
+ * @param {{ detail: unknown }} event
+ */
+function check(event) {
+	const { detail } = event;
+	if (isPracticePage) {
+		practiceData.set({
+			...$practiceData,
+			isVisible: detail,
+		});
 	}
 
-	$: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
+	if (isParticipantsPage) {
+		participantData.set({
+			...$participantData,
+			isVisible: detail,
+		});
+	}
+}
+
+$: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 </script>
 
 <nav

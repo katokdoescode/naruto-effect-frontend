@@ -1,38 +1,38 @@
 <script>
-	import InlineIcon from '$lib/ui/InlineIcon.svelte';
-	import { createEventDispatcher } from 'svelte';
-	import { _ } from 'svelte-i18n';
+import InlineIcon from '$lib/ui/InlineIcon.svelte';
+import { createEventDispatcher } from 'svelte';
+import { _ } from 'svelte-i18n';
 
-	export let wordsCount = 0;
-	export let showStars = false;
-	export let showItemPutting = false;
-	export let disabled = false;
+export let wordsCount = 0;
+export let showStars = false;
+export let showItemPutting = false;
+export let disabled = false;
 
-	const dispatch = createEventDispatcher();
-	export async function putItem(callback) {
-		showItemPutting = true;
-		try {
-			setTimeout(() => {
-				showStars = true;
-			}, 300);
-			return callback && (await callback());
-		} finally {
-			setTimeout(() => {
-				showItemPutting = false;
-				showStars = false;
-			}, 2000);
-		}
-	}
-
-	function click() {
-		showStars = true;
-
-		dispatch('click');
-
+const dispatch = createEventDispatcher();
+export async function putItem(callback) {
+	showItemPutting = true;
+	try {
 		setTimeout(() => {
+			showStars = true;
+		}, 300);
+		return callback && (await callback());
+	} finally {
+		setTimeout(() => {
+			showItemPutting = false;
 			showStars = false;
-		}, 3000);
+		}, 2000);
 	}
+}
+
+function click() {
+	showStars = true;
+
+	dispatch('click');
+
+	setTimeout(() => {
+		showStars = false;
+	}, 3000);
+}
 </script>
 
 <div class="hat-component">

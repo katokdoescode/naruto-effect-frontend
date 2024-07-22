@@ -1,66 +1,66 @@
 <script>
-	import { browser } from '$app/environment';
-	import { ColorSchemes } from '$lib/constants';
-	import { onMount } from 'svelte';
-	import { _ } from 'svelte-i18n';
+import { browser } from '$app/environment';
+import { ColorSchemes } from '$lib/constants';
+import { onMount } from 'svelte';
+import { _ } from 'svelte-i18n';
 
-	import { getContext } from 'svelte';
+import { getContext } from 'svelte';
 
-	/** @type{string | 'light'|'dark'|'auto'} */
-	let scheme;
-	let isMounted = false;
-	const availableSchemes = Object.values(ColorSchemes);
+/** @type{string | 'light'|'dark'|'auto'} */
+let scheme;
+let isMounted = false;
+const availableSchemes = Object.values(ColorSchemes);
 
-	const appColorScheme = getContext('appColorScheme');
+const appColorScheme = getContext('appColorScheme');
 
-	onMount(() => {
-		// Get the initial scheme from localStorage or default to auto
-		scheme = localStorage.getItem('colorScheme') || ColorSchemes.AUTO;
-		isMounted = true;
-		updateTheme();
-	});
+onMount(() => {
+	// Get the initial scheme from localStorage or default to auto
+	scheme = localStorage.getItem('colorScheme') || ColorSchemes.AUTO;
+	isMounted = true;
+	updateTheme();
+});
 
-	function updateTheme() {
-		/** @type {HTMLLinkElement} */
-		const lightStylesheet = document.querySelector(
-			'link[href="/styles/themes/light.css"]'
-		);
+function updateTheme() {
+	/** @type {HTMLLinkElement} */
+	const lightStylesheet = document.querySelector(
+		'link[href="/styles/themes/light.css"]',
+	);
 
-		/** @type {HTMLLinkElement} */
-		const darkStylesheet = document.querySelector(
-			'link[href="/styles/themes/dark.css"]'
-		);
+	/** @type {HTMLLinkElement} */
+	const darkStylesheet = document.querySelector(
+		'link[href="/styles/themes/dark.css"]',
+	);
 
-		if (scheme === ColorSchemes.AUTO) {
-			lightStylesheet.media = '(prefers-color-scheme: light)';
-			darkStylesheet.media = '(prefers-color-scheme: dark)';
-		} else if (scheme === ColorSchemes.LIGHT) {
-			lightStylesheet.media = 'all';
-			darkStylesheet.media = 'not all';
-		} else if (scheme === ColorSchemes.DARK) {
-			lightStylesheet.media = 'not all';
-			darkStylesheet.media = 'all';
-		}
-
-		localStorage.setItem('colorScheme', scheme);
-		const darkModePreference = window.matchMedia(
-			'(prefers-color-scheme: dark)'
-		)?.matches;
-		const lightModePreference = window.matchMedia(
-			'(prefers-color-scheme: light)'
-		)?.matches;
-
-		const prefersColorScheme = darkModePreference
-			? 'dark'
-			: lightModePreference
-			? 'light'
-			: null;
-		appColorScheme.set(
-			scheme === ColorSchemes.AUTO ? prefersColorScheme : scheme
-		);
+	if (scheme === ColorSchemes.AUTO) {
+		lightStylesheet.media = '(prefers-color-scheme: light)';
+		darkStylesheet.media = '(prefers-color-scheme: dark)';
+	} else if (scheme === ColorSchemes.LIGHT) {
+		lightStylesheet.media = 'all';
+		darkStylesheet.media = 'not all';
+	} else if (scheme === ColorSchemes.DARK) {
+		lightStylesheet.media = 'not all';
+		darkStylesheet.media = 'all';
 	}
 
-	$: if (scheme && browser && isMounted) updateTheme();
+	localStorage.setItem('colorScheme', scheme);
+	const darkModePreference = window.matchMedia(
+		'(prefers-color-scheme: dark)',
+	)?.matches;
+	const lightModePreference = window.matchMedia(
+		'(prefers-color-scheme: light)',
+	)?.matches;
+
+	const prefersColorScheme = darkModePreference
+		? 'dark'
+		: lightModePreference
+			? 'light'
+			: null;
+	appColorScheme.set(
+		scheme === ColorSchemes.AUTO ? prefersColorScheme : scheme,
+	);
+}
+
+$: if (scheme && browser && isMounted) updateTheme();
 </script>
 
 <select

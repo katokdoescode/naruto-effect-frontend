@@ -1,13 +1,13 @@
 <script>
-	import { _, locale, locales } from 'svelte-i18n';
-	export let id;
+import { _, locale, locales } from 'svelte-i18n';
+export let id;
 
-	function switchLanguage() {
-		$locale = $locales[nextLanguageIndex];
-	}
+function switchLanguage() {
+	$locale = $locales[nextLanguageIndex];
+}
 
-	$: nextLanguageIndex =
-		($locales.findIndex((value) => $locale === value) + 1) % $locales.length;
+$: nextLanguageIndex =
+	($locales.findIndex((value) => $locale === value) + 1) % $locales.length;
 </script>
 
 <button

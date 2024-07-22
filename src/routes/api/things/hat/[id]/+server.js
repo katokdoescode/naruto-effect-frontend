@@ -16,9 +16,8 @@ export async function GET({ params }) {
 
 	if (!error && hat) {
 		return json({ success: true, data: hat });
-	} else {
-		return json(createError(false, error.message));
 	}
+	return json(createError(false, error.message));
 }
 
 export async function PATCH({ request, params }) {
@@ -30,9 +29,8 @@ export async function PATCH({ request, params }) {
 
 	if (!error && data) {
 		return json({ success: true, data });
-	} else {
-		return json(createError(false, error.message));
 	}
+	return json(createError(false, error.message));
 }
 
 export async function DELETE({ params }) {
@@ -42,7 +40,6 @@ export async function DELETE({ params }) {
 
 	if (!error) {
 		return json({ success: true, data: null });
-	} else {
-		return json(createError(false, error.message));
 	}
+	return json(createError(false, error.message));
 }

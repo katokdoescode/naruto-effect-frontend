@@ -18,7 +18,7 @@ export async function load({ params }) {
 	}
 
 	const data = {
-		hat
+		hat,
 	};
 
 	return data;

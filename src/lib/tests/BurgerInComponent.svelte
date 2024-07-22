@@ -1,12 +1,12 @@
 <script>
-	import Burger from '$lib/ui/Burger.svelte';
+import Burger from '$lib/ui/Burger.svelte';
 
-	$: isMenuOpened = false;
+$: isMenuOpened = false;
 
-	function updateMenuState(event) {
-		const { detail } = event;
-		isMenuOpened = detail;
-	}
+function updateMenuState(event) {
+	const { detail } = event;
+	isMenuOpened = detail;
+}
 </script>
 
 <header data-menu-is-opened={isMenuOpened}>

@@ -1,9 +1,9 @@
 <script>
-	/** @type {string} */
-	export let message = '';
+/** @type {string} */
+export let message = '';
 
-	/** @type{string} */
-	export let tag = 'h3';
+/** @type{string} */
+export let tag = 'h3';
 </script>
 
 <article class="alert-message">

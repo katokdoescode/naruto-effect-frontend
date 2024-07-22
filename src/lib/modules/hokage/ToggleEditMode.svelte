@@ -1,211 +1,205 @@
 <script>
-	import { page } from '$app/stores';
-	import Button from '$lib/ui/Button.svelte';
-	import { pick } from '$lib/utils/objectsTools';
-	import { createEventDispatcher, getContext } from 'svelte';
-	import { _, locale } from 'svelte-i18n';
+import { page } from '$app/stores';
+import Button from '$lib/ui/Button.svelte';
+import { pick } from '$lib/utils/objectsTools';
+import { createEventDispatcher, getContext, onDestroy } from 'svelte';
+import { _, locale } from 'svelte-i18n';
 
-	const dispatch = createEventDispatcher();
+const dispatch = createEventDispatcher();
 
-	let route;
-	$: route = $page.route.id;
-	$: isMainPage = route === '/' || '';
-	$: isCVPage = route === '/cv';
-	$: isCreatingMode = $page.url.pathname.includes('/create');
-	$: canDelete =
-		!(isMainPage || isCVPage) && $isEditingState && !isCreatingMode;
+let route;
+$: route = $page.route.id;
+$: isMainPage = route === '/' || '';
+$: isCVPage = route === '/cv';
+$: isCreatingMode = $page.url.pathname.includes('/create');
+$: canDelete = !(isMainPage || isCVPage) && $isEditingState && !isCreatingMode;
 
-	const isEditingState = getContext('isEditingState');
-	const editingPageStatus = getContext('editingPageStatus');
-	const cvPage = getContext('cvPage');
-	const contentPage = getContext('contentPage');
-	const practiceData = getContext('practiceData');
-	const participantData = getContext('participantData');
-	const needSave = getContext('needSave');
-	const isShowDeleteModal = getContext('isShowDeleteModal');
-	const deleteModalDecision = getContext('deleteModalDecision');
+const isEditingState = getContext('isEditingState');
+const editingPageStatus = getContext('editingPageStatus');
+const cvPage = getContext('cvPage');
+const contentPage = getContext('contentPage');
+const practiceData = getContext('practiceData');
+const participantData = getContext('participantData');
+const needSave = getContext('needSave');
+const isShowDeleteModal = getContext('isShowDeleteModal');
+const deleteModalDecision = getContext('deleteModalDecision');
 
-	needSave.subscribe((save) => {
-		if (save) saveContent();
-	});
+needSave.subscribe((/** @type {boolean} */ save) => {
+	if (save) saveContent();
+})();
 
-	async function deleteContent() {
-		editingPageStatus.set('loading');
+async function deleteContent() {
+	editingPageStatus.set('loading');
 
-		const response = await fetch(url().route, {
-			method: 'DELETE',
-			body: url().data
-		}).then((data) => data.json());
+	const response = await fetch(url().route, {
+		method: 'DELETE',
+		body: url().data,
+	}).then((data) => data.json());
 
-		if (response.success) {
-			isEditingState.set(false);
-			editingPageStatus.set('success');
-			setTimeout(() => {
-				editingPageStatus.set(null);
-				window.location.assign('/');
-			}, 2500);
-		} else {
-			editingPageStatus.set('error');
-			setTimeout(() => editingPageStatus.set(null), 3500);
-		}
+	if (response.success) {
+		isEditingState.set(false);
+		editingPageStatus.set('success');
+		setTimeout(() => {
+			editingPageStatus.set(null);
+			window.location.assign('/');
+		}, 2500);
+	} else {
+		editingPageStatus.set('error');
+		setTimeout(() => editingPageStatus.set(null), 3500);
+	}
+}
+
+async function saveContent() {
+	editingPageStatus.set('loading');
+
+	const response = await fetch(url().route, {
+		method: url().method,
+		body: url().data,
+	}).then((data) => data.json());
+
+	if (response.success) {
+		isEditingState.set(false);
+		editingPageStatus.set('success');
+		url().onSuccess(response.data);
+		setTimeout(() => {
+			editingPageStatus.set(null);
+		}, 2500);
+	} else {
+		editingPageStatus.set('error');
+		setTimeout(() => editingPageStatus.set(null), 3500);
+	}
+}
+
+function toggleEditMode() {
+	if ($isEditingState) {
+		saveContent();
+		return;
 	}
 
-	async function saveContent() {
-		editingPageStatus.set('loading');
+	isEditingState.set(true);
+}
 
-		const response = await fetch(url().route, {
-			method: url().method,
-			body: url().data
-		}).then((data) => data.json());
+$: url = () => {
+	switch (route) {
+		case '/':
+			return {
+				route: '/api/mainPage',
+				method: 'PATCH',
+				rawData: $contentPage,
+				data: JSON.stringify($contentPage),
+				onSuccess: (/** @type {MainPageData} */ data) => data,
+			};
+		case '/cv':
+			return {
+				route: '/api/cv',
+				method: 'PATCH',
+				rawData: $cvPage,
+				data: JSON.stringify($cvPage),
+				onSuccess: (/** @type {CvData} */ data) => data,
+			};
 
-		if (response.success) {
-			isEditingState.set(false);
-			editingPageStatus.set('success');
-			url().onSuccess(response.data);
-			setTimeout(() => {
-				editingPageStatus.set(null);
-			}, 2500);
-		} else {
-			editingPageStatus.set('error');
-			setTimeout(() => editingPageStatus.set(null), 3500);
-		}
+		case '/practices/create':
+			return {
+				route: '/api/practices',
+				method: 'POST',
+				rawData: $practiceData,
+				data: JSON.stringify($practiceData),
+				onSuccess: (/** @type {Practice} */ data) => {
+					const slug = data.slug[$locale];
+					window.location.assign(`/practices/${slug}`);
+				},
+			};
+
+		case '/practices/[slug]':
+			return {
+				route: '/api/practices',
+				method: 'PATCH',
+				rawData: $practiceData,
+				data: JSON.stringify($practiceData),
+				onSuccess: (/** @type {Practice} */ practice) => {
+					dispatch('update', {
+						method: 'updatePractices',
+						data: pick(practice, ['id', 'isVisible', 'slug', 'title']),
+					});
+				},
+			};
+
+		case '/participants/create':
+			return {
+				route: '/api/participants',
+				method: 'POST',
+				rawData: $participantData,
+				data: JSON.stringify($participantData),
+				onSuccess: (/** @type {Participant} */ data) => {
+					const slug = data.slug;
+					window.location.assign(`/participants/${slug}`);
+				},
+			};
+
+		case '/participants/[slug]':
+			return {
+				route: '/api/participants',
+				method: 'PATCH',
+				rawData: $participantData,
+				data: JSON.stringify($participantData),
+				onSuccess: (/** @type {Participant} */ participant) => {
+					dispatch('update', {
+						method: 'updateParticipants',
+						data: pick(participant, ['id', 'isVisible', 'slug', 'name']),
+					});
+				},
+			};
+
+		default:
+			break;
 	}
+};
 
-	function toggleEditMode() {
-		if ($isEditingState) {
-			saveContent();
-			return;
-		}
+function deleteEntity() {
+	isShowDeleteModal.set(true);
+	deleteModalDecision.subscribe(async (d) => {
+		const decision = await d;
 
-		isEditingState.set(true);
+		if (decision === undefined) return;
+		if (decision) deleteContent();
+	})();
+}
+
+$: isImageValid = url().rawData?.banner
+	? !!(url().rawData.banner.link ? url().rawData.banner.alt : true)
+	: true;
+$: isTitleEmpty = !!(url().rawData?.title && !url().rawData.title[$locale]);
+$: isNameEmpty = !!(url().rawData?.name && !url().rawData.name[$locale]);
+$: isDescriptionEmpty =
+	url().rawData?.description &&
+	!Object.values(url().rawData?.description).some((v) => v) &&
+	url().rawData?.text &&
+	!Object.values(url().rawData?.text).some((v) => v);
+$: isNotValid =
+	$isEditingState &&
+	(isDescriptionEmpty || isTitleEmpty || isNameEmpty || !isImageValid);
+
+$: btnStatus = () => {
+	if ($editingPageStatus) {
+		return $editingPageStatus;
 	}
+	return $isEditingState ? 'save' : 'edit';
+};
 
-	$: url = function () {
-		switch (route) {
-			case '/':
-				return {
-					route: '/api/mainPage',
-					method: 'PATCH',
-					rawData: $contentPage,
-					data: JSON.stringify($contentPage),
-					onSuccess: function (data) {
-						return data;
-					}
-				};
-			case '/cv':
-				return {
-					route: '/api/cv',
-					method: 'PATCH',
-					rawData: $cvPage,
-					data: JSON.stringify($cvPage),
-					onSuccess: function (data) {
-						return data;
-					}
-				};
-
-			case '/practices/create':
-				return {
-					route: '/api/practices',
-					method: 'POST',
-					rawData: $practiceData,
-					data: JSON.stringify($practiceData),
-					onSuccess: function (data) {
-						const slug = data.slug[$locale];
-						window.location.assign(`/practices/${slug}`);
-					}
-				};
-
-			case '/practices/[slug]':
-				return {
-					route: '/api/practices',
-					method: 'PATCH',
-					rawData: $practiceData,
-					data: JSON.stringify($practiceData),
-					onSuccess: function (practice) {
-						dispatch('update', {
-							method: 'updatePractices',
-							data: pick(practice, ['id', 'isVisible', 'slug', 'title'])
-						});
-					}
-				};
-
-			case '/participants/create':
-				return {
-					route: '/api/participants',
-					method: 'POST',
-					rawData: $participantData,
-					data: JSON.stringify($participantData),
-					onSuccess: function (data) {
-						const slug = data.slug;
-						window.location.assign(`/participants/${slug}`);
-					}
-				};
-
-			case '/participants/[slug]':
-				return {
-					route: '/api/participants',
-					method: 'PATCH',
-					rawData: $participantData,
-					data: JSON.stringify($participantData),
-					onSuccess: function (participant) {
-						dispatch('update', {
-							method: 'updateParticipants',
-							data: pick(participant, ['id', 'isVisible', 'slug', 'name'])
-						});
-					}
-				};
-
+$: btnColor = () => {
+	if (btnStatus()) {
+		switch (btnStatus()) {
+			case 'success':
+				return 'green';
+			case 'error':
+				return 'red';
 			default:
-				break;
+				return 'gray';
 		}
-	};
-
-	function deleteEntity() {
-		isShowDeleteModal.set(true);
-		deleteModalDecision.subscribe(async (d) => {
-			const decision = await d;
-			if (decision === undefined) return;
-
-			if (decision) deleteContent();
-		});
 	}
 
-	$: isImageValid = url().rawData?.banner
-		? !!(url().rawData.banner.link ? url().rawData.banner.alt : true)
-		: true;
-	$: isTitleEmpty = !!(url().rawData?.title && !url().rawData.title[$locale]);
-	$: isNameEmpty = !!(url().rawData?.name && !url().rawData.name[$locale]);
-	$: isDescriptionEmpty =
-		url().rawData?.description &&
-		!Object.values(url().rawData?.description).some((v) => v) &&
-		url().rawData?.text &&
-		!Object.values(url().rawData?.text).some((v) => v);
-	$: isNotValid =
-		$isEditingState &&
-		(isDescriptionEmpty || isTitleEmpty || isNameEmpty || !isImageValid);
-
-	$: btnStatus = function () {
-		if ($editingPageStatus) {
-			return $editingPageStatus;
-		} else {
-			return $isEditingState ? 'save' : 'edit';
-		}
-	};
-
-	$: btnColor = function () {
-		if (btnStatus()) {
-			switch (btnStatus()) {
-				case 'success':
-					return 'green';
-				case 'error':
-					return 'red';
-				default:
-					return 'gray';
-			}
-		}
-
-		return 'gray';
-	};
+	return 'gray';
+};
 </script>
 
 <div class="row">

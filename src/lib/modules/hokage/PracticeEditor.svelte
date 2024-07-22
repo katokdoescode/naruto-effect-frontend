@@ -1,16 +1,16 @@
 <script>
-	import { Placeholder } from '$lib/constants';
-	import TextEditor from '$lib/modules/TextEditor.svelte';
-	import MediaHandler from '$lib/modules/hokage/MediaHandler.svelte';
-	import Textarea from '$lib/ui/Textarea.svelte';
-	import { createEventDispatcher } from 'svelte';
-	import { _, locale } from 'svelte-i18n';
+import { Placeholder } from '$lib/constants';
+import TextEditor from '$lib/modules/TextEditor.svelte';
+import MediaHandler from '$lib/modules/hokage/MediaHandler.svelte';
+import Textarea from '$lib/ui/Textarea.svelte';
+import { createEventDispatcher } from 'svelte';
+import { _, locale } from 'svelte-i18n';
 
-	const dispatch = createEventDispatcher();
+const dispatch = createEventDispatcher();
 
-	/** @type {Practice} */
-	export let localValue;
-	$: dispatch('input', localValue);
+/** @type {Practice} */
+export let localValue;
+$: dispatch('input', localValue);
 </script>
 
 <Textarea

@@ -1,32 +1,32 @@
 <script>
-	import Button from '$lib/ui/Button.svelte';
-	import { getContext } from 'svelte';
-	import { _ } from 'svelte-i18n';
-	import Modal from './Modal.svelte';
+import Button from '$lib/ui/Button.svelte';
+import { getContext } from 'svelte';
+import { _ } from 'svelte-i18n';
+import Modal from './Modal.svelte';
 
-	const isShowDeleteModal = getContext('isShowDeleteModal');
-	const deleteModalDecision = getContext('deleteModalDecision');
+const isShowDeleteModal = getContext('isShowDeleteModal');
+const deleteModalDecision = getContext('deleteModalDecision');
 
-	let open = false;
-	let message = '';
+let open = false;
+let message = '';
 
-	$: message = $_('messages.confirm.delete');
-	$: open = $isShowDeleteModal;
+$: message = $_('messages.confirm.delete');
+$: open = $isShowDeleteModal;
 
-	$: if (!open)
-		deleteModalDecision.set(new Promise((resolve) => resolve(undefined)));
+$: if (!open)
+	deleteModalDecision.set(new Promise((resolve) => resolve(undefined)));
 
-	async function cancel() {
-		deleteModalDecision.set(new Promise((resolve) => resolve(false)));
+async function cancel() {
+	deleteModalDecision.set(new Promise((resolve) => resolve(false)));
 
-		isShowDeleteModal.set(false);
-	}
+	isShowDeleteModal.set(false);
+}
 
-	function confirm() {
-		deleteModalDecision.set(new Promise((resolve) => resolve(true)));
+function confirm() {
+	deleteModalDecision.set(new Promise((resolve) => resolve(true)));
 
-		isShowDeleteModal.set(false);
-	}
+	isShowDeleteModal.set(false);
+}
 </script>
 
 <Modal

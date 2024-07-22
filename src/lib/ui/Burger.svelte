@@ -1,11 +1,11 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
-	import { _ } from 'svelte-i18n';
+import { createEventDispatcher } from 'svelte';
+import { _ } from 'svelte-i18n';
 
-	export let isOpened = false;
-	const dispatch = createEventDispatcher();
+export let isOpened = false;
+const dispatch = createEventDispatcher();
 
-	$: dispatch('change', isOpened);
+$: dispatch('change', isOpened);
 </script>
 
 <label

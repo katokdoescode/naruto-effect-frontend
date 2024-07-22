@@ -1,70 +1,70 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
+import { createEventDispatcher } from 'svelte';
+const dispatch = createEventDispatcher();
 
-	/** @type{string|null} id */
-	export let id = null;
+/** @type{string|null} id */
+export let id = null;
 
-	/** @type{"button" | "submit" | "reset" | null | undefined} type */
-	export let type = 'button';
+/** @type{"button" | "submit" | "reset" | null | undefined} type */
+export let type = 'button';
 
-	/** @type {boolean} */
-	export let disabled = false;
+/** @type {boolean} */
+export let disabled = false;
 
-	/** @type {boolean} Will have active state styles */
-	export let active = false;
+/** @type {boolean} Will have active state styles */
+export let active = false;
 
-	/** @type {"transparent"|"gray"|"black"|"green"|"red"|"white"} Color of the button */
-	export let color = 'transparent';
+/** @type {"transparent"|"gray"|"black"|"green"|"red"|"white"} Color of the button */
+export let color = 'transparent';
 
-	/** @type {"none"|"login"} Specific style of the button */
-	export let styleType = 'none';
+/** @type {"none"|"login"} Specific style of the button */
+export let styleType = 'none';
 
-	/** @type {string} */
-	export let href = null;
+/** @type {string} */
+export let href = null;
 
-	/** @type {string} */
-	export let nativeClasses = '';
+/** @type {string} */
+export let nativeClasses = '';
 
-	let button;
+let button;
 
-	$: classes = `button ${active ? 'active' : ''}`;
+$: classes = `button ${active ? 'active' : ''}`;
 
-	$: if (color !== 'transparent') {
-		classes = [
-			...removeColorsFromClass(classes.split(' ')),
-			'bordered',
-			color,
-			nativeClasses
-		].join(' ');
-	}
+$: if (color !== 'transparent') {
+	classes = [
+		...removeColorsFromClass(classes.split(' ')),
+		'bordered',
+		color,
+		nativeClasses,
+	].join(' ');
+}
 
-	$: if (styleType !== 'none') {
-		classes += styleType;
-	}
+$: if (styleType !== 'none') {
+	classes += styleType;
+}
 
-	function click(event) {
-		dispatch('click', event);
-	}
+function click(event) {
+	dispatch('click', event);
+}
 
-	function blur(event) {
-		dispatch('blur', event);
-	}
+function blur(event) {
+	dispatch('blur', event);
+}
 
-	export function nativeClick() {
-		button.click();
-	}
+export function nativeClick() {
+	button.click();
+}
 
-	/**
-	 * Removes colors from classes array
-	 * @param {string[]} classes
-	 */
-	function removeColorsFromClass(classes) {
-		return classes.filter(
-			(c) =>
-				!['transparent', 'gray', 'black', 'green', 'red', 'white'].includes(c)
-		);
-	}
+/**
+ * Removes colors from classes array
+ * @param {string[]} classes
+ */
+function removeColorsFromClass(classes) {
+	return classes.filter(
+		(c) =>
+			!['transparent', 'gray', 'black', 'green', 'red', 'white'].includes(c),
+	);
+}
 </script>
 
 {#if href}

@@ -7,7 +7,7 @@ export async function load({ cookies }) {
 	let isAuthenticated = !!cookies.get('authToken');
 
 	const {
-		data: { user }
+		data: { user },
 	} = await supabase.auth.getUser();
 
 	if (!user) {
@@ -45,7 +45,7 @@ export async function load({ cookies }) {
 		practices,
 		participants,
 		pageData,
-		loginPhrase: VITE_LOGIN_PHRASE
+		loginPhrase: VITE_LOGIN_PHRASE,
 	};
 
 	return data;

@@ -1,83 +1,83 @@
 <script>
-	import Button from '$lib/ui/Button.svelte';
-	import Input from '$lib/ui/Input.svelte';
-	import { getDateFormatter, locale } from 'svelte-i18n';
-	import { _ } from 'svelte-i18n';
+import Button from '$lib/ui/Button.svelte';
+import Input from '$lib/ui/Input.svelte';
+import { getDateFormatter, locale } from 'svelte-i18n';
+import { _ } from 'svelte-i18n';
 
-	/**
-	 * @type {import('./$types').PageData}
-	 */
-	export let data = undefined;
+/**
+ * @type {import('./$types').PageData}
+ */
+export let data = undefined;
 
-	/** @type {HatData[]}*/
-	let hats = data?.hats || [];
-	let isLoading = false;
-	let isDeleting = null;
-	let error = null;
+/** @type {HatData[]}*/
+let hats = data?.hats || [];
+let isLoading = false;
+let isDeleting = null;
+let error = null;
 
-	/** @type {HatData}*/
-	let newHat = {
-		name: '',
-		password: null,
-		words: []
-	};
+/** @type {HatData}*/
+let newHat = {
+	name: '',
+	password: null,
+	words: [],
+};
 
-	async function createNewHat() {
-		isLoading = true;
-		if (!newHat.name) return;
+async function createNewHat() {
+	isLoading = true;
+	if (!newHat.name) return;
 
-		try {
-			const res = await fetch('/api/things/hat', {
-				method: 'POST',
-				body: JSON.stringify(newHat)
-			});
-			const response = await res.json();
-			if (!response.success) throw new Error(response.errorMessage);
+	try {
+		const res = await fetch('/api/things/hat', {
+			method: 'POST',
+			body: JSON.stringify(newHat),
+		});
+		const response = await res.json();
+		if (!response.success) throw new Error(response.errorMessage);
 
-			newHat = {
-				name: '',
-				password: null,
-				words: []
-			};
+		newHat = {
+			name: '',
+			password: null,
+			words: [],
+		};
 
-			data.hats.push(response.data);
-			hats = data.hats;
-		} catch (e) {
-			error = e;
-			console.error(e);
-		} finally {
-			isLoading = false;
-		}
+		data.hats.push(response.data);
+		hats = data.hats;
+	} catch (e) {
+		error = e;
+		console.error(e);
+	} finally {
+		isLoading = false;
 	}
+}
 
-	async function removeHat(id) {
-		if (!id || !confirm($_('messages.confirm.hat.delete'))) return;
+async function removeHat(id) {
+	if (!id || !confirm($_('messages.confirm.hat.delete'))) return;
 
-		isDeleting = id;
-		try {
-			await fetch('/api/things/hat/' + id, {
-				method: 'DELETE'
-			});
-			data.hats = hats.filter((hat) => hat.id !== id);
-			hats = data.hats;
-		} catch {
-			console.error('Failed to delete hat');
-			alert($_('messages.error.hat.delete'));
-		} finally {
-			isDeleting = null;
-		}
+	isDeleting = id;
+	try {
+		await fetch(`/api/things/hat/${id}`, {
+			method: 'DELETE',
+		});
+		data.hats = hats.filter((hat) => hat.id !== id);
+		hats = data.hats;
+	} catch {
+		console.error('Failed to delete hat');
+		alert($_('messages.error.hat.delete'));
+	} finally {
+		isDeleting = null;
 	}
+}
 
-	function getDate(date) {
-		if (!date) return '';
+function getDate(date) {
+	if (!date) return '';
 
-		try {
-			const proxyDate = new Date(date);
-			return getDateFormatter({ locale: $locale }).format(proxyDate);
-		} catch {
-			return date;
-		}
+	try {
+		const proxyDate = new Date(date);
+		return getDateFormatter({ locale: $locale }).format(proxyDate);
+	} catch {
+		return date;
 	}
+}
 </script>
 
 <svelte:head>
