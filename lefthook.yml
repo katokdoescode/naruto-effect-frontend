@@ -3,3 +3,4 @@ pre-commit:
     check:
       glob: "*.{svelte,js}"
       run: bun run check:biome
+      stage_fixed: true
