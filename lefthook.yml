@@ -1,0 +1,5 @@
+pre-commit:
+  commands:
+    check:
+      glob: "*.{svelte,js}"
+      run: bun run check:biome
