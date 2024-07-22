@@ -1,0 +1,31 @@
+name: Code checks
+
+on:
+  push:
+    branches:
+      - stage
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build app
+        run: bun run build
+
+      - name: Run checks and tests
+        run: |
+          bun run check
+          bun run biome:check
+          bun run test
