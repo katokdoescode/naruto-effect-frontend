@@ -10,6 +10,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      VITE_TINYMCE_API_KEY: dkasjndjkasndjknasjkndkjasdnmasjkdnyui
+      VITE_SUPABASE_BUCKET: bucket-name
+      VITE_BFF_SUPABASE_URL: https://url.supabase.co/
+      VITE_SUPABASE_CLIENT_ANON_KEY: token.part.of
+      VITE_ADMIN_EMAIL: example@example.xyz
+      VITE_LOGIN_PHRASE: test
 
     steps:
       - name: Check out code
@@ -22,13 +29,6 @@ jobs:
         run: bun install
 
       - name: Build app
-        env:
-          VITE_TINYMCE_API_KEY: dkasjndjkasndjknasjkndkjasdnmasjkdnyui
-          VITE_SUPABASE_BUCKET: bucket-name
-          VITE_BFF_SUPABASE_URL: https://url.supabase.co/
-          VITE_SUPABASE_CLIENT_ANON_KEY: token.part.of
-          VITE_ADMIN_EMAIL: example@example.xyz
-          VITE_LOGIN_PHRASE: test
         run: bun run build
 
       - name: Run checks and tests
