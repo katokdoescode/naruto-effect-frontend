@@ -29,9 +29,9 @@ const userValids = [true, false, false, false, false];
 
 describe('validateUserData function', () => {
 	userDataset.forEach((data, index) => {
-	test(`data with index: ${index} is ${userValids[index]}`, () => {
-		// @ts-ignore
-		expect(validateUserData(data)).toBe(userValids[index]);
-	 })
+		test(`data with index: ${index} is ${userValids[index]}`, () => {
+			// @ts-ignore
+			expect(validateUserData(data)).toBe(userValids[index]);
+		});
 	});
 });
