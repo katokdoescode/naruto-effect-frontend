@@ -28,6 +28,11 @@ jobs:
       - name: Install dependencies
         run: bun install
 
+      - name: Supabase
+        uses: supabase/setup-cli@v1
+        with:
+            version: latest
+
       - name: Build app
         run: bun run build
 
@@ -36,3 +41,8 @@ jobs:
           bun run check
           bun run check:biome
           bun run test:unit
+
+      - name: E2E Tests
+        run: |
+          supabase start
+          bun run test:integration
