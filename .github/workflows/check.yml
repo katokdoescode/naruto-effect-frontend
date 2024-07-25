@@ -43,8 +43,13 @@ jobs:
             version: latest
 
       - name: Start Supabase
-        id: supabase
         run: supabase start
+
+      - name: Store Supabase Anon Key
+        run: |
+          output=$(supabase status -o env)
+          anon_key=$(echo "$output" | grep 'ANON_KEY' | cut -d '=' -f2 | tr -d '"')
+          echo "VITE_SUPABASE_CLIENT_ANON_KEY=$anon_key" >> $GITHUB_ENV
 
       - name: E2E Tests
         run: bun run test:integration
