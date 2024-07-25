@@ -1,11 +1,29 @@
-/** @type {import('@playwright/test').PlaywrightTestConfig} */
-const config = {
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
 	webServer: {
-		command: 'npm run build && npm run preview',
+		command: 'bun run build --mode=development && bun run preview',
 		port: 4173
 	},
+	timeout: 3000,
+	fullyParallel: true,
 	testDir: 'tests',
-	testMatch: /(.+\.)?(test|spec)\.[jt]s/
-};
+	testMatch: /(.+\.)?(test|spec)\.[jt]s/,
+	reporter: 'list',
+  projects: [
+      {
+          name: 'chromium',
+          use: { ...devices['Desktop Chrome'] },
+        },
 
-export default config;
+        {
+          name: 'firefox',
+          use: { ...devices['Desktop Firefox'] },
+        },
+
+        {
+          name: 'webkit',
+          use: { ...devices['Desktop Safari'] },
+        },
+    ],
+});
