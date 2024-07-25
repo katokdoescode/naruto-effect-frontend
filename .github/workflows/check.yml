@@ -45,4 +45,5 @@ jobs:
       - name: E2E Tests
         run: |
           supabase start
+          bunx playwright install --with-deps
           bun run test:integration
