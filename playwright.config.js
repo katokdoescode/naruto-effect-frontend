@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
 	webServer: {
-		command: 'bun run build && bun run preview',
+		command: 'bun run build --mode=development && bun run preview',
 		port: 4173
 	},
 	timeout: 3000,
