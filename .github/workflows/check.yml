@@ -14,7 +14,6 @@ jobs:
       VITE_TINYMCE_API_KEY: gpl
       VITE_SUPABASE_BUCKET: naruto-effect-public-storage
       VITE_BFF_SUPABASE_URL: http://localhost:54321/
-      VITE_SUPABASE_CLIENT_ANON_KEY: token.part.of
       VITE_ADMIN_EMAIL: example@example.xyz
       VITE_LOGIN_PHRASE: test
 
