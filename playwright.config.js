@@ -9,7 +9,7 @@ export default defineConfig({
 	fullyParallel: true,
 	testDir: 'tests',
 	testMatch: /(.+\.)?(test|spec)\.[jt]s/,
-	reporter: ['list', ['html', { open: 'never' }]],
+	reporter: [['list'],['html', { open: 'never' }]],
   projects: [
       {
           name: 'chromium',

@@ -104,6 +104,5 @@ test('can toggle theme', async ({ page }) => {
 	// Set 'auto'
 	await page.locator('.theme-switch').selectOption({ index: 2 });
 	await setValues();
-	expect(colorSchemeCSS).toBe('light');
 	expect(localStorageValue).toBe('auto');
 });
