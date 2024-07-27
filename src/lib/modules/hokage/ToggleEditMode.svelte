@@ -24,9 +24,11 @@ const needSave = getContext('needSave');
 const isShowDeleteModal = getContext('isShowDeleteModal');
 const deleteModalDecision = getContext('deleteModalDecision');
 
-needSave.subscribe((/** @type {boolean} */ save) => {
-	if (save) saveContent();
-})();
+const unsubscribeNeedSave = needSave.subscribe(
+	(/** @type {boolean} */ save) => {
+		if (save) saveContent();
+	},
+);
 
 async function deleteContent() {
 	editingPageStatus.set('loading');
@@ -45,7 +47,7 @@ async function deleteContent() {
 		}, 2500);
 	} else {
 		editingPageStatus.set('error');
-		setTimeout(() => editingPageStatus.set(null), 3500);
+		setTimeout(() => editingPageStatus.set(null), 2500);
 	}
 }
 
@@ -155,14 +157,24 @@ $: url = () => {
 	}
 };
 
-function deleteEntity() {
+async function deleteEntity() {
+	let unsubscribe = () => null;
 	isShowDeleteModal.set(true);
-	deleteModalDecision.subscribe(async (d) => {
-		const decision = await d;
 
-		if (decision === undefined) return;
-		if (decision) deleteContent();
-	})();
+	await (() =>
+		new Promise(() => {
+			unsubscribe = deleteModalDecision.subscribe(async (d) => {
+				const decision = await d;
+
+				console.debug(decision);
+
+				if (decision === undefined) return;
+
+				if (decision) deleteContent();
+			});
+		}))();
+
+	unsubscribe();
 }
 
 $: isImageValid = url().rawData?.banner
@@ -200,12 +212,15 @@ $: btnColor = () => {
 
 	return 'gray';
 };
+
+onDestroy(() => unsubscribeNeedSave());
 </script>
 
-<div class="row">
+<div class="row" aria-controls="content" role="toolbar">
 	<Button
 		color={btnColor()}
 		disabled={isNotValid}
+		value={btnStatus()}
 		on:click={toggleEditMode}>
 		{$_(`button.${btnStatus()}`)}
 	</Button>
@@ -214,6 +229,7 @@ $: btnColor = () => {
 		<Button
 			color="red"
 			nativeClasses="no-mobile"
+			value='delete'
 			on:click={deleteEntity}>
 			{$_(`button.delete`)}
 		</Button>

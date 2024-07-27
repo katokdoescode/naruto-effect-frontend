@@ -7,7 +7,7 @@ export async function GET({ params }) {
 	const { slug } = params;
 	let localesList = [];
 
-	locales.subscribe((locale) => {
+	const unsubscribe = locales.subscribe((locale) => {
 		localesList = locale;
 	});
 
@@ -23,6 +23,8 @@ export async function GET({ params }) {
 		.or(localesList.join())
 		.limit(1)
 		.single();
+
+	unsubscribe();
 
 	if (!error && practice) {
 		return json({ success: true, data: practice });

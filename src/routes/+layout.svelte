@@ -12,7 +12,7 @@ import FooterEditor from '$lib/modules/hokage/FooterEditor.svelte';
 import ConfirmDelete from '$lib/modules/hokage/modals/ConfirmDelete.svelte';
 import ConfirmExit from '$lib/modules/hokage/modals/ConfirmExit.svelte';
 import { handleKeydown, handleKeyup } from '$lib/utils/keyboardHandler';
-import { onMount, setContext } from 'svelte';
+import { onDestroy, onMount, setContext } from 'svelte';
 import { locale } from 'svelte-i18n';
 import { writable } from 'svelte/store';
 
@@ -47,6 +47,7 @@ let participants = data?.participants || [];
 let pageLinks = data?.pageData?.pageLinks || [];
 let loginPhrase = data?.loginPhrase || undefined;
 let pageDataObject = data?.pageData || null;
+let unsubscribeLocale = () => null;
 
 $: firstTwoLinks = pageLinks?.slice(0, 2);
 $: lastLink = pageLinks?.slice(2, 3)[0];
@@ -155,7 +156,7 @@ onMount(() => {
 	const settedLocale = localStorage.getItem('userLang');
 	if (settedLocale) locale.set(settedLocale);
 
-	locale.subscribe((lang) => {
+	unsubscribeLocale = locale.subscribe((lang) => {
 		document.querySelector('html').lang = lang;
 		localStorage.setItem('userLang', lang);
 		document.cookie = `lang=${lang}; path=/`;
@@ -189,21 +190,23 @@ $: open = false;
 $: authorized.set(data?.authorized || false);
 $: readAnchorTag();
 
-confirmModalDecision.subscribe(async (d) => {
-	const decision = await d;
-	if (decision === undefined) return;
-	if (whereToGo) {
-		if (decision) {
-			needSave.set(true);
-			canNavigate = true;
-			goto(whereToGo);
-		} else {
-			needSave.set(false);
-			canNavigate = true;
-			goto(whereToGo);
+const unsubscribeConfirmModalDecision = confirmModalDecision.subscribe(
+	async (d) => {
+		const decision = await d;
+		if (decision === undefined) return;
+		if (whereToGo) {
+			if (decision) {
+				needSave.set(true);
+				canNavigate = true;
+				goto(whereToGo);
+			} else {
+				needSave.set(false);
+				canNavigate = true;
+				goto(whereToGo);
+			}
 		}
-	}
-});
+	},
+);
 
 beforeNavigate(async (event) => {
 	if (!canNavigate && $isEditingState) {
@@ -214,6 +217,11 @@ beforeNavigate(async (event) => {
 		canNavigate = false;
 		isEditingState.set(false);
 	}
+});
+
+onDestroy(() => {
+	unsubscribeLocale();
+	unsubscribeConfirmModalDecision();
 });
 </script>
 
