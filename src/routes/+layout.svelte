@@ -115,6 +115,10 @@ function updateData(update) {
 	methods[method](data);
 }
 
+function updatePageData({ detail }) {
+	pageDataObject = detail;
+}
+
 function cleanAddressLine() {
 	// Remove hash after successful login
 	replaceState('/', $page.state);
@@ -274,6 +278,7 @@ onDestroy(() => {
 	bind:this={footerEditor}
 	id="footer-dialog"
 	pageData={pageDataObject}
+	on:update={updatePageData}
 />
 
 <style>
