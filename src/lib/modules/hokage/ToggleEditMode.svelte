@@ -24,9 +24,11 @@ const needSave = getContext('needSave');
 const isShowDeleteModal = getContext('isShowDeleteModal');
 const deleteModalDecision = getContext('deleteModalDecision');
 
-needSave.subscribe((/** @type {boolean} */ save) => {
-	if (save) saveContent();
-})();
+const unsubscribeNeedSave = needSave.subscribe(
+	(/** @type {boolean} */ save) => {
+		if (save) saveContent();
+	},
+);
 
 async function deleteContent() {
 	editingPageStatus.set('loading');
@@ -155,14 +157,27 @@ $: url = () => {
 	}
 };
 
-function deleteEntity() {
-	isShowDeleteModal.set(true);
-	deleteModalDecision.subscribe(async (d) => {
-		const decision = await d;
+async function deleteEntity() {
+	let unsubscribe = () => null;
 
-		if (decision === undefined) return;
-		if (decision) deleteContent();
-	})();
+	await (() =>
+		new Promise((resolve) => {
+			isShowDeleteModal.set(true);
+			unsubscribe = deleteModalDecision.subscribe(async (d) => {
+				const decision = await d;
+
+				if (decision === undefined) {
+					resolve();
+				}
+
+				if (decision) {
+					deleteContent();
+					resolve();
+				}
+			});
+		}))();
+
+	unsubscribe();
 }
 
 $: isImageValid = url().rawData?.banner
@@ -200,6 +215,8 @@ $: btnColor = () => {
 
 	return 'gray';
 };
+
+onDestroy(() => unsubscribeNeedSave());
 </script>
 
 <div class="row">

@@ -1,4 +1,4 @@
-import { VITE_ADMIN_EMAIL } from '$env/static/private';
+import { NODE_ENV, VITE_ADMIN_EMAIL } from '$env/static/private';
 import { supabase } from '$lib/supabaseClient.js';
 import { createError } from '$lib/utils/errors.js';
 import { validateUserData } from '$lib/utils/validate.js';
@@ -19,10 +19,14 @@ export async function POST({ cookies, request }) {
 		});
 	}
 
+	const isDev = NODE_ENV === 'development';
+
 	const {
 		data: { session: authToken },
 		error,
-	} = await supabase.auth.signInWithPassword(userData);
+	} = isDev
+		? await supabase.auth.signInAnonymously()
+		: await supabase.auth.signInWithPassword(userData);
 
 	if (!error && authToken) {
 		cookies.set('authToken', authToken.access_token, { path: '/' });

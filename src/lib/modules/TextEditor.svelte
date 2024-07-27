@@ -43,13 +43,17 @@ let conf = {
 	placeholder,
 };
 
-appColorScheme.subscribe((/** @type {string} */ scheme) => {
-	skinUrl = `/styles/tinymce/Naruto/${scheme}`;
-	conf.skin_url = skinUrl;
-})();
+const unsubscribeAppColorScheme = appColorScheme.subscribe(
+	(/** @type {string} */ scheme) => {
+		skinUrl = `/styles/tinymce/Naruto/${scheme}`;
+		conf.skin_url = skinUrl;
+	},
+);
 
 const dispatch = createEventDispatcher();
 $: dispatch('input', value);
+
+onDestroy(() => unsubscribeAppColorScheme());
 </script>
 
 <div

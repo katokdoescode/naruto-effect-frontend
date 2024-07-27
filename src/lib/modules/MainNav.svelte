@@ -37,26 +37,32 @@ function translateTitle(title) {
 }
 
 async function cancelCreating() {
+	let unsubscribe = () => null;
 	isShowConfirmExitModal.set(true);
 
-	confirmModalDecision.subscribe(async (d) => {
-		const decision = await d;
+	await (() =>
+		new Promise((resolve) => {
+			unsubscribe = confirmModalDecision.subscribe(async (d) => {
+				const decision = await d;
 
-		if (decision === undefined) return;
+				if (decision === undefined) return;
 
-		if (!decision) {
-			if (isCreatingMode) {
-				isEditingState.set(false);
-				goto('/');
-			}
-			isEditingState.set(false);
-		} else {
-			if (!isCreatingMode) {
-				needSave.set(true);
-				isEditingState.set(false);
-			}
-		}
-	})();
+				if (!decision) {
+					if (isCreatingMode) {
+						isEditingState.set(false);
+						goto('/');
+					}
+					isEditingState.set(false);
+				} else {
+					if (!isCreatingMode) {
+						needSave.set(true);
+						isEditingState.set(false);
+					}
+				}
+			});
+		}))();
+
+	unsubscribe();
 }
 
 $: visiblePractices = practices
