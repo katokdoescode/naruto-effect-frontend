@@ -150,9 +150,9 @@ $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 	{/if}
 </nav>
 
-<section
+<nav
 	class="contacts no-mobile"
-	aria-label="Контакты">
+	aria-label={$_('mainMenu.contacts')}>
 	{#if pageLinks}
 		{#each pageLinks as { link, name }}
 			<a
@@ -164,7 +164,7 @@ $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 			</a>
 		{/each}
 	{/if}
-</section>
+</nav>
 
 <style scoped>
 	.main-nav {

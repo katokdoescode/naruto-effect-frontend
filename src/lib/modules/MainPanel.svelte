@@ -1,6 +1,7 @@
 <script>
 import Logo from '$lib/modules/Logo.svelte';
 import MainNav from '$lib/modules/MainNav.svelte';
+import { _ } from 'svelte-i18n';
 export let practices = [];
 export let pageLinks = [];
 </script>
@@ -13,7 +14,7 @@ export let pageLinks = [];
 	</div>
 
 	<MainNav
-		aria-label="Practices"
+		aria-label={$_('mainMenu.practices')}
 		{pageLinks}
 		{practices} />
 </header>
