@@ -21,7 +21,7 @@ async function logOut(page) {
 }
 
 test.describe
-	.parallel('Unauthorized action', () => {
+	.parallel('User', () => {
 		test.beforeEach(async ({ page }) => {
 			await page.goto('/');
 			await page.waitForURL('/');
@@ -169,21 +169,6 @@ test.describe('Hokage', () => {
 		await expect(page.locator('#content article')).toHaveText('Test text');
 	});
 
-	test('can publish practice', async ({ page }) => {
-		const link = page.locator('#main-menu .links-list a').first();
-		const href = await link.getAttribute('href');
-		await link.click();
-		const contentControlPanel = page.locator('#panel-content');
-		await contentControlPanel.locator('button[value=edit]').click();
-		await page
-			.locator('#second-menu .edit-title-wrapper input[type=checkbox]')
-			.click();
-		await contentControlPanel.locator('button[value=save]').click();
-		await expect(
-			page.locator(`#main-menu .links-list a[href="${href}"]:is(.disabled)`),
-		).not.toBeVisible();
-	});
-
 	test('can delete practice', async ({ page }) => {
 		await page.locator('#main-menu .links-list a').first().click();
 		const currentUrl = page.url();
@@ -200,5 +185,20 @@ test.describe('Hokage', () => {
 		);
 
 		expect(currentPath !== newCurrentPath).toBe(true);
+	});
+
+	test('can publish practice', async ({ page }) => {
+		const link = page.locator('#main-menu .links-list a').last();
+		const href = await link.getAttribute('href');
+		await link.click();
+		const contentControlPanel = page.locator('#panel-content');
+		await contentControlPanel.locator('button[value=edit]').click();
+		await page
+			.locator('#second-menu .edit-title-wrapper input[type=checkbox]')
+			.click();
+		await contentControlPanel.locator('button[value=save]').click();
+		await expect(
+			page.locator(`#main-menu .links-list a[href="${href}"]:is(.disabled)`),
+		).not.toBeVisible();
 	});
 });
