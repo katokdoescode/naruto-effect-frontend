@@ -2,10 +2,11 @@
 import Button from '$lib/ui/Button.svelte';
 import Input from '$lib/ui/Input.svelte';
 import Textarea from '$lib/ui/Textarea.svelte';
-import { getContext } from 'svelte';
+import { createEventDispatcher, getContext } from 'svelte';
 import { _, locale } from 'svelte-i18n';
 const isFooterEditorOpen = getContext('isFooterEditorOpen');
 const footerEditorState = getContext('footerEditorState');
+const dispatch = createEventDispatcher();
 
 export let nativeClasses = '';
 export let id;
@@ -58,6 +59,7 @@ async function submitForm() {
 
 		footerEditorState.set('success');
 		setTimeout(() => {
+			dispatch('update', pageData);
 			footerEditorState.set('save');
 			isFooterEditorOpen.set(false);
 		}, 314);

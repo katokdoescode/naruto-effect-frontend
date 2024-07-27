@@ -1,4 +1,5 @@
 <script>
+import { goto } from '$app/navigation';
 import { page } from '$app/stores';
 import Button from '$lib/ui/Button.svelte';
 import { pick } from '$lib/utils/objectsTools';
@@ -108,7 +109,7 @@ $: url = () => {
 				data: JSON.stringify($practiceData),
 				onSuccess: (/** @type {Practice} */ data) => {
 					const slug = data.slug[$locale];
-					window.location.assign(`/practices/${slug}`);
+					goto(`/practices/${slug}`);
 				},
 			};
 
@@ -123,6 +124,7 @@ $: url = () => {
 						method: 'updatePractices',
 						data: pick(practice, ['id', 'isVisible', 'slug', 'title']),
 					});
+					goto(`/practices/${practice.slug[$locale]}`);
 				},
 			};
 
@@ -134,7 +136,7 @@ $: url = () => {
 				data: JSON.stringify($participantData),
 				onSuccess: (/** @type {Participant} */ data) => {
 					const slug = data.slug;
-					window.location.assign(`/participants/${slug}`);
+					goto(`/participants/${slug}`);
 				},
 			};
 
@@ -149,6 +151,7 @@ $: url = () => {
 						method: 'updateParticipants',
 						data: pick(participant, ['id', 'isVisible', 'slug', 'name']),
 					});
+					goto(`/participants/${participant.slug}`);
 				},
 			};
 
