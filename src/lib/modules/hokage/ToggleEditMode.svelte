@@ -47,7 +47,7 @@ async function deleteContent() {
 		}, 2500);
 	} else {
 		editingPageStatus.set('error');
-		setTimeout(() => editingPageStatus.set(null), 3500);
+		setTimeout(() => editingPageStatus.set(null), 2500);
 	}
 }
 
@@ -159,21 +159,18 @@ $: url = () => {
 
 async function deleteEntity() {
 	let unsubscribe = () => null;
+	isShowDeleteModal.set(true);
 
 	await (() =>
-		new Promise((resolve) => {
-			isShowDeleteModal.set(true);
+		new Promise(() => {
 			unsubscribe = deleteModalDecision.subscribe(async (d) => {
 				const decision = await d;
 
-				if (decision === undefined) {
-					resolve();
-				}
+				console.debug(decision);
 
-				if (decision) {
-					deleteContent();
-					resolve();
-				}
+				if (decision === undefined) return;
+
+				if (decision) deleteContent();
 			});
 		}))();
 
@@ -219,10 +216,11 @@ $: btnColor = () => {
 onDestroy(() => unsubscribeNeedSave());
 </script>
 
-<div class="row">
+<div class="row" aria-controls="content" role="toolbar">
 	<Button
 		color={btnColor()}
 		disabled={isNotValid}
+		value={btnStatus()}
 		on:click={toggleEditMode}>
 		{$_(`button.${btnStatus()}`)}
 	</Button>
@@ -231,6 +229,7 @@ onDestroy(() => unsubscribeNeedSave());
 		<Button
 			color="red"
 			nativeClasses="no-mobile"
+			value='delete'
 			on:click={deleteEntity}>
 			{$_(`button.delete`)}
 		</Button>

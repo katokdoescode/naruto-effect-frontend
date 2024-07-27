@@ -21,7 +21,7 @@ isEditingState.set(false);
 	/>
 
 	<ShadowWrapper noPads>
-		<main class="main-page-content">
+		<main id="content" class="main-page-content">
 			<slot />
 		</main>
 	</ShadowWrapper>

@@ -41,7 +41,7 @@ async function cancelCreating() {
 	isShowConfirmExitModal.set(true);
 
 	await (() =>
-		new Promise((resolve) => {
+		new Promise(() => {
 			unsubscribe = confirmModalDecision.subscribe(async (d) => {
 				const decision = await d;
 
