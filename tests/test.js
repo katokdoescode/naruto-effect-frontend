@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 
+// Don't forget to `supabase db reset` before start tests
+
 /**
  * @param {import("@playwright/test").Page} page
  */
@@ -14,10 +16,10 @@ async function login(page) {
 }
 
 /**
- * @param {{ click: (arg0: string) => any; }} page
+ * @param {import("@playwright/test").Page} page
  */
 async function logOut(page) {
-	await page.click('form[action="/api/signOut"]');
+	await page.click('form[action="/api/signOut"] button[type=submit]');
 }
 
 test.describe
@@ -199,6 +201,87 @@ test.describe('Hokage', () => {
 		await contentControlPanel.locator('button[value=save]').click();
 		await expect(
 			page.locator(`#main-menu .links-list a[href="${href}"]:is(.disabled)`),
+		).not.toBeVisible();
+	});
+
+	test('can create new participant', async ({ page }) => {
+		await page.locator('a[href="/participants/create"]').click();
+
+		const contentControlPanel = page.locator('#panel-content');
+		const newParticipantTitle = 'Radion Harvatsev';
+
+		await page.locator('#practiceTitle').fill(newParticipantTitle);
+		await page
+			.locator('#practiceSubtitle')
+			.fill('This is the guy who can drink beer every day');
+		await page.locator('.editor-wrapper').click();
+		await page.keyboard.type('Test text');
+
+		await contentControlPanel.locator('button[value=save]').click();
+
+		await expect(page.locator('h1')).toHaveText(newParticipantTitle);
+		await expect(page.locator('#content h2')).toHaveText(
+			'This is the guy who can drink beer every day',
+		);
+		await expect(page.locator('#content article')).toHaveText('Test text');
+	});
+
+	test('can edit participant', async ({ page }) => {
+		await page.locator('a[href="/participants/radion-harvatsev"]').click();
+		const contentControlPanel = page.locator('#panel-content');
+		const newParticipantTitle = 'Rodion Harvatsev';
+
+		await contentControlPanel.locator('button[value=edit]').click();
+
+		await page.locator('#practiceTitle').fill(newParticipantTitle);
+		await page
+			.locator('#practiceSubtitle')
+			.fill('This is the guy who can drink wine every day');
+		await page.locator('.editor-wrapper').click();
+		await page.keyboard.press('ControlOrMeta+A');
+		await page.keyboard.press('Delete');
+		await page.keyboard.type('London is a capital of the Great Britan');
+		await contentControlPanel.locator('button[value=save]').click();
+		await expect(page.locator('h1')).toHaveText(newParticipantTitle);
+		await expect(page.locator('#content h2')).toHaveText(
+			'This is the guy who can drink wine every day',
+		);
+		await expect(page.locator('#content article')).toHaveText(
+			'London is a capital of the Great Britan',
+		);
+	});
+
+	test('can publish participant', async ({ page }) => {
+		await page.locator('a[href="/participants/rodion-harvatsev"]').click();
+		const contentControlPanel = page.locator('#panel-content');
+		await contentControlPanel.locator('button[value=edit]').click();
+		await page
+			.locator('#second-menu .edit-title-wrapper input[type=checkbox]')
+			.click();
+		await contentControlPanel.locator('button[value=save]').click();
+
+		await logOut(page);
+		const newParticipantTitle = 'Rodion Harvatsev';
+		await page.locator('a[href="/participants/rodion-harvatsev"]').click();
+		await expect(page.locator('h1')).toHaveText(newParticipantTitle);
+		await expect(page.locator('#content h2')).toHaveText(
+			'This is the guy who can drink wine every day',
+		);
+		await expect(page.locator('#content article')).toHaveText(
+			'London is a capital of the Great Britan',
+		);
+	});
+
+	test('can delete participant', async ({ page }) => {
+		await page.locator('a[href="/participants/rodion-harvatsev"]').click();
+		const contentControlPanel = page.locator('#panel-content');
+		await contentControlPanel.locator('button[value=edit]').click();
+		await contentControlPanel.locator('button[value=delete]').click();
+
+		await page.locator('dialog[open].modal').waitFor();
+		await page.locator('dialog[open].modal button').last().click();
+		await expect(
+			page.locator('a[href="/participants/rodion-harvatsev"]'),
 		).not.toBeVisible();
 	});
 });
