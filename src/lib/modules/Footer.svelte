@@ -1,30 +1,30 @@
 <script>
-	import Button from '$lib/ui/Button.svelte';
-	import { createEventDispatcher, getContext } from 'svelte';
-	import { _, locale } from 'svelte-i18n';
-	const dispatch = createEventDispatcher();
+import Button from '$lib/ui/Button.svelte';
+import { createEventDispatcher, getContext } from 'svelte';
+import { _, locale } from 'svelte-i18n';
+const dispatch = createEventDispatcher();
 
-	/** @type{LocaleObject} */
-	export let copyright = null;
+/** @type{LocaleObject} */
+export let copyright = null;
 
-	/**@type{string|number}*/
-	export let year = new Date().getFullYear();
+/**@type{string|number}*/
+export let year = new Date().getFullYear();
 
-	const isFooterEditorOpen = getContext('isFooterEditorOpen');
-	const footerEditorState = getContext('footerEditorState');
-	const authorized = getContext('authorized');
+const isFooterEditorOpen = getContext('isFooterEditorOpen');
+const footerEditorState = getContext('footerEditorState');
+const authorized = getContext('authorized');
 
-	function showFooterEditor() {
-		isFooterEditorOpen.set(true);
-	}
+function showFooterEditor() {
+	isFooterEditorOpen.set(true);
+}
 
-	function hideFooterEditor() {
-		isFooterEditorOpen.set(false);
-	}
+function hideFooterEditor() {
+	isFooterEditorOpen.set(false);
+}
 
-	function submitFooterForm() {
-		dispatch('submitFooter');
-	}
+function submitFooterForm() {
+	dispatch('submitFooter');
+}
 </script>
 
 {#if $authorized}

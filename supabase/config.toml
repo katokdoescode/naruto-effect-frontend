@@ -1,0 +1,16 @@
+project_id="naruto-effect-frontend"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+[api.tls]
+enabled = false
+
+[auth]
+enabled = true
+enable_anonymous_sign_ins=true
+enable_refresh_token_rotation = true
+refresh_token_reuse_interval = 999

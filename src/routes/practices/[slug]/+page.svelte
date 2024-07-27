@@ -1,58 +1,58 @@
 <script>
-	/* eslint-disable svelte/no-at-html-tags */
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
-	import AlertMessage from '$lib/modules/AlertMessage.svelte';
-	import YouTube from '$lib/modules/YouTube.svelte';
-	import PracticeEditor from '$lib/modules/hokage/PracticeEditor.svelte';
-	import { clean } from '$lib/utils/objectsTools.js';
-	import { CarSlugger } from '@katokdoescode/car-slugger';
-	import { getContext, onMount } from 'svelte';
-	import { BannerModes } from '$lib/constants';
-	import { _, locale, locales } from 'svelte-i18n';
-	import autoTranslate from '$lib/utils/autoTranslate.js';
+/* eslint-disable svelte/no-at-html-tags */
+import { goto } from '$app/navigation';
+import { page } from '$app/stores';
+import { BannerModes } from '$lib/constants';
+import AlertMessage from '$lib/modules/AlertMessage.svelte';
+import YouTube from '$lib/modules/YouTube.svelte';
+import PracticeEditor from '$lib/modules/hokage/PracticeEditor.svelte';
+import autoTranslate from '$lib/utils/autoTranslate.js';
+import { clean } from '$lib/utils/objectsTools.js';
+import { CarSlugger } from '@katokdoescode/car-slugger';
+import { getContext, onMount } from 'svelte';
+import { _, locale, locales } from 'svelte-i18n';
 
-	const authorized = getContext('authorized');
-	const practiceData = getContext('practiceData');
-	const isEditingState = getContext('isEditingState');
+const authorized = getContext('authorized');
+const practiceData = getContext('practiceData');
+const isEditingState = getContext('isEditingState');
 
-	const slugger = new CarSlugger();
+const slugger = new CarSlugger();
 
-	export let data;
-	let isMounted = false;
+export let data;
+let isMounted = false;
 
-	$: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
+$: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 
-	/** @type {Practice} */
-	$: practice = data?.practice;
+/** @type {Practice} */
+$: practice = data?.practice;
 
-	/** @type{Practice} */
-	let localValue;
-	$: localValue = practice;
+/** @type{Practice} */
+let localValue;
+$: localValue = practice;
 
-	$: if (localValue)
-		Object.entries(localValue.title).forEach(([key, value]) => {
-			if (value) localValue.slug[key] = slugger.getSlug(localValue.title[key]);
-		});
-
-	$: practiceData.set(clean(localValue));
-	$: localizedSlug = practice?.originalSlug[$locale] || undefined;
-	$: route = $page.params.slug;
-	$: if (isMounted && route !== localizedSlug) {
-		if (localizedSlug)
-			goto(`/practices/${localizedSlug}`, { replaceState: false });
-	}
-
-	$: isNotLocalized = !practice.title[$locale];
-
-	$: autoTranslatedTitle =
-		isNotLocalized && $locale === 'en'
-			? autoTranslate($locale, practice.title[anotherLocale])
-			: practice.title[anotherLocale];
-
-	onMount(() => {
-		isMounted = true;
+$: if (localValue)
+	Object.entries(localValue.title).forEach(([key, value]) => {
+		if (value) localValue.slug[key] = slugger.getSlug(localValue.title[key]);
 	});
+
+$: practiceData.set(clean(localValue));
+$: localizedSlug = practice?.originalSlug[$locale] || undefined;
+$: route = $page.params.slug;
+$: if (isMounted && route !== localizedSlug) {
+	if (localizedSlug)
+		goto(`/practices/${localizedSlug}`, { replaceState: false });
+}
+
+$: isNotLocalized = !practice.title[$locale];
+
+$: autoTranslatedTitle =
+	isNotLocalized && $locale === 'en'
+		? autoTranslate($locale, practice.title[anotherLocale])
+		: practice.title[anotherLocale];
+
+onMount(() => {
+	isMounted = true;
+});
 </script>
 
 <svelte:head>

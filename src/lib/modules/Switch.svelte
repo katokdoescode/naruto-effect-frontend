@@ -1,7 +1,7 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
-	export let checked = false;
+import { createEventDispatcher } from 'svelte';
+const dispatch = createEventDispatcher();
+export let checked = false;
 </script>
 
 <input

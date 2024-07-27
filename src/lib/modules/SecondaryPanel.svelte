@@ -1,11 +1,11 @@
 <script lang="ts">
-	import LangSwitch from '$lib/modules/LangSwitch.svelte';
-	import SecondNav from '$lib/modules/SecondNav.svelte';
-	import ThemeSwitch from '$lib/modules/ThemeSwitch.svelte';
-	import { locale } from 'svelte-i18n';
+import LangSwitch from '$lib/modules/LangSwitch.svelte';
+import SecondNav from '$lib/modules/SecondNav.svelte';
+import ThemeSwitch from '$lib/modules/ThemeSwitch.svelte';
+import { locale } from 'svelte-i18n';
 
-	export let participants = [];
-	export let participateLink = null;
+export let participants = [];
+export let participateLink = null;
 </script>
 
 <aside

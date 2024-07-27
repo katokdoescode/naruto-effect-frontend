@@ -7,12 +7,12 @@ const defaultLocale = 'en';
 export const appLocales = ['en', 'ru'];
 
 appLocales.forEach((locale) =>
-	register(locale, () => import(`./locales/${locale}.json`))
+	register(locale, () => import(`./locales/${locale}.json`)),
 );
 
 init({
 	fallbackLocale: defaultLocale,
 	initialLocale: browser
 		? matchLocale(appLocales, window.navigator.language?.split('-')[0])
-		: defaultLocale
+		: defaultLocale,
 });

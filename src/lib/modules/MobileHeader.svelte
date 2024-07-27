@@ -1,66 +1,72 @@
 <script>
-	import { onNavigate } from '$app/navigation';
-	import { page } from '$app/stores';
-	import Logo from '$lib/modules/Logo.svelte';
-	import MainNav from '$lib/modules/MainNav.svelte';
-	import SecondNav from '$lib/modules/SecondNav.svelte';
-	import Burger from '$lib/ui/Burger.svelte';
-	import Button from '$lib/ui/Button.svelte';
-	import { createEventDispatcher, getContext } from 'svelte';
-	import { _ } from 'svelte-i18n';
-	import BurgerMenu from './BurgerMenu.svelte';
-	import MobileEditPanel from './hokage/MobileEditPanel.svelte';
+import { onNavigate } from '$app/navigation';
+import { page } from '$app/stores';
+import Logo from '$lib/modules/Logo.svelte';
+import MainNav from '$lib/modules/MainNav.svelte';
+import SecondNav from '$lib/modules/SecondNav.svelte';
+import Burger from '$lib/ui/Burger.svelte';
+import Button from '$lib/ui/Button.svelte';
+import { createEventDispatcher, getContext } from 'svelte';
+import { _ } from 'svelte-i18n';
+import BurgerMenu from './BurgerMenu.svelte';
+import MobileEditPanel from './hokage/MobileEditPanel.svelte';
 
-	const dispatch = createEventDispatcher();
+const dispatch = createEventDispatcher();
 
-	const authorized = getContext('authorized');
+const authorized = getContext('authorized');
 
-	export let practices;
-	export let participants;
-	export let pageLinks;
+export let practices;
+export let participants;
+export let pageLinks;
 
-	$: isBurgerMenuOpened = false;
-	$: isMainMenuOpened = false;
-	$: isSecondaryMenuOpened = false;
-	$: isAnyMenuOpened =
-		isBurgerMenuOpened || isMainMenuOpened || isSecondaryMenuOpened;
-	$: if (isBurgerMenuOpened) {
-		toggleMainMenu(false);
-		toggleSecondaryMenu(false);
+$: isBurgerMenuOpened = false;
+$: isMainMenuOpened = false;
+$: isSecondaryMenuOpened = false;
+$: isAnyMenuOpened =
+	isBurgerMenuOpened || isMainMenuOpened || isSecondaryMenuOpened;
+$: if (isBurgerMenuOpened) {
+	toggleMainMenu(false);
+	toggleSecondaryMenu(false);
+}
+
+/**
+ * @param {boolean|unknown} [prevent]
+ */
+function toggleMainMenu(prevent) {
+	if (prevent !== undefined && (prevent === true || prevent === false)) {
+		isMainMenuOpened = prevent;
+		isBurgerMenuOpened = !prevent;
+		return;
+	}
+	isMainMenuOpened = !isMainMenuOpened;
+
+	isBurgerMenuOpened = false;
+	isSecondaryMenuOpened = false;
+}
+
+/**
+ * @param {boolean|unknown} [prevent]
+ */
+function toggleSecondaryMenu(prevent) {
+	if (prevent !== undefined && (prevent === true || prevent === false)) {
+		isSecondaryMenuOpened = prevent;
+		isBurgerMenuOpened = !prevent;
+		return;
 	}
 
-	function toggleMainMenu(prevent) {
-		if (prevent !== undefined && (prevent === true || prevent === false)) {
-			isMainMenuOpened = prevent;
-			isBurgerMenuOpened = !prevent;
-			return;
-		}
-		isMainMenuOpened = !isMainMenuOpened;
+	isSecondaryMenuOpened = !isSecondaryMenuOpened;
 
-		isBurgerMenuOpened = false;
-		isSecondaryMenuOpened = false;
-	}
+	isBurgerMenuOpened = false;
+	isMainMenuOpened = false;
+}
 
-	function toggleSecondaryMenu(prevent) {
-		if (prevent !== undefined && (prevent === true || prevent === false)) {
-			isSecondaryMenuOpened = prevent;
-			isBurgerMenuOpened = !prevent;
-			return;
-		}
+function hideAllMenus() {
+	isBurgerMenuOpened = false;
+	isSecondaryMenuOpened = false;
+	isMainMenuOpened = false;
+}
 
-		isSecondaryMenuOpened = !isSecondaryMenuOpened;
-
-		isBurgerMenuOpened = false;
-		isMainMenuOpened = false;
-	}
-
-	function hideAllMenus() {
-		isBurgerMenuOpened = false;
-		isSecondaryMenuOpened = false;
-		isMainMenuOpened = false;
-	}
-
-	onNavigate(() => hideAllMenus());
+onNavigate(() => hideAllMenus());
 </script>
 
 <header

@@ -1,36 +1,36 @@
 <script>
-	import { page } from '$app/stores';
-	import Button from '$lib/ui/Button.svelte';
-	import { getContext } from 'svelte';
-	import { _ } from 'svelte-i18n';
-	import Modal from './Modal.svelte';
+import { page } from '$app/stores';
+import Button from '$lib/ui/Button.svelte';
+import { getContext } from 'svelte';
+import { _ } from 'svelte-i18n';
+import Modal from './Modal.svelte';
 
-	const isShowConfirmExitModal = getContext('isShowConfirmExitModal');
-	const confirmModalDecision = getContext('confirmModalDecision');
+const isShowConfirmExitModal = getContext('isShowConfirmExitModal');
+const confirmModalDecision = getContext('confirmModalDecision');
 
-	let open = false;
-	let message = '';
+let open = false;
+let message = '';
 
-	$: isCreatingMode = $page.url.pathname.includes('/create');
-	$: message = isCreatingMode
-		? $_('messages.confirm.exitCreating')
-		: $_('messages.confirm.exit');
-	$: open = $isShowConfirmExitModal;
+$: isCreatingMode = $page.url.pathname.includes('/create');
+$: message = isCreatingMode
+	? $_('messages.confirm.exitCreating')
+	: $_('messages.confirm.exit');
+$: open = $isShowConfirmExitModal;
 
-	$: if (!open)
-		confirmModalDecision.set(new Promise((resolve) => resolve(undefined)));
+$: if (!open)
+	confirmModalDecision.set(new Promise((resolve) => resolve(undefined)));
 
-	async function cancel() {
-		confirmModalDecision.set(new Promise((resolve) => resolve(false)));
+async function cancel() {
+	confirmModalDecision.set(new Promise((resolve) => resolve(false)));
 
-		isShowConfirmExitModal.set(false);
-	}
+	isShowConfirmExitModal.set(false);
+}
 
-	function confirm() {
-		confirmModalDecision.set(new Promise((resolve) => resolve(true)));
+function confirm() {
+	confirmModalDecision.set(new Promise((resolve) => resolve(true)));
 
-		isShowConfirmExitModal.set(false);
-	}
+	isShowConfirmExitModal.set(false);
+}
 </script>
 
 <Modal

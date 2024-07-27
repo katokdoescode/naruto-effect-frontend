@@ -5,7 +5,10 @@
  * @param {Array} [undesiredValues=[undefined, null, NaN]] - Array of undesirable values.
  * @returns {Object} An object without keys having the undesirable values.
  */
-export function clean(sourceObject, undesiredValues = [undefined, null, NaN]) {
+export function clean(
+	sourceObject,
+	undesiredValues = [undefined, null, Number.NaN],
+) {
 	const result = { ...sourceObject };
 
 	for (const key in result) {

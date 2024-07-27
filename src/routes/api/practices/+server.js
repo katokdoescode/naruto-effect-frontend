@@ -17,11 +17,10 @@ export async function GET({ cookies }) {
 	if (practices) {
 		return json({
 			success: true,
-			data: practices
+			data: practices,
 		});
-	} else {
-		return json(createError(false, error.message));
 	}
+	return json(createError(false, error.message));
 }
 
 export async function POST({ request }) {
@@ -41,9 +40,8 @@ export async function POST({ request }) {
 
 	if (!error && data && status === 201) {
 		return json({ success: true, data: practice });
-	} else {
-		return json(createError(false, error.message));
 	}
+	return json(createError(false, error.message));
 }
 
 export async function PATCH({ request }) {
@@ -64,9 +62,8 @@ export async function PATCH({ request }) {
 
 	if (!error && practice && status === 200) {
 		return json({ success: true, data: practice });
-	} else {
-		return json(createError(false, error.message));
 	}
+	return json(createError(false, error.message));
 }
 
 export async function DELETE({ request }) {
@@ -82,7 +79,6 @@ export async function DELETE({ request }) {
 
 	if (!error && data && status === 204) {
 		return json({ success: true });
-	} else {
-		return json(createError(false, error.message));
 	}
+	return json(createError(false, error.message));
 }

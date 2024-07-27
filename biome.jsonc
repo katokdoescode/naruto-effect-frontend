@@ -1,0 +1,41 @@
+{
+	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+	"organizeImports": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"style": {
+			  // If fix, it will broke component props
+			  "useConst": "off",
+				"noUselessElse": {
+ 					"fix": "safe",
+ 					"level": "info"
+				},
+				"useTemplate": {
+				  "fix": "safe",
+ 					"level": "info"
+				}
+			},
+			"performance": {
+			  "noDelete": "off"
+			},
+			"complexity": {
+			  "noForEach": "off"
+			}
+		}
+	},
+	"formatter": {
+  	"indentStyle": "tab",
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "lineEnding": "lf"
+	},
+	"javascript": {
+	 "formatter": {
+		  "quoteStyle": "single"
+		}
+	}
+}

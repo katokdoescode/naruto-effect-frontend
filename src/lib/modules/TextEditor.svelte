@@ -1,55 +1,59 @@
 <script>
-	/* eslint-disable svelte/no-at-html-tags */
-	import Editor from '@tinymce/tinymce-svelte';
-	import { createEventDispatcher, getContext } from 'svelte';
+/* eslint-disable svelte/no-at-html-tags */
+import Editor from '@tinymce/tinymce-svelte';
+import { createEventDispatcher, getContext, onDestroy } from 'svelte';
 
-	/** @type{object} */
-	export let addConf = {};
+/** @type{object} */
+export let addConf = {};
 
-	/** @type{boolean | undefined} */
-	export let inline = false;
+/** @type{boolean | undefined} */
+export let inline = false;
 
-	/** @type{boolean} */
-	export let disabled = false;
+/** @type{boolean} */
+export let disabled = false;
 
-	/** @type{string} */
-	export let id;
+/** @type{string} */
+export let id;
 
-	/** @type{string} */
-	export let value;
+/** @type{string} */
+export let value;
 
-	/** @type{string|boolean} */
-	export let placeholder = 'Type here...';
+/** @type{string|boolean} */
+export let placeholder = 'Type here...';
 
-	const appColorScheme = getContext('appColorScheme');
-	let skinUrl = `/styles/tinymce/Naruto/${$appColorScheme}`;
+const appColorScheme = getContext('appColorScheme');
+let skinUrl = `/styles/tinymce/Naruto/${$appColorScheme}`;
 
-	const apiKey = import.meta.env.VITE_TINYMCE_API_KEY;
+const apiKey = import.meta.env.VITE_TINYMCE_API_KEY;
 
-	let conf = {
-		height: inline ? 'max-content' : '100%',
-		toolbar: false,
-		menubar: false,
-		branding: false,
-		statusbar: false,
-		contextmenu: inline
-			? false
-			: 'bold fontsize align italic list underline strikethrough link hr undo', // indent и выбор параграфа
-		resize: false,
-		content_css: 'Naruto',
-		font_css: '/styles/fonts.css',
-		plugins: ['autolink', 'lists', 'link'],
-		...addConf,
-		placeholder
-	};
+let conf = {
+	height: inline ? 'max-content' : '100%',
+	toolbar: false,
+	menubar: false,
+	branding: false,
+	statusbar: false,
+	contextmenu: inline
+		? false
+		: 'bold fontsize align italic list underline strikethrough link hr undo', // indent и выбор параграфа
+	resize: false,
+	content_css: 'Naruto',
+	font_css: '/styles/fonts.css',
+	plugins: ['autolink', 'lists', 'link'],
+	...addConf,
+	placeholder,
+};
 
-	appColorScheme.subscribe((scheme) => {
+const unsubscribeAppColorScheme = appColorScheme.subscribe(
+	(/** @type {string} */ scheme) => {
 		skinUrl = `/styles/tinymce/Naruto/${scheme}`;
 		conf.skin_url = skinUrl;
-	});
+	},
+);
 
-	const dispatch = createEventDispatcher();
-	$: dispatch('input', value);
+const dispatch = createEventDispatcher();
+$: dispatch('input', value);
+
+onDestroy(() => unsubscribeAppColorScheme());
 </script>
 
 <div

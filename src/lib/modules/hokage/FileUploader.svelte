@@ -1,95 +1,95 @@
 <script>
-	import { fade } from 'svelte/transition';
-	import Button from '$lib/ui/Button.svelte';
-	import { _ } from 'svelte-i18n';
-	import { page } from '$app/stores';
+import { page } from '$app/stores';
+import Button from '$lib/ui/Button.svelte';
+import { _ } from 'svelte-i18n';
+import { fade } from 'svelte/transition';
 
-	const acceptable = {
-		images: 'image/*'
-	};
+const acceptable = {
+	images: 'image/*',
+};
 
-	/** @type{'images'} */
-	export let type = 'images';
+/** @type{'images'} */
+export let type = 'images';
 
-	/** @type{string} */
-	export let id = 'file';
+/** @type{string} */
+export let id = 'file';
 
-	/** @type{number} */
-	export let tabindex = 0;
+/** @type{number} */
+export let tabindex = 0;
 
-	/** @type{string|null} */
-	export let link;
+/** @type{string|null} */
+export let link;
 
-	/** @type{string|undefined}*/
-	let errorText;
+/** @type{string|undefined}*/
+let errorText;
 
-	/** @type{'success'|'error'|null}*/
-	let status;
+/** @type{'success'|'error'|null}*/
+let status;
 
-	/** @type{HTMLInputElement}*/
-	let input;
+/** @type{HTMLInputElement}*/
+let input;
 
-	let isLoading = false;
+let isLoading = false;
 
-	/**
-	 * Uploading file via API
-	 * @param {object|undefined} body
-	 */
-	async function uploadFile(body) {
-		if (!body) return;
-		isLoading = true;
+/**
+ * Uploading file via API
+ * @param {object|undefined} body
+ */
+async function uploadFile(body) {
+	if (!body) return;
+	isLoading = true;
 
-		try {
-			const { url, error } = await (
-				await fetch('/api/files', { method: 'POST', body })
-			).json();
+	try {
+		const { url, error } = await (
+			await fetch('/api/files', { method: 'POST', body })
+		).json();
 
-			if (error) {
-				status = 'error';
-			} else {
-				status = 'success';
-				link = url;
-			}
-		} finally {
-			isLoading = false;
-			setTimeout(() => {
-				status = null;
-			}, 2500);
-		}
-	}
-
-	function onUpload({ target }) {
-		errorText = null;
-		const file = target.files[0];
-		const formData = new FormData();
-
-		// 4mb
-		if (file.size / 1000000 > 4) {
+		if (error) {
 			status = 'error';
-			errorText = $_('errors.sizeLimit');
-			setTimeout(() => {
-				status = null;
-			}, 2500);
-			setTimeout(() => {
-				errorText = null;
-			}, 5000);
-			return;
+		} else {
+			status = 'success';
+			link = url;
 		}
+	} finally {
+		isLoading = false;
+		setTimeout(() => {
+			status = null;
+		}, 2500);
+	}
+}
 
-		formData.append('file', file, file.name);
-		formData.append('type', type);
-		formData.append('prefix', $page.params?.slug || null);
-		formData.append('link', link);
-		uploadFile(formData);
+function onUpload({ target }) {
+	errorText = null;
+	const file = target.files[0];
+	const formData = new FormData();
+
+	// 4mb
+	if (file.size / 1000000 > 4) {
+		status = 'error';
+		errorText = $_('errors.sizeLimit');
+		setTimeout(() => {
+			status = null;
+		}, 2500);
+		setTimeout(() => {
+			errorText = null;
+		}, 5000);
+		return;
 	}
 
-	function raiseUploading() {
-		input.click();
-	}
+	formData.append('file', file, file.name);
+	formData.append('type', type);
+	formData.append('prefix', $page.params?.slug || null);
+	formData.append('link', link);
+	uploadFile(formData);
+}
 
-	/** @type{'red'|'green'|'gray'} */
-	$: buttonColor =
-		status === 'success' ? 'green' : status === 'error' ? 'red' : 'gray';
+function raiseUploading() {
+	input.click();
+}
+
+/** @type{'red'|'green'|'gray'} */
+$: buttonColor =
+	status === 'success' ? 'green' : status === 'error' ? 'red' : 'gray';
 </script>
 
 <div class="file-uploader">

@@ -15,7 +15,6 @@ export async function GET({ params }) {
 
 	if (!error && participant) {
 		return json({ success: true, data: participant });
-	} else {
-		return json(createError(false, error.message));
 	}
+	return json(createError(false, error.message));
 }

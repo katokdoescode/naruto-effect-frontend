@@ -1,48 +1,48 @@
 <script>
-	import { createEventDispatcher } from 'svelte';
+import { createEventDispatcher } from 'svelte';
 
-	/** @type {boolean} */
-	export let simple = false;
+/** @type {boolean} */
+export let simple = false;
 
-	/** @type {boolean} */
-	export let round = false;
+/** @type {boolean} */
+export let round = false;
 
-	/** @type {boolean} */
-	export let bordered = false;
+/** @type {boolean} */
+export let bordered = false;
 
-	/** @type {string} */
-	export let value = '';
+/** @type {string} */
+export let value = '';
 
-	/** @type {'white'|'black'|undefined} */
-	export let color = undefined;
+/** @type {'white'|'black'|undefined} */
+export let color = undefined;
 
-	/** @type {'text'|'password'|'phone'|'email'|'number' } */
-	export let type = 'text';
+/** @type {'text'|'password'|'phone'|'email'|'number' } */
+export let type = 'text';
 
-	/** @type {string|null} */
-	export let placeholder = null;
+/** @type {string|null} */
+export let placeholder = null;
 
-	/** @type {string} */
-	export let id;
+/** @type {string} */
+export let id;
 
-	/** @type {string} */
-	export let label = null;
+/** @type {string} */
+export let label = null;
 
-	/** @type {string} */
-	export let autocomplete = 'off';
+/** @type {string} */
+export let autocomplete = 'off';
 
-	/** @type {string} */
-	export let nativeClass = '';
+/** @type {string} */
+export let nativeClass = '';
 
-	export function focus() {
-		element.focus();
-	}
+export function focus() {
+	element.focus();
+}
 
-	let element;
+let element;
 
-	const dispatch = createEventDispatcher();
-	$: dispatch('input', value);
-	$: classes = `${nativeClass} input ${simple ? 'simple' : ''} ${round ? 'round' : ''} ${bordered ? 'bordered' : ''} ${color ? color : ''}`;
+const dispatch = createEventDispatcher();
+$: dispatch('input', value);
+$: classes = `${nativeClass} input ${simple ? 'simple' : ''} ${round ? 'round' : ''} ${bordered ? 'bordered' : ''} ${color ? color : ''}`;
 </script>
 
 {#if !simple && !round}

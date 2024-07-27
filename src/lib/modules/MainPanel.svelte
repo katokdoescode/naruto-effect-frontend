@@ -1,8 +1,8 @@
 <script>
-	import Logo from '$lib/modules/Logo.svelte';
-	import MainNav from '$lib/modules/MainNav.svelte';
-	export let practices = [];
-	export let pageLinks = [];
+import Logo from '$lib/modules/Logo.svelte';
+import MainNav from '$lib/modules/MainNav.svelte';
+export let practices = [];
+export let pageLinks = [];
 </script>
 
 <header

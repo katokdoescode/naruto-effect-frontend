@@ -8,6 +8,6 @@ export function createError(success, errorMessage) {
 	return {
 		success,
 		errorMessage,
-		data: undefined
+		data: undefined,
 	};
 }

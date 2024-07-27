@@ -1,15 +1,15 @@
 <script>
-	import { createEventDispatcher, getContext } from 'svelte';
-	import Footer from './Footer.svelte';
-	import Header from './Header.svelte';
-	import ShadowWrapper from './ShadowWrapper.svelte';
-	const dispatch = createEventDispatcher();
+import { createEventDispatcher, getContext } from 'svelte';
+import Footer from './Footer.svelte';
+import Header from './Header.svelte';
+import ShadowWrapper from './ShadowWrapper.svelte';
+const dispatch = createEventDispatcher();
 
-	/**@type{MainPageData} */
-	export let pageDataObject = null;
+/**@type{MainPageData} */
+export let pageDataObject = null;
 
-	const isEditingState = getContext('isEditingState');
-	isEditingState.set(false);
+const isEditingState = getContext('isEditingState');
+isEditingState.set(false);
 </script>
 
 <section
@@ -21,7 +21,7 @@
 	/>
 
 	<ShadowWrapper noPads>
-		<main class="main-page-content">
+		<main id="content" class="main-page-content">
 			<slot />
 		</main>
 	</ShadowWrapper>

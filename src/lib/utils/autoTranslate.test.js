@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import autoTranslate from './autoTranslate';
 
 describe('Translates', () => {
@@ -8,7 +8,7 @@ describe('Translates', () => {
 
 	it('cyrillic to latin', () => {
 		expect(autoTranslate('en', 'Обычная практика без перевода')).toBe(
-			'Obychnaya Praktika Bez Perevoda'
+			'Obychnaya Praktika Bez Perevoda',
 		);
 	});
 });

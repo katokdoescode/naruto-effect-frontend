@@ -9,7 +9,7 @@ export async function load({ params, cookies }) {
 	const { slug } = params;
 	let localesList = [];
 
-	locales.subscribe((locale) => {
+	const unsubscribe = locales.subscribe((locale) => {
 		localesList = locale;
 	});
 
@@ -33,11 +33,13 @@ export async function load({ params, cookies }) {
 		.select('id, isVisible, slug, title')
 		.in('isVisible', [true, ...(isAuthenticated ? [false] : [])]);
 
+	unsubscribe();
+
 	if (supabaseError) throw error(404, supabaseError.message);
 	if (practicesError) console.error('Practices was not loaded.');
 
 	return {
 		practice: { ...practice, originalSlug: structuredClone(practice.slug) },
-		practices
+		practices,
 	};
 }

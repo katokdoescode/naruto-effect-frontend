@@ -12,9 +12,8 @@ export async function GET() {
 
 	if (!error && pageData) {
 		return json({ success: true, data: pageData });
-	} else {
-		return json(createError(false, error.message));
 	}
+	return json(createError(false, error.message));
 }
 
 export async function PATCH({ request }) {
@@ -28,7 +27,6 @@ export async function PATCH({ request }) {
 
 	if (!error && data) {
 		return json({ success: true, data });
-	} else {
-		return json(createError(false, error.message));
 	}
+	return json(createError(false, error.message));
 }
