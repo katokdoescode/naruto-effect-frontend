@@ -1,4 +1,5 @@
 project_id="naruto-effect-frontend"
+
 [api]
 enabled = true
 port = 54321
@@ -7,6 +8,7 @@ extra_search_path = ["public", "extensions"]
 max_rows = 1000
 [api.tls]
 enabled = false
+
 [auth]
 enabled = true
 enable_anonymous_sign_ins=true
