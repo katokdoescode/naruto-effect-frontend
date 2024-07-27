@@ -2,7 +2,7 @@
 import LangSwitch from '$lib/modules/LangSwitch.svelte';
 import SecondNav from '$lib/modules/SecondNav.svelte';
 import ThemeSwitch from '$lib/modules/ThemeSwitch.svelte';
-import { locale } from 'svelte-i18n';
+import { _, locale } from 'svelte-i18n';
 
 export let participants = [];
 export let participateLink = null;
@@ -17,7 +17,7 @@ export let participateLink = null;
 	</div>
 
 	<SecondNav
-		aria-label="Participants"
+		aria-label={$_('mainMenu.participants')}
 		{participants} />
 
 	<div class="wrapper">
