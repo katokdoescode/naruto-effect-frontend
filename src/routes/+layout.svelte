@@ -117,6 +117,7 @@ function updateData(update) {
 
 function updatePageData({ detail }) {
 	pageDataObject = detail;
+	pageLinks = detail.pageLinks;
 }
 
 function cleanAddressLine() {

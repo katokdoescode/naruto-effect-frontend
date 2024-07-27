@@ -59,9 +59,9 @@ async function submitForm() {
 
 		footerEditorState.set('success');
 		setTimeout(() => {
+			dispatch('update', pageData);
 			footerEditorState.set('save');
 			isFooterEditorOpen.set(false);
-			dispatch('update', pageData);
 		}, 314);
 	} else {
 		footerEditorState.set('error');

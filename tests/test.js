@@ -340,6 +340,7 @@ test.describe('Hokage', () => {
 		}
 
 		await page.locator('footer .edit button').first().click();
+		await page.waitForTimeout(500);
 
 		expect(await page.locator('nav.contacts a').first().textContent()).toBe(
 			`${newValues.firstLink.title} `,
