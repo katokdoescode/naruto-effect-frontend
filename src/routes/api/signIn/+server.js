@@ -29,9 +29,12 @@ export async function POST({ cookies, request }) {
 		: await supabase.auth.signInWithPassword(userData);
 
 	if (!error && authToken) {
+		console.debug();
 		cookies.set('authToken', authToken.access_token, {
 			path: '/',
-			expires: new Date(new Date().getTime() + 86500000),
+			expires:
+				new Date(new Date().getTime() + authToken.expires_at) ||
+				new Date(new Date().getTime() + 86500000),
 		});
 
 		return json({ success: true });
