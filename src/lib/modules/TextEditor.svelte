@@ -29,7 +29,7 @@ const apiKey = import.meta.env.VITE_TINYMCE_API_KEY;
 let conf = {
 	height: inline ? 'max-content' : '100%',
 	toolbar:
-		'bold fontsize align italic list underline strikethrough link codesample image hr undo',
+		'bold fontsize align italic list underline strikethrough link codesample image accordion hr undo',
 	menubar: false,
 	branding: false,
 	statusbar: false,
