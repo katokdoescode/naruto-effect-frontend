@@ -28,17 +28,19 @@ const apiKey = import.meta.env.VITE_TINYMCE_API_KEY;
 
 let conf = {
 	height: inline ? 'max-content' : '100%',
-	toolbar: false,
+	toolbar:
+		'bold fontsize align italic list underline strikethrough link image hr undo',
 	menubar: false,
 	branding: false,
 	statusbar: false,
+	images_file_types: 'jpg,png,webp',
 	contextmenu: inline
 		? false
 		: 'bold fontsize align italic list underline strikethrough link hr undo', // indent и выбор параграфа
 	resize: false,
 	content_css: 'Naruto',
 	font_css: '/styles/fonts.css',
-	plugins: ['autolink', 'lists', 'link'],
+	plugins: ['autolink', 'lists', 'link', 'image', 'accordion', 'accordion'],
 	...addConf,
 	placeholder,
 };
