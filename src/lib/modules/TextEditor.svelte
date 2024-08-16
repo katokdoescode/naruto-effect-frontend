@@ -25,6 +25,50 @@ const appColorScheme = getContext('appColorScheme');
 let skinUrl = `/styles/tinymce/Naruto/${$appColorScheme}`;
 
 const apiKey = import.meta.env.VITE_TINYMCE_API_KEY;
+let tinymce;
+
+function filePickerCallback(callback) {
+	const input = document.createElement('input');
+	input.setAttribute('type', 'file');
+	input.setAttribute('accept', 'image/*');
+
+	input.addEventListener('change', async (e) => {
+		// @ts-ignore
+		const file = e.target.files[0];
+		const formData = new FormData();
+
+		// 4mb
+		if (file.size / 1000000 > 4) {
+			callback('File is larger than 4 MB');
+			return;
+		}
+
+		formData.append('file', file, file.name);
+		formData.append('type', 'images');
+		formData.append('prefix', 'editor');
+
+		await (async () => {
+			try {
+				const res = await fetch('/api/files', {
+					method: 'POST',
+					body: formData,
+				});
+				const { url, error } = await res.json();
+				if (error) {
+					console.error(error);
+					callback('Unexpected error from server');
+					return;
+				}
+				callback(url);
+			} catch (error) {
+				console.error(error);
+				callback('Unexpected error');
+			}
+		})();
+	});
+
+	input.click();
+}
 
 let conf = {
 	height: inline ? 'max-content' : '100%',
@@ -34,6 +78,7 @@ let conf = {
 	branding: false,
 	statusbar: false,
 	images_file_types: 'jpg,png,webp',
+	file_picker_callback: filePickerCallback,
 	contextmenu: inline
 		? false
 		: 'bold fontsize align italic list underline strikethrough link hr undo', // indent и выбор параграфа
@@ -52,7 +97,6 @@ let conf = {
 	...addConf,
 	placeholder,
 };
-
 const unsubscribeAppColorScheme = appColorScheme.subscribe(
 	(/** @type {string} */ scheme) => {
 		skinUrl = `/styles/tinymce/Naruto/${scheme}`;
@@ -85,6 +129,7 @@ onDestroy(() => unsubscribeAppColorScheme());
 			{conf}
 			{disabled}
 			{inline}
+			bind:this={tinymce}
 			bind:value />
 	{/key}
 </div>
