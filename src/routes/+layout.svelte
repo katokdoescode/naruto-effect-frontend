@@ -31,6 +31,7 @@ const isEditingState = writable();
 const editingPageStatus = writable();
 const cvPage = writable();
 const contentPage = writable();
+const projectData = writable();
 const practiceData = writable();
 const participantData = writable();
 const appColorScheme = writable();
@@ -43,6 +44,7 @@ const footerEditorState = writable('save');
 
 let footerEditor;
 let practices = data?.practices || [];
+let projects = data?.projects || [];
 let participants = data?.participants || [];
 let pageLinks = data?.pageData?.pageLinks || [];
 let loginPhrase = data?.loginPhrase || undefined;
@@ -108,6 +110,12 @@ function updateData(update) {
 		updateParticipants: (data) => {
 			participants = participants.map((participant) =>
 				participant.id === data.id ? data : participant,
+			);
+		},
+		/** @param {Project} data */
+		updateProjects: (data) => {
+			projects = projects.map((project) =>
+				project.id === data.id ? data : project,
 			);
 		},
 	};
@@ -177,6 +185,7 @@ setContext('combo', combo);
 setContext('isEditingState', isEditingState);
 setContext('editingPageStatus', editingPageStatus);
 setContext('cvPage', cvPage);
+setContext('projectData', projectData);
 setContext('contentPage', contentPage);
 setContext('practiceData', practiceData);
 setContext('participantData', participantData);

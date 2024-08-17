@@ -9,12 +9,14 @@ const participantData = getContext('participantData');
 const practiceData = getContext('practiceData');
 const isEditingState = getContext('isEditingState');
 const editingPageStatus = getContext('editingPageStatus');
+const projectData = getContext('projectData');
 
 let checked = false;
 
 $: route = $page.route.id || '';
 $: isPracticePage = route?.includes('practices') || '';
 $: isParticipantsPage = route?.includes('participants') || '';
+$: isProjectsPage = route?.includes('projects') || '';
 $: isMainPage = route === '/' || '';
 $: isCvPage = route?.includes('cv') || '';
 $: isCreating = route?.includes('create') || '';
@@ -26,6 +28,10 @@ $: {
 
 	if (isPracticePage) {
 		checked = $practiceData?.isVisible;
+	}
+
+	if (isProjectsPage) {
+		checked = $projectData?.isVisible;
 	}
 }
 
@@ -98,6 +104,13 @@ function check({ target }) {
 		participantData.set({
 			...$participantData,
 			isVisible: checked,
+		});
+	}
+
+	if (isProjectsPage) {
+		projectData.set({
+			...$projectData,
+			isVisible: detail,
 		});
 	}
 }

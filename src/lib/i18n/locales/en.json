@@ -28,8 +28,11 @@
 		"participants": "Participants",
 		"participants.new": "Adding new participant",
 		"participants.edit": "Editing new participant",
+		"projects": "Projects",
+		"projects.new": "Adding new project",
+		"projects.edit": "Editing project",
 		"settings": "Settings",
-		"contacts": "Контакты",
+		"contacts": "Contacts",
 		"settings.publicity": "Publicity",
 		"cv": {
 			"edit": "Edit CV page"
@@ -59,6 +62,7 @@
 		"continue": "Continue creating",
 		"uploading": "Uploading",
 		"upload": "Upload",
+		"addProject": "Создать новый проект",
 		"things": {
 			"hat": {
 				"put": "Put fant",
@@ -85,6 +89,10 @@
 		"participant": {
 			"name": "Given Name and Second name",
 			"title": "Who is he/she?"
+		},
+		"project": {
+			"name": "Project name",
+			"title": "Title of a project"
 		},
 		"cv": {
 			"title": "Title",
@@ -160,5 +168,11 @@
 				}
 			}
 		}
+	},
+	"projects": {
+		"title": "Naruto Effect Projects",
+		"noProjects": "No projects yet 🤷‍♀️",
+		"projects": "Projects",
+		"editing": "Editing"
 	}
 }

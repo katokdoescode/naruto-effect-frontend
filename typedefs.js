@@ -69,6 +69,26 @@
  */
 
 /**
+ * @exports Project
+ * @typedef Project
+ * @type {object}
+ * @property {number} id
+ * @property {LocaleObject} name
+ * @property {string} slug
+ * @property {LocaleObject} title
+ * @property {LocaleObject} description
+ * @property {boolean} isVisible
+ * @property {string?} [createdAt]
+ */
+
+/**
+ * @exports Projects
+ * @typedef Projects
+ * @type {Array<Projects>}
+ */
+
+
+/**
  * @exports SeoData
  * @typedef SeoData
  * @type {object}
@@ -159,6 +179,15 @@
  */
 
 /**
+ * @exports ProjectsPartial
+ * @typedef {object} ProjectsPartial
+ * @property {number} id
+ * @property {LocaleObject} slug
+ * @property {LocaleObject} title
+ * @property {boolean} isVisible
+ */
+
+/**
  * @exports SupabasePractice
  * @typedef {object} SupabasePractice
  * @property {Practice} data
@@ -177,9 +206,9 @@
  */
 
 /**
- * @exports SupabasePractices
- * @typedef {object} SupabasePracticesPartial
- * @property {PracticePartial[]} data
+ * @exports SupabaseProjects
+ * @typedef {object} SupabaseProjects
+ * @property {ProjectsPartial[]} data
  * @property {number} status
  * @property {string} statusText
  * @property {SupabaseError|null} error

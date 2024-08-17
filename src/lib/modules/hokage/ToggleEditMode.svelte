@@ -19,6 +19,7 @@ const isEditingState = getContext('isEditingState');
 const editingPageStatus = getContext('editingPageStatus');
 const cvPage = getContext('cvPage');
 const contentPage = getContext('contentPage');
+const projectData = getContext('projectData');
 const practiceData = getContext('practiceData');
 const participantData = getContext('participantData');
 const needSave = getContext('needSave');
@@ -155,6 +156,33 @@ $: url = () => {
 				},
 			};
 
+		case '/projects/create':
+			return {
+				route: '/api/projects',
+				method: 'POST',
+				rawData: $projectData,
+				data: JSON.stringify($projectData),
+				onSuccess: (/** @type {Project} */ data) => {
+					const slug = data.slug;
+					goto(`/projects/${slug}`);
+				},
+			};
+
+		case '/(projects)/projects/[slug]':
+			return {
+				route: '/api/projects',
+				method: 'PATCH',
+				rawData: $projectData,
+				data: JSON.stringify($projectData),
+				onSuccess: (/** @type {Project} */ project) => {
+					dispatch('update', {
+						method: 'updateProjects',
+						data: pick(project, ['id', 'isVisible', 'slug', 'name']),
+					});
+					goto(`/projects/${project.slug}`);
+				},
+			};
+
 		default:
 			break;
 	}
@@ -180,16 +208,16 @@ async function deleteEntity() {
 	unsubscribe();
 }
 
-$: isImageValid = url().rawData?.banner
-	? !!(url().rawData.banner.link ? url().rawData.banner.alt : true)
+$: isImageValid = url()?.rawData?.banner
+	? !!(url()?.rawData.banner.link ? url()?.rawData?.banner.alt : true)
 	: true;
-$: isTitleEmpty = !!(url().rawData?.title && !url().rawData.title[$locale]);
-$: isNameEmpty = !!(url().rawData?.name && !url().rawData.name[$locale]);
+$: isTitleEmpty = !!(url()?.rawData?.title && !url().rawData.title[$locale]);
+$: isNameEmpty = !!(url()?.rawData?.name && !url().rawData.name[$locale]);
 $: isDescriptionEmpty =
-	url().rawData?.description &&
+	url()?.rawData?.description &&
 	!Object.values(url().rawData?.description).some((v) => v) &&
-	url().rawData?.text &&
-	!Object.values(url().rawData?.text).some((v) => v);
+	url()?.rawData?.text &&
+	!Object.values(url()?.rawData?.text).some((v) => v);
 $: isNotValid =
 	$isEditingState &&
 	(isDescriptionEmpty || isTitleEmpty || isNameEmpty || !isImageValid);

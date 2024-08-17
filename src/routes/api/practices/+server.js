@@ -6,7 +6,6 @@ import { json } from '@sveltejs/kit';
 export async function GET({ cookies }) {
 	const isAuthenticated = !!cookies.get('authToken');
 
-	/** @type{SupabasePracticesPartial} */
 	const response = await supabase
 		.from(Routes.PRACTICES)
 		.select('id, isVisible, slug, title')

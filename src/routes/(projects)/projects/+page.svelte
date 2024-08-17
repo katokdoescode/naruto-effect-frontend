@@ -1,22 +1,64 @@
 <script>
-import { locale } from 'svelte-i18n';
+import Button from '$lib/ui/Button.svelte';
+import { getContext } from 'svelte';
+import { _, locale } from 'svelte-i18n';
+const authorized = getContext('authorized');
+
+export let data;
 </script>
 
 <svelte:head>
-  {#if $locale === 'ru'}
-  <title>Проекты Эффекта Наруто</title>
-  {:else}
-  <title>Naruto Effect Projects</title>
-  {/if}
+  <title>{$_('projects.title')}</title>
 </svelte:head>
 <nav>
-  {#if $locale === 'ru'}
-  <h1>Проекты Эффекта Наруто</h1>
+  <h1>{$_('projects.title')}</h1>
 
-  <a href="/projects/lesnoe11">Лесное 11</a>
+  {#if data.projects?.length}
+    <ul class="projects-list">
+      {#each data.projects as project}
+        <li class="project-item">
+          <a
+            class="projects-link"
+            class:disabled={!project?.isVisible || false}
+            data-sveltekit-keepfocus
+            href="/projects/{project.slug}"
+          >
+            {project.name[$locale]}
+          </a>
+        </li>
+      {/each}
+
+    </ul>
+    {#if $authorized}
+    <div class="add">
+      <Button  color="black" href="/projects/create" >{$_('button.addProject')}</Button>
+    </div>
+    {/if}
   {:else}
-  <h1>Naruto Effect Projects</h1>
-
-  <a href="/projects/lesnoe11">Lesnoe 11</a>
+    <h2>{$_('projects.noProjects')}</h2>
   {/if}
 </nav>
+
+<style>
+.add {
+  margin-top: 2em;
+}
+
+ul.projects-list {
+  padding-left: 1em;
+}
+
+.project-item {
+  list-style: disc;
+}
+
+.projects-link {
+  &.disabled {
+    opacity: 0.5;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+</style>

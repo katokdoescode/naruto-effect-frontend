@@ -15,6 +15,7 @@ const authorized = getContext('authorized');
 const isEditingState = getContext('isEditingState');
 const participantData = getContext('participantData');
 const practiceData = getContext('practiceData');
+const projectData = getContext('projectData');
 
 let checked = false;
 
@@ -34,6 +35,7 @@ function translateName(name) {
 $: route = $page.route.id || '';
 $: isPracticePage = route?.includes('practices') || '';
 $: isParticipantsPage = route?.includes('participants') || '';
+$: isProjectsPage = route?.includes('projects') || '';
 $: isMainPage = route === '/' || '';
 $: isCVPage = route === '/cv';
 
@@ -61,6 +63,10 @@ $: {
 	if (isPracticePage) {
 		checked = $practiceData?.isVisible;
 	}
+
+	if (isProjectsPage) {
+		checked = $projectData?.isVisible;
+	}
 }
 
 /**
@@ -78,6 +84,13 @@ function check(event) {
 	if (isParticipantsPage) {
 		participantData.set({
 			...$participantData,
+			isVisible: detail,
+		});
+	}
+
+	if (isProjectsPage) {
+		projectData.set({
+			...$projectData,
 			isVisible: detail,
 		});
 	}

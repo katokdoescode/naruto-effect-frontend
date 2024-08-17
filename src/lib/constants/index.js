@@ -7,6 +7,7 @@ export const ColorSchemes = {
 export const Routes = {
 	PRACTICES: 'practices',
 	PARTICIPANTS: 'participants',
+	PROJECTS: 'projects',
 	MAIN_PAGE: 'common',
 	CV: 'cv',
 	HAT: 'hat',
