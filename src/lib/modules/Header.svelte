@@ -2,6 +2,7 @@
 import { page } from '$app/stores';
 import SignOut from '$lib/modules/hokage/SignOut.svelte';
 import { createEventDispatcher, getContext } from 'svelte';
+import { _ } from 'svelte-i18n';
 import ToggleEditMode from './hokage/ToggleEditMode.svelte';
 
 const dispatch = createEventDispatcher();
@@ -11,9 +12,15 @@ const authorized = getContext('authorized');
 
 <header class="content-header no-mobile">
 	<div class="row">
-		<a
-			class:active={$page.url.pathname.includes('/cv')}
-			href="/cv">CV</a>
+		<div class="row">
+			<a
+				class:active={$page.url.pathname.includes('/cv')}
+				href="/cv">CV</a>
+
+			<a
+				class:active={$page.url.pathname.includes('/projects')}
+				href="/projects">{$_('mainMenu.projects')}</a>
+		</div>
 
 		{#if $authorized}
 			<SignOut on:logout={() => dispatch('logout')} />
@@ -38,5 +45,6 @@ const authorized = getContext('authorized');
 	.content-header .row {
 		display: flex;
 		justify-content: space-between;
+		gap: 62px;
 	}
 </style>

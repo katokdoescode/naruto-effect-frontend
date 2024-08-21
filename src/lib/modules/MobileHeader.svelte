@@ -94,6 +94,9 @@ onNavigate(() => hideAllMenus());
 			<a
 				class:active={$page.url.pathname.includes('/cv')}
 				href="/cv">CV</a>
+			<a
+				class:active={$page.url.pathname.includes('/projects')}
+				href="/projects">{$_('mainMenu.projects')}</a>
 
 			<Button
 				id="control-second-menu"
