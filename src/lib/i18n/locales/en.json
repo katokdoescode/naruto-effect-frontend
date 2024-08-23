@@ -92,7 +92,8 @@
 		},
 		"project": {
 			"name": "Project name",
-			"title": "Title of a project"
+			"title": "Title of a project",
+			"slug": "Slug name"
 		},
 		"cv": {
 			"title": "Title",

@@ -16,9 +16,6 @@ export let value = '';
 /** @type {'white'|'black'|undefined} */
 export let color = undefined;
 
-/** @type {'text'|'password'|'phone'|'email'|'number' } */
-export let type = 'text';
-
 /** @type {string|null} */
 export let placeholder = null;
 
@@ -54,8 +51,8 @@ $: classes = `${nativeClass} input ${simple ? 'simple' : ''} ${round ? 'round' :
 			class="real-input"
 			{autocomplete}
 			{placeholder}
-			{type}
-			{value}
+			type="text"
+			bind:value
 			{...$$restProps}
 		/>
 

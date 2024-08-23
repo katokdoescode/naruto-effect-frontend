@@ -156,7 +156,7 @@ $: url = () => {
 				},
 			};
 
-		case '/projects/create':
+		case '/(projects)/projects/create':
 			return {
 				route: '/api/projects',
 				method: 'POST',

@@ -1,7 +1,7 @@
 <script>
 import { enhance } from '$app/forms';
 import Button from '$lib/ui/Button.svelte';
-import Input from '$lib/ui/Input.svelte';
+import Password from '$lib/ui/Password.svelte';
 import { createEventDispatcher, getContext } from 'svelte';
 import { _ } from 'svelte-i18n';
 const dispatch = createEventDispatcher();
@@ -48,10 +48,9 @@ async function signIn() {
 		>
 			<h2>{$_('hokagemode')}</h2>
 
-			<Input
+			<Password
 				id="password"
-				autocomplete="password"
-				type="password">
+				autocomplete="password">
 				<svelte:fragment slot="error">
 					{#if !!errorMessage}
 						<span>{errorMessage}</span>
@@ -60,7 +59,7 @@ async function signIn() {
 						<span>Already authorized</span>
 					{/if}
 				</svelte:fragment>
-			</Input>
+			</Password>
 
 			<div class="buttons">
 				<form

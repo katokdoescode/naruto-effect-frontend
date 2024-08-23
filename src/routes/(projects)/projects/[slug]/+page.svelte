@@ -3,12 +3,9 @@ import AlertMessage from '$lib/modules/AlertMessage.svelte';
 import ProjectEditor from '$lib/modules/hokage/ProjectEditor.svelte';
 import autoTranslate from '$lib/utils/autoTranslate';
 import { clean } from '$lib/utils/objectsTools';
-import { CarSlugger } from '@katokdoescode/car-slugger';
 import { getContext } from 'svelte';
 import { _, locale, locales } from 'svelte-i18n';
 export let data;
-
-const slugger = new CarSlugger();
 
 const isEditingState = getContext('isEditingState');
 const authorized = getContext('authorized');
@@ -21,10 +18,6 @@ $: project = data?.project;
 
 /** @type {Project} */
 $: localValue = project;
-
-$: localValue.slug = Object.values(localValue.name).find(Boolean)
-	? slugger.getSlug(Object.values(localValue.name).find(Boolean))
-	: '';
 
 $: projectData.set(clean(localValue));
 
@@ -49,7 +42,7 @@ $: autoTranslatedName =
 </svelte:head>
 {#if data.project}
   {#if $isEditingState && $authorized}
-    <ProjectEditor localValue={data.project} />
+    <ProjectEditor bind:localValue />
   {:else if isNotLocalized}
   <div class="wrapper">
 		<h1>{autoTranslatedName}</h1>
