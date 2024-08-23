@@ -238,6 +238,7 @@
  * @type {object}
  * @property {boolean} authorized
  * @property {Practice[]} practices
+ * @property {Project[]} projects
  * @property {Participant[]} participants
  * @property {MainPageData} pageData,
  * @property {string} loginPhrase

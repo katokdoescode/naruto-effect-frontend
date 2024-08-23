@@ -110,7 +110,7 @@ function check({ target }) {
 	if (isProjectsPage) {
 		projectData.set({
 			...$projectData,
-			isVisible: detail,
+			isVisible: checked,
 		});
 	}
 }

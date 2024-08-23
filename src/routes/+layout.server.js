@@ -15,7 +15,7 @@ export async function load({ cookies }) {
 		cookies.delete('authToken', { path: '/' });
 	}
 
-	/** @type {SupabasePracticesPartial} */
+	/** @type {SupabasePractices} */
 	const { data: practices, error: practicesError } = await supabase
 		.from(Routes.PRACTICES)
 		.select('id, isVisible, slug, title')

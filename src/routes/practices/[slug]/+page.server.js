@@ -27,7 +27,7 @@ export async function load({ params, cookies }) {
 		.limit(1)
 		.single();
 
-	/** @type {SupabasePracticesPartial} */
+	/** @type {SupabasePractices} */
 	const { data: practices, error: practicesError } = await supabase
 		.from(Routes.PRACTICES)
 		.select('id, isVisible, slug, title')
