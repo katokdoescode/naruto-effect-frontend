@@ -3,23 +3,21 @@ import Fant from '$lib/modules/things/Fant.svelte';
 import Hat from '$lib/modules/things/Hat.svelte';
 import Button from '$lib/ui/Button.svelte';
 import Textarea from '$lib/ui/Textarea.svelte';
+import parseLink from '$lib/utils/parseLink';
 import { onMount } from 'svelte';
 import { _ } from 'svelte-i18n';
 
-/** @type {import('./$types').PageData} */
-export let data = undefined;
-
-/** @type {HatData|undefined} */
-let hat = data.hat || undefined;
+export let data;
 let hatIcon;
 let fantText = '';
 let newFant = '';
 let isAdding = false;
 let isDeleting = false;
-let words = hat?.words || [];
-let wordsCount = words.length;
 let fantInput;
 
+$: ({ hat } = data);
+$: ({ words } = hat);
+$: wordsCount = words.length;
 async function deleteFant(id = undefined, shouldConfirm = false) {
 	if (
 		id === undefined ||
@@ -129,71 +127,80 @@ onMount(async () => {
 </svelte:head>
 
 <a href="/things/hat">← {$_('button.things.hat.back')}</a>
-<h1>{hat.name}</h1>
+{#if hat}
+	<h1>{hat.name}</h1>
 
-{#if hat?.isPutting}
-	<form
-		name="hat"
-		class="fant-form"
-		on:submit|preventDefault>
-		<Textarea
-			bind:this={fantInput}
-			id="fant-name"
-			bordered={true}
-			placeholder={$_('placeholder.things.hat.inputName')}
-			resize="vertical"
-			round={true}
-			bind:value={newFant}
-		/>
+	{#if hat?.isPutting}
+		<form
+			name="hat"
+			class="fant-form"
+			on:submit|preventDefault>
+			<Textarea
+				bind:this={fantInput}
+				id="fant-name"
+				bordered={true}
+				placeholder={$_('placeholder.things.hat.inputName')}
+				resize="vertical"
+				round={true}
+				bind:value={newFant}
+			/>
+
+			<Button
+				id="fant-submit"
+				bordered={true}
+				color="black"
+				disabled={isAdding}
+				round={true}
+				type="submit"
+				on:click={putFant}
+			>
+				{$_('button.things.hat.put')}
+			</Button>
+		</form>
+
+		<details class="fant-details">
+			<summary>{$_('button.things.hat.showList')} | {wordsCount} 🎟️</summary>
+
+			<ul class="fant-list">
+				{#each words as word, idx}
+					<li class="fant-item">
+						{#if parseLink(word)}
+							<a
+								href={word}
+								rel="noopener noreferrer"
+								target="_blank"
+							>{word}</a>
+						{:else}
+							{word}
+						{/if}
+						<Button
+							color="red"
+							on:click={() => deleteFant(idx, true)}>🚮</Button>
+					</li>
+				{/each}
+			</ul>
+		</details>
 
 		<Button
-			id="fant-submit"
-			bordered={true}
 			color="black"
-			disabled={isAdding}
-			round={true}
-			type="submit"
-			on:click={putFant}
-		>
-			{$_('button.things.hat.put')}
+			on:click={startGame}>
+			{$_('button.things.hat.start')}
 		</Button>
-	</form>
+	{/if}
 
-	<details class="fant-details">
-		<summary>{$_('button.things.hat.showList')} | {wordsCount} 🎟️</summary>
+	<Hat
+		bind:this={hatIcon}
+		disabled={isDeleting || !wordsCount}
+		{wordsCount}
+		on:click={getFant}
+	/>
 
-		<ul class="fant-list">
-			{#each words as word, idx}
-				<li class="fant-item">
-					{word}
-					<Button
-						color="red"
-						on:click={() => deleteFant(idx, true)}>🚮</Button>
-				</li>
-			{/each}
-		</ul>
-	</details>
-
-	<Button
-		color="black"
-		on:click={startGame}>
-		{$_('button.things.hat.start')}
-	</Button>
+	{#if fantText}
+		<Fant text={fantText} />
+	{:else}
+		<div class="empty-fant"></div>
+	{/if}
 {/if}
-
-<Hat
-	bind:this={hatIcon}
-	disabled={isDeleting || !wordsCount}
-	{wordsCount}
-	on:click={getFant}
-/>
-
-{#if fantText}
-	<Fant text={fantText} />
-{:else}
-	<div class="empty-fant"></div>
-{/if}
-
 <style>
 	.fant-form {
 		margin-top: 1rem;
@@ -204,13 +211,15 @@ onMount(async () => {
 	.fant-list {
 		display: flex;
 		flex-direction: column;
-		gap: 0.3rem;
+		gap: 0.4rem;
+		padding-left: 0;
 	}
 
 	.fant-item {
 		display: flex;
 		gap: 0.5rem;
 		justify-content: space-between;
+		word-break: break-all;
 	}
 
 	.fant-details summary {

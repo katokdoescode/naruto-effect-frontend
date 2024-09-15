@@ -1,16 +1,34 @@
 <script>
 import InlineIcon from '$lib/ui/InlineIcon.svelte';
+import parseLink from '$lib/utils/parseLink';
+import { onMount } from 'svelte';
 
 export let text = '';
 $: text = text.trim();
 $: isLong = text.length > 20;
+$: isLink = !!parseLink(text);
+$: show = true;
+onMount(() => {
+	setTimeout(() => {
+		show = false;
+	}, 800);
+});
 </script>
 
 <div
 	class="fant"
 	class:long={isLong}>
-	<p class="fant-text">{text}</p>
-	<div class="dust-wrapper show">
+	<p class="fant-text">
+		{#if isLink}
+			<a
+				href={text}
+				rel="noopener noreferrer"
+				target="_blank">{text}</a>
+		{:else}
+			{text}
+		{/if}
+	</p>
+	<div class="dust-wrapper" class:show>
 		<InlineIcon src="/images/hat/dust-spell.svg" />
 	</div>
 </div>
@@ -37,6 +55,7 @@ $: isLong = text.length > 20;
 		white-space: pre-wrap;
 		font-weight: normal;
 		text-align: start;
+		word-break: break-all;
 	}
 
 	.fant .dust-wrapper {
@@ -49,11 +68,16 @@ $: isLong = text.length > 20;
 		display: none;
 	}
 
+	.fant .dust-wrapper :global(svg) {
+		display: none;
+	}
+
 	.fant .dust-wrapper.show {
 		display: block;
 	}
 
 	.fant .dust-wrapper.show :global(svg) {
+		display: block;
 		background: radial-gradient(
 			circle,
 			var(--color-bg-main) 0%,
