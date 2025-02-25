@@ -1,6 +1,7 @@
 <script>
 import { beforeNavigate, goto, replaceState } from '$app/navigation';
 import { page } from '$app/stores';
+import AudioPlayer from '$lib/modules/AudioPlayer.svelte';
 import Content from '$lib/modules/Content.svelte';
 import CookieModal from '$lib/modules/CookieModal.svelte';
 import FavIcons from '$lib/modules/FavIcons.svelte';
@@ -246,7 +247,10 @@ onDestroy(() => {
 </svelte:head>
 
 <FavIcons />
-
+<AudioPlayer
+	id="audio-player"
+	src="/audio/ne.wav"
+/>
 <div class="screen main-layout">
 	<MainPanel
 		pageLinks={firstTwoLinks}

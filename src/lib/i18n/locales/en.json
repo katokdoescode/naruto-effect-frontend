@@ -175,5 +175,13 @@
 		"noProjects": "No projects yet 🤷‍♀️",
 		"projects": "Projects",
 		"editing": "Editing"
+	},
+	"audioPlayer": {
+		"play": "Play",
+		"pause": "Pause",
+		"volume": "Volume",
+		"seek": "Seek",
+		"remainingTime": "Time remaining",
+		"player": "Audio player"
 	}
 }
