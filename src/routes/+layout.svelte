@@ -249,7 +249,7 @@ onDestroy(() => {
 <FavIcons />
 <AudioPlayer
 	id="audio-player"
-	src="/audio/ne.wav"
+	src="/audio/ne.mp3"
 />
 <div class="screen main-layout">
 	<MainPanel
@@ -306,6 +306,15 @@ onDestroy(() => {
 		margin: 0 auto;
 		column-gap: var(--sections-padding);
 		min-height: 800px;
+	}
+
+	:global(.audio-player) {
+		/* position: absolute; */
+		background-color: transparent;
+	}
+
+	:global(.audio-player) + .main-layout {
+		height: calc(100svh - var(--initial-padding-top) - var(--player-height));
 	}
 
 	@media (width <= 1018px) {

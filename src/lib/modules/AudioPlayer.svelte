@@ -1,4 +1,5 @@
 <script>
+import Button from '$lib/ui/Button.svelte';
 import InlineIcon from '$lib/ui/InlineIcon.svelte';
 import { onDestroy, onMount } from 'svelte';
 import { _ } from 'svelte-i18n';
@@ -26,12 +27,14 @@ function handleLoadedMetadata() {
 }
 
 function onClose() {
-	audio.pause();
+	audio?.pause();
 	playing = false;
 	show = false;
 }
 
 onMount(() => {
+	audio = new Audio(src);
+	audio.preload = 'auto';
 	audio.addEventListener('timeupdate', handleTimeUpdate);
 	audio.addEventListener('loadedmetadata', handleLoadedMetadata);
 });
@@ -39,17 +42,26 @@ onMount(() => {
 onDestroy(() => {
 	audio?.removeEventListener('timeupdate', handleTimeUpdate);
 	audio?.removeEventListener('loadedmetadata', handleLoadedMetadata);
+	audio = null;
 });
 
-function togglePlay() {
-	if (playing) {
-		audio.pause();
-	} else {
-		audio.play();
+async function togglePlay() {
+	try {
+		if (playing) {
+			await audio.pause();
+		} else {
+			await audio.play();
+		}
+		playing = !playing;
+	} catch (e) {
+		console.error(e);
 	}
-	playing = !playing;
 }
 
+/**
+ * @param {number} seconds
+ * @returns {string}
+ */
 function formatTime(seconds) {
 	if (!seconds || !Number.isFinite(seconds)) return '0:00';
 
@@ -73,174 +85,156 @@ function handleVolume(e) {
 
 {#if show}
 	<div class="audio-player" role="region" aria-label={$_('audioPlayer.player')}>
-		<audio
-			id={audioId}
-    bind:this={audio}
-    {src}
-    preload="metadata"
-    bind:duration
-    bind:currentTime
-    bind:volume
-  />
+		<div class="controls">
+			<Button
+				color="black"
+				aria-controls={audioId}
+				aria-label={playing ? $_('audioPlayer.pause') : $_('audioPlayer.play')}
+				on:click={togglePlay}
+			>
+				{playing ? $_('audioPlayer.pause') : $_('audioPlayer.play')}
+			</Button>
 
-  <div class="controls">
-    <button
-      aria-controls={audioId}
-      aria-label={playing ? $_('audioPlayer.pause') : $_('audioPlayer.play')}
-      on:click={togglePlay}
-    >
-      {playing ? $_('audioPlayer.pause') : $_('audioPlayer.play')}
-    </button>
+			<div class="time-slider">
+				<input
+					type="range"
+					aria-controls={audioId}
+					min="0"
+					max={duration || 0}
+					value={currentTime}
+					on:input={handleSeek}
+					aria-label={$_('audioPlayer.seek')}
+				/>
+				<span aria-label={$_('audioPlayer.remainingTime')}>
+					{formatTime((duration || 0) - (currentTime || 0))}
+				</span>
+			</div>
 
-    <div class="time-slider">
-      <input
-        type="range"
-        aria-controls={audioId}
-        min="0"
-        max={duration || 0}
-        value={currentTime}
-        on:input={handleSeek}
-        aria-label={$_('audioPlayer.seek')}
-      />
-      <span aria-label={$_('audioPlayer.remainingTime')}>
-        {formatTime((duration || 0) - (currentTime || 0))}
-      </span>
-    </div>
+			<div class="volume-control">
+				<label for={volumeId}>{$_('audioPlayer.volume')}:</label>
+				<input
+					id={volumeId}
+					type="range"
+					aria-controls={audioId}
+					min="0"
+					max="1"
+					step="0.1"
+					value={volume}
+					on:input={handleVolume}
+					aria-label={$_('audioPlayer.volume')}
+				/>
+			</div>
 
-    <div class="volume-control">
-      <label for={volumeId}>{$_('audioPlayer.volume')}:</label>
-      <input
-        id={volumeId}
-        type="range"
-        aria-controls={audioId}
-        min="0"
-        max="1"
-        step="0.1"
-        value={volume}
-        on:input={handleVolume}
-        aria-label={$_('audioPlayer.volume')}
-      />
-    </div>
-
-    <button
-      class="close-button"
-      aria-label={$_('close')}
-      on:click={onClose}
-    >
+			<Button
+				color="black"
+				nativeClasses="close-button"
+				aria-label={$_('close')}
+				on:click={onClose}
+			>
 				<InlineIcon nativeClass="close-icon" src="/icons/x.svg" />
-			</button>
+			</Button>
 		</div>
 	</div>
 {/if}
 
 <style>
-  .audio-player {
-    width: 100%;
-    padding: 1rem;
-    background: var(--color-bg-main);
-    border-radius: 8px;
+	.audio-player {
+		width: 100%;
+		padding: 1rem;
+		background: transparent;
+		border-radius: 8px;
 		box-sizing: border-box;
 		container: audio-player / inline-size;
-  }
+	}
 
-  .controls {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
+	.controls {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
 
-  button {
-    padding: 0.5rem 1rem;
-    border: none;
-    background: var(--color-main);
-    color: var(--color-bg-main);
-    border-radius: 4px;
-    cursor: pointer;
-  }
+	.time-slider {
+		flex: 3 1;
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
 
-  .time-slider {
-    flex: 3 1;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
+	input[type="range"] {
+		width: 100%;
+		-webkit-appearance: none;
+		background: transparent;
+	}
 
-  input[type="range"] {
-    width: 100%;
-    -webkit-appearance: none;
-    background: transparent;
-  }
+	input[type="range"]::-webkit-slider-runnable-track {
+		width: 100%;
+		height: 4px;
+		background: var(--color-gray);
+		border-radius: 2px;
+		border: none;
+	}
 
-  input[type="range"]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 4px;
-    background: var(--color-gray);
-    border-radius: 2px;
-    border: none;
-  }
+	input[type="range"]::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		height: 12px;
+		width: 12px;
+		border-radius: 50%;
+		background: var(--color-main);
+		cursor: pointer;
+		margin-top: -4px;
+	}
 
-  input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    height: 12px;
-    width: 12px;
-    border-radius: 50%;
-    background: var(--color-main);
-    cursor: pointer;
-    margin-top: -4px;
-  }
+	input[type="range"]::-moz-range-track {
+		width: 100%;
+		height: 4px;
+		background: var(--color-gray);
+		border-radius: 2px;
+		border: none;
+	}
 
-  input[type="range"]::-moz-range-track {
-    width: 100%;
-    height: 4px;
-    background: var(--color-gray);
-    border-radius: 2px;
-    border: none;
-  }
+	input[type="range"]::-moz-range-thumb {
+		height: 12px;
+		width: 12px;
+		border-radius: 50%;
+		background: var(--color-main);
+		cursor: pointer;
+		border: none;
+	}
 
-  input[type="range"]::-moz-range-thumb {
-    height: 12px;
-    width: 12px;
-    border-radius: 50%;
-    background: var(--color-main);
-    cursor: pointer;
-    border: none;
-  }
+	input[type="range"]:focus {
+		outline: none;
+	}
 
-  input[type="range"]:focus {
-    outline: none;
-  }
+	input[type="range"]:focus::-webkit-slider-thumb {
+		box-shadow: 0 0 0 2px var(--color-bg-main), 0 0 0 4px var(--color-main);
+	}
 
-  input[type="range"]:focus::-webkit-slider-thumb {
-    box-shadow: 0 0 0 2px var(--color-bg-main), 0 0 0 4px var(--color-main);
-  }
+	input[type="range"]:focus::-moz-range-thumb {
+		box-shadow: 0 0 0 2px var(--color-bg-main), 0 0 0 4px var(--color-main);
+	}
 
-  input[type="range"]:focus::-moz-range-thumb {
-    box-shadow: 0 0 0 2px var(--color-bg-main), 0 0 0 4px var(--color-main);
-  }
-
-  .volume-control {
-    display: flex;
+	.volume-control {
+		display: flex;
 		flex: 1 2;
-    align-items: center;
-    gap: 0.5rem;
-  }
+		align-items: center;
+		gap: 0.5rem;
+	}
 	@container audio-player (width <= 750px) {
 		.volume-control {
 			flex: 1 2 100px;
 		}
 	}
 
-  .close-button {
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-    line-height: 1;
-  }
-
+	:global(.close-button) {
+		width: 24px;
+		height: 24px;
+		padding: 0 !important;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 20px;
+		line-height: 1;
+	}
 
 	:global(.close-icon) {
 		width: 80%;
