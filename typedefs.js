@@ -45,6 +45,22 @@
  */
 
 /**
+ * @typedef {object} PracticeListItem
+ * @property {number} id
+ * @property {boolean} isVisible
+ * @property {string} slug
+ * @property {string} title
+ */
+
+/**
+ * @typedef {object} SupabasePracticeList
+ * @property {PracticeListItem[]} data
+ * @property {number} status
+ * @property {string} statusText
+ * @property {object|null} error
+ */
+
+/**
  * @exports Practices
  * @typedef Practices
  * @type {Array<Practice>}
@@ -86,7 +102,6 @@
  * @typedef Projects
  * @type {Array<Projects>}
  */
-
 
 /**
  * @exports SeoData

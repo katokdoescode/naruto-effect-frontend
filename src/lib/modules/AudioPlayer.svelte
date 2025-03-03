@@ -162,7 +162,7 @@ function handleVolume(e) {
 
 	input[type="range"] {
 		width: 100%;
-		-webkit-appearance: none;
+		appearance: none;
 		background: transparent;
 	}
 
@@ -175,7 +175,7 @@ function handleVolume(e) {
 	}
 
 	input[type="range"]::-webkit-slider-thumb {
-		-webkit-appearance: none;
+		appearance: none;
 		height: 12px;
 		width: 12px;
 		border-radius: 50%;
