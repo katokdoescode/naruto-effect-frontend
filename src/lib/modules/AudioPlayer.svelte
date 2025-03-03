@@ -88,11 +88,16 @@ function handleVolume(e) {
 		<div class="controls">
 			<Button
 				color="black"
+				nativeClasses="play-button"
 				aria-controls={audioId}
 				aria-label={playing ? $_('audioPlayer.pause') : $_('audioPlayer.play')}
 				on:click={togglePlay}
 			>
-				{playing ? $_('audioPlayer.pause') : $_('audioPlayer.play')}
+				<span class="play-text">
+					{playing ? $_('audioPlayer.pause') : $_('audioPlayer.play')}
+				</span>
+
+				<InlineIcon src="/icons/play.svg" />
 			</Button>
 
 			<div class="time-slider">
@@ -111,7 +116,13 @@ function handleVolume(e) {
 			</div>
 
 			<div class="volume-control">
-				<label for={volumeId}>{$_('audioPlayer.volume')}:</label>
+				<label for={volumeId}>
+					<span class="volume-label">
+						{$_('audioPlayer.volume')}:
+					</span>
+
+					<InlineIcon src="/icons/sound.svg"/>
+				</label>
 				<input
 					id={volumeId}
 					type="range"
@@ -154,7 +165,7 @@ function handleVolume(e) {
 	}
 
 	.time-slider {
-		flex: 3 1;
+		flex: 3 1 100px;
 		display: flex;
 		align-items: center;
 		gap: 1rem;
@@ -219,9 +230,71 @@ function handleVolume(e) {
 		align-items: center;
 		gap: 0.5rem;
 	}
+
+	.volume-control :global(svg) {
+		display: none;
+		width: 24px;
+		height: 24px;
+	}
+
+	:global(.play-button svg) {
+		display: none;
+		width: 24px;
+		height: 24px;
+	}
+
+	@media (width <= 750px) {
+		.volume-control {
+			flex: 1 2 100px;
+		}
+
+		.volume-label {
+			clip: rect(0 0 0 0);
+			clip-path: inset(50%);
+			height: 1px;
+			overflow: hidden;
+			position: absolute;
+			white-space: nowrap;
+			width: 1px;
+		}
+
+		.volume-control :global(svg) {
+			display: inline-block;
+		}
+
+		:global(.play-button svg) {
+			display: inline-block;
+		}
+	}
+
 	@container audio-player (width <= 750px) {
 		.volume-control {
 			flex: 1 2 100px;
+		}
+
+		.volume-label,
+		.play-text {
+			clip: rect(0 0 0 0);
+			clip-path: inset(50%);
+			height: 1px;
+			overflow: hidden;
+			position: absolute;
+			white-space: nowrap;
+			width: 1px;
+		}
+
+		.volume-control :global(svg) {
+			display: inline-block;
+		}
+
+		:global(.play-button) {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		:global(.play-button svg) {
+			display: inline-block;
 		}
 	}
 
