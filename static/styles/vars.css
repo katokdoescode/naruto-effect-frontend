@@ -16,6 +16,9 @@
 	--max-right-section-width: 279px;
 	--min-right-section-width: 215px;
 
+	/* PLAYER HEIGHT */
+	--player-height: 64px;
+
 	/* MAIN PAGE SIZES */
 	--initial-padding-top: 50px;
 	--initial-padding-on-the-sides: 70px;
