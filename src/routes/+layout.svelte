@@ -1,6 +1,7 @@
 <script>
 import { beforeNavigate, goto, replaceState } from '$app/navigation';
 import { page } from '$app/stores';
+import { setupTokenRefresh } from '$lib/auth';
 import AudioPlayer from '$lib/modules/AudioPlayer.svelte';
 import Content from '$lib/modules/Content.svelte';
 import CookieModal from '$lib/modules/CookieModal.svelte';
@@ -166,6 +167,8 @@ function submitFooter() {
 	footerEditor.submit();
 }
 
+let cleanup;
+
 onMount(() => {
 	const settedLocale = localStorage.getItem('userLang');
 	if (settedLocale) locale.set(settedLocale);
@@ -178,6 +181,7 @@ onMount(() => {
 
 	initHandlers();
 	logoController();
+	cleanup = setupTokenRefresh();
 });
 
 setContext('needSave', needSave);
@@ -237,6 +241,7 @@ beforeNavigate(async (event) => {
 onDestroy(() => {
 	unsubscribeLocale();
 	unsubscribeConfirmModalDecision();
+	if (cleanup) cleanup();
 });
 </script>
 
