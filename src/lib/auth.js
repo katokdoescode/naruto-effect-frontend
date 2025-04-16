@@ -33,6 +33,6 @@ export async function refreshSession() {
 
 export function setupTokenRefresh() {
 	if (!browser) return;
-	const interval = setInterval(refreshSession, 5 * 60 * 1000);
+	const interval = setInterval(refreshSession, 4 * 60 * 1000);
 	return () => clearInterval(interval);
 }
