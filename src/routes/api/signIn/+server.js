@@ -37,6 +37,13 @@ export async function POST({ cookies, request }) {
 				new Date(new Date().getTime() + 86500000),
 		});
 
+		cookies.set('refreshToken', authToken.refresh_token, {
+			path: '/',
+			expires:
+				new Date(new Date().getTime() + authToken.expires_at) ||
+				new Date(new Date().getTime() + 86500000),
+		});
+
 		return json({ success: true });
 	}
 	return json(createError(false, 'Email or password is not correct.'));

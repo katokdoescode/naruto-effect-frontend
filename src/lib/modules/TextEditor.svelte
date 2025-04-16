@@ -77,7 +77,8 @@ let conf = {
 	menubar: false,
 	branding: false,
 	statusbar: false,
-	images_file_types: 'jpg,png,webp',
+	license_key: 'gpl',
+	images_file_types: 'jpg,png,webp,avif',
 	file_picker_callback: filePickerCallback,
 	contextmenu: inline
 		? false
