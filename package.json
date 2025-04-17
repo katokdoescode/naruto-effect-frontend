@@ -11,27 +11,33 @@
     "check:biome": "biome check --write ./src/** ./tests/**",
     "biome:report": "biome check --reporter=summary ./src/**",
     "test:integration": "playwright test",
-    "test:unit": "vitest"
+    "test:unit": "vitest run",
+    "supabase:start": "supabase start",
+    "supabase:stop": "supabase stop",
+    "supabase:status": "supabase status",
+    "supabase:db:reset": "supabase db reset",
+    "supabase:db:push": "supabase db push",
+    "supabase:db:pull": "supabase db pull"
   },
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
-    "@playwright/test": "^1.45.3",
+    "@playwright/test": "^1.52.0",
     "@sveltejs/adapter-vercel": "^4.0.5",
-    "@sveltejs/kit": "^2.5.18",
-    "lefthook": "^1.7.5",
-    "svelte": "^4.2.18",
-    "svelte-check": "^3.8.4",
-    "typescript": "^5.5.3",
-    "vite": "^5.3.4",
+    "@sveltejs/kit": "^2.20.7",
+    "lefthook": "^1.11.10",
+    "svelte": "^4.2.19",
+    "svelte-check": "^3.8.6",
+    "typescript": "^5.8.3",
+    "vite": "^5.4.18",
     "vite-plugin-static-copy": "^1.0.6",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.1"
   },
   "type": "module",
   "dependencies": {
     "@katokdoescode/car-slugger": "^1.1.0",
-    "@supabase/supabase-js": "^2.44.4",
+    "@supabase/supabase-js": "^2.49.4",
     "@tinymce/tinymce-svelte": "^3.0.0",
-    "svelte-i18n": "^4.0.0",
-    "tinymce": "^7.2.1"
+    "svelte-i18n": "^4.0.1",
+    "tinymce": "^7.8.0"
   }
 }

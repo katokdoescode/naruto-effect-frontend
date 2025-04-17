@@ -82,6 +82,7 @@ This project uses Supabase for backend services. To set up the database locally:
 1. Install the Supabase CLI following the [official documentation](https://supabase.com/docs/guides/cli)
 
 2. Start the local Supabase instance:
+
    ```bash
    supabase start
    ```
@@ -89,12 +90,18 @@ This project uses Supabase for backend services. To set up the database locally:
 3. The local Supabase instance will be available at `http://localhost:54321`
 
 4. Apply migrations:
+
    ```bash
    supabase db reset
    ```
+
    This will apply all migrations and seed data from the `supabase/migrations` and `supabase/seed.sql` files.
 
 5. To connect your application to the local Supabase instance, update your environment variables accordingly.
+
+6. <http://127.0.0.1:54323/project/default/auth/users> - create user with credentials:
+   1. Email: <admin@admin.admin>
+   2. Passwd: test
 
 ## Testing
 
@@ -109,9 +116,12 @@ Unit tests are written using Vitest and are located alongside the components the
 
 ### Integration Tests
 
+Start local supabase instance first, and create admin user.
+You need to reset local database first, then start the tests.
+
 ```bash
 # Run integration tests
-npm run test:integration
+bun run test:integration
 ```
 
 Integration tests are written using Playwright and are located in the `tests/` directory.

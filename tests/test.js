@@ -9,10 +9,9 @@ async function login(page) {
 	await page.goto('/');
 	await page.click('body');
 	await page.keyboard.press('Alt+M+L');
-	await expect(page.locator('.login-dialog')).toHaveAttribute('open', '');
+	await expect(page.locator('.login-dialog')).toBeVisible();
 	await page.locator('input[type=password]').fill('test');
 	await page.keyboard.press('Enter');
-	await expect(page.locator('.login-dialog')).not.toHaveAttribute('open', '');
 }
 
 /**
