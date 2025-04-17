@@ -88,8 +88,9 @@ jobs:
 
       - name: Start Supabase
         run: |
-          supabase start
-          supabase reset
+          supabase init
+          supabase start --debug
+          supabase db reset --debug
 
       - name: Store Supabase Anon Key
         run: |
