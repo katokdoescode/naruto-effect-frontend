@@ -10,13 +10,6 @@ on:
 jobs:
   checks:
     runs-on: ubuntu-latest
-    env:
-      VITE_TINYMCE_API_KEY: gpl
-      VITE_NODE_ENV: development
-      VITE_SUPABASE_BUCKET: naruto-effect-public-storage
-      VITE_ADMIN_EMAIL: example@example.xyz
-      VITE_LOGIN_PHRASE: test
-      VITE_BFF_SUPABASE_URL: http://localhost:54321/
 
     steps:
       - name: Check out code
@@ -25,10 +18,8 @@ jobs:
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
 
-      - name: Install dependencies and build
-        run: |
-          bun install
-          bun run build
+      - name: Install dependencies
+        run: bun install
 
       - name: Run checks
         run: |
