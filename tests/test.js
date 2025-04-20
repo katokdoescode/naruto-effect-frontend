@@ -80,11 +80,13 @@ test.describe
 
 			// Set 'light'
 			await page.locator('.theme-switch').selectOption({ index: 0 });
+			await page.locator('.theme-switch').selectOption({ index: 0 });
 			await setValues();
 			expect(colorSchemeCSS).toBe('light');
 			expect(localStorageValue).toBe('light');
 
 			// Set 'dark'
+			await page.locator('.theme-switch').selectOption({ index: 1 });
 			await page.locator('.theme-switch').selectOption({ index: 1 });
 			await setValues();
 			expect(colorSchemeCSS).toBe('dark');
