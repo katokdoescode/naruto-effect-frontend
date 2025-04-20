@@ -1,17 +1,14 @@
 <script>
 import { browser } from '$app/environment';
 import { ColorSchemes } from '$lib/constants';
+import { appColorScheme } from '$lib/stores/themeStore';
 import { onMount } from 'svelte';
 import { _ } from 'svelte-i18n';
-
-import { getContext } from 'svelte';
 
 /** @type{string | 'light'|'dark'|'auto'} */
 let scheme;
 let isMounted = false;
 const availableSchemes = Object.values(ColorSchemes);
-
-const appColorScheme = getContext('appColorScheme');
 
 onMount(() => {
 	// Get the initial scheme from localStorage or default to auto
@@ -50,11 +47,13 @@ function updateTheme() {
 		'(prefers-color-scheme: light)',
 	)?.matches;
 
-	const prefersColorScheme = darkModePreference
-		? 'dark'
-		: lightModePreference
-			? 'light'
-			: null;
+	let prefersColorScheme = null;
+	if (darkModePreference) {
+		prefersColorScheme = 'dark';
+	} else if (lightModePreference) {
+		prefersColorScheme = 'light';
+	}
+
 	appColorScheme.set(
 		scheme === ColorSchemes.AUTO ? prefersColorScheme : scheme,
 	);
