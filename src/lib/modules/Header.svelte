@@ -2,7 +2,7 @@
 import { page } from '$app/stores';
 import SignOut from '$lib/modules/hokage/SignOut.svelte';
 import { authorized } from '$lib/stores/authStore';
-import { createEventDispatcher, getContext } from 'svelte';
+import { createEventDispatcher } from 'svelte';
 import { _ } from 'svelte-i18n';
 import ToggleEditMode from './hokage/ToggleEditMode.svelte';
 
