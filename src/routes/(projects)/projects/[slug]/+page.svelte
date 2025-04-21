@@ -57,7 +57,7 @@ onMount(() => {
 			canNavigate.set(true);
 			needSave.set(false);
 			isEditingState.set(false);
-			goto(`/projects/${response.slug[$locale]}`);
+			goto(`/projects/${response.slug}`);
 		}
 	});
 
@@ -80,7 +80,7 @@ onMount(() => {
 					const decision = await d;
 
 					if (decision) {
-						const response = await deletePage(project.id, {
+						const response = await deletePage(project, {
 							route: '/api/projects',
 							method: 'DELETE',
 						});

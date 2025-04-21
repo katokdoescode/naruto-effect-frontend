@@ -13,8 +13,12 @@ let route;
 $: route = $page.route.id;
 $: isMainPage = route === '/' || '';
 $: isCVPage = route === '/cv';
+$: isProjectsPage = route === '/(projects)/projects';
 $: isCreatingMode = $page.url.pathname.includes('/create');
-$: canDelete = !(isMainPage || isCVPage) && $isEditingState && !isCreatingMode;
+$: canDelete =
+	!(isMainPage || isCVPage || isProjectsPage) &&
+	$isEditingState &&
+	!isCreatingMode;
 
 $: btnStatus = (() => {
 	if ($editingPageStatus) {
@@ -42,12 +46,14 @@ $: btnColor = (() => {
 
 <div class="row" aria-controls="content" role="toolbar">
 	{#if !$isEditingState}
-	<Button
-		color={btnColor}
-		value={btnStatus}
-		on:click={() => isEditingState.set(!$isEditingState)}>
-			{$_(`button.${btnStatus}`)}
-		</Button>
+		{#if !isProjectsPage}
+			<Button
+				color={btnColor}
+				value={btnStatus}
+				on:click={() => isEditingState.set(!$isEditingState)}>
+				{$_(`button.${btnStatus}`)}
+			</Button>
+		{/if}
 	{:else}
 		<Button
 			color={btnColor}
