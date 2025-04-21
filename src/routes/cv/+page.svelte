@@ -3,6 +3,7 @@
 import CvPageEditor from '$lib/modules/hokage/CvPageEditor.svelte';
 import { canNavigate, needCancel, needSave } from '$lib/stores/appStore';
 import { isEditingState } from '$lib/stores/appStore';
+import { clean } from '$lib/utils/objectsTools';
 import { savePage } from '$lib/utils/pagesActions';
 import { onMount } from 'svelte';
 import { locale } from 'svelte-i18n';
@@ -10,19 +11,19 @@ import { locale } from 'svelte-i18n';
 /** @type {import('./$types').PageData} */
 export let data;
 
-const pageData = data?.cvData || undefined;
-let localValue = structuredClone(pageData);
+let localValue = data?.cvData;
 
 onMount(() => {
 	const unsubscribe = needSave.subscribe(async (save) => {
 		if (!save) return;
 
-		const response = await savePage(localValue, {
+		const response = await savePage(clean(localValue), {
 			route: '/api/cv',
 			method: 'PATCH',
 		});
 
 		if (response) {
+			data.cvData = response;
 			localValue = response;
 			isEditingState.set(false);
 			needSave.set(false);
@@ -32,7 +33,7 @@ onMount(() => {
 	const unsubscribeCancel = needCancel.subscribe(async (cancel) => {
 		if (!cancel) return;
 
-		localValue = structuredClone(pageData);
+		localValue = data?.cvData;
 		needCancel.set(false);
 		isEditingState.set(false);
 	});

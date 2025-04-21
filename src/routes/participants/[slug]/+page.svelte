@@ -32,7 +32,7 @@ $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 
 /** @type {Participant} */
 let participant = data?.participant;
-let localValue = structuredClone(participant);
+let localValue = data?.participant;
 
 $: entityVisibility?.set(localValue.isVisible);
 
@@ -49,11 +49,10 @@ $: autoTranslatedName =
 
 function updateLocalData() {
 	participant = data?.participant;
-	localValue = structuredClone(participant);
+	localValue = data?.participant;
 }
 
 onMount(() => {
-	updateLocalData();
 	const unsubscribe = needSave.subscribe(async (save) => {
 		if (!save) return;
 
@@ -63,17 +62,15 @@ onMount(() => {
 		});
 
 		if (response) {
+			data.participant = response;
 			localValue = response;
 
-			for (const key in data.participants) {
-				if ($participants[key].id === localValue.id) {
-					participants.update((participants) =>
-						participants.map((participant) =>
-							participant.id === localValue.id ? localValue : participant,
-						),
-					);
-				}
-			}
+			participants.update((participants) =>
+				participants.map((participant) =>
+					participant.id === response.id ? response : participant,
+				),
+			);
+
 			canNavigate.set(true);
 			needSave.set(false);
 			isEditingState.set(false);
@@ -83,7 +80,7 @@ onMount(() => {
 
 	const unsubscribeCancel = needCancel.subscribe(async (cancel) => {
 		if (!cancel) return;
-		updateLocalData();
+		localValue = data?.participant;
 		needCancel.set(false);
 		isEditingState.set(false);
 	});
@@ -130,13 +127,9 @@ onMount(() => {
 		unsubscribeCancel();
 		unsubscribeDelete();
 		unsubscribeEntityVisibility();
+		isEditingState.set(false);
+		canNavigate.set(false);
 	};
-});
-
-afterNavigate(() => {
-	updateLocalData();
-	isEditingState.set(false);
-	canNavigate.set(false);
 });
 </script>
 

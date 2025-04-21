@@ -26,18 +26,15 @@ export let data;
 $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 
 /** @type {Project} */
-$: project = data?.project;
-
-/** @type {Project} */
 $: localValue = data?.project;
 
 $: entityVisibility?.set(localValue.isVisible);
-$: isNotLocalized = !project.name[$locale];
+$: isNotLocalized = !localValue.name[$locale];
 
 $: autoTranslatedName =
 	isNotLocalized && $locale === 'en'
-		? autoTranslate($locale, project.name[anotherLocale])
-		: project.name[anotherLocale];
+		? autoTranslate($locale, localValue.name[anotherLocale])
+		: localValue.name[anotherLocale];
 
 onMount(() => {
 	const unsubscribe = needSave.subscribe(async (save) => {
@@ -49,6 +46,9 @@ onMount(() => {
 		});
 
 		if (response) {
+			data.project = response;
+			localValue = response;
+
 			projects.update((projects) =>
 				projects.map((project) =>
 					project.id === response.id ? response : project,
@@ -64,7 +64,7 @@ onMount(() => {
 
 	const unsubscribeCancel = needCancel.subscribe(async (cancel) => {
 		if (!cancel) return;
-		localValue = structuredClone(data?.project);
+		localValue = data?.project;
 		needCancel.set(false);
 		isEditingState.set(false);
 		canNavigate.set(true);
@@ -81,14 +81,14 @@ onMount(() => {
 					const decision = await d;
 
 					if (decision) {
-						const response = await deletePage(project, {
+						const response = await deletePage(localValue, {
 							route: '/api/projects',
 							method: 'DELETE',
 						});
 
 						if (response) {
 							projects.update((projects) =>
-								projects.filter(({ id }) => id !== project.id),
+								projects.filter(({ id }) => id !== localValue.id),
 							);
 							needDelete.set(false);
 							isEditingState.set(false);
@@ -132,13 +132,13 @@ onMount(() => {
     {/if}
   {/if}
 </svelte:head>
-{#if project}
+{#if localValue}
   {#if $isEditingState && $authorized}
     <ProjectEditor bind:localValue />
   {:else if isNotLocalized}
   <div class="wrapper">
 		<h1>{autoTranslatedName}</h1>
-		<h2>{project.title[$locale] || project.title[anotherLocale]}</h2>
+		<h2>{localValue.title[$locale] || localValue.title[anotherLocale]}</h2>
 		<div class="alert">
 			<AlertMessage
 				message={$_('messages.anotherLanguageOnly')}
@@ -146,15 +146,15 @@ onMount(() => {
 		</div>
 	</div>
 	<article class="main-article">
-		{@html project.description[anotherLocale]}
+		{@html localValue.description[anotherLocale]}
 	</article>
   {:else}
   <a href="/projects">← {$_('projects.projects')}</a>
-  <h1>{project.name[$locale]}</h1>
-  <h2>{project.title[$locale]}</h2>
+  <h1>{localValue.name[$locale]}</h1>
+  <h2>{localValue.title[$locale]}</h2>
 
   <article>
-    {@html project.description[$locale]}
+    {@html localValue.description[$locale]}
   </article>
   {/if}
 {/if}

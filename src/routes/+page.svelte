@@ -9,26 +9,25 @@ import {
 	needCancel,
 	needSave,
 } from '$lib/stores/appStore';
+import { clean } from '$lib/utils/objectsTools';
 import { savePage } from '$lib/utils/pagesActions';
 import { onMount } from 'svelte';
 import { locale } from 'svelte-i18n';
 export let data;
 
-/** @type {MainPageData} */
-const pageData = data?.pageData;
-
-let localValue = structuredClone(pageData);
+let localValue = data?.pageData;
 
 onMount(() => {
 	const unsubscribe = needSave.subscribe(async (save) => {
 		if (!save) return;
 
-		const response = await savePage(localValue, {
+		const response = await savePage(clean(localValue), {
 			route: '/api/mainPage',
 			method: 'PATCH',
 		});
 
 		if (response) {
+			data.pageData = response;
 			localValue = response;
 			isEditingState.set(false);
 			needSave.set(false);
@@ -38,7 +37,7 @@ onMount(() => {
 	const unsubscribeCancel = needCancel.subscribe(async (cancel) => {
 		if (!cancel) return;
 
-		localValue = structuredClone(pageData);
+		localValue = data.pageData;
 		needCancel.set(false);
 		isEditingState.set(false);
 	});
@@ -56,14 +55,14 @@ onMount(() => {
 
 <svelte:head>
 	{#if $isEditingState}
-		<title>Main page data: {pageData?.title[$locale] || ''}</title>
+		<title>Main page data: {localValue?.title[$locale] || ''}</title>
 	{:else}
-		<title>{pageData?.title[$locale] || ''}</title>
+		<title>{localValue?.title[$locale] || ''}</title>
 	{/if}
 
 	<meta
 		name="description"
-		content={pageData?.description[$locale] || ''} />
+		content={localValue?.description[$locale] || ''} />
 </svelte:head>
 
 {#if $isEditingState}

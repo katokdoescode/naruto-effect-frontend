@@ -34,9 +34,6 @@ let isMounted = false;
 $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 
 /** @type {Practice} */
-$: practice = data?.practice;
-
-/** @type {Practice} */
 $: localValue = data?.practice;
 
 $: entityVisibility?.set(localValue.isVisible);
@@ -47,21 +44,20 @@ $: if (localValue) {
 	});
 }
 
-$: localizedSlug = practice?.originalSlug[$locale] || undefined;
+$: localizedSlug = localValue?.originalSlug[$locale] || undefined;
 $: route = $page.params.slug;
 $: if (isMounted && localizedSlug && route !== localizedSlug) {
 	goto(`/practices/${localizedSlug}`, { replaceState: false });
 }
 
-$: isNotLocalized = !practice.title[$locale];
+$: isNotLocalized = !localValue.title[$locale];
 
 $: autoTranslatedTitle =
 	isNotLocalized && $locale === 'en'
-		? autoTranslate($locale, practice.title[anotherLocale])
-		: practice.title[anotherLocale];
+		? autoTranslate($locale, localValue.title[anotherLocale])
+		: localValue.title[anotherLocale];
 
 function updateLocalData() {
-	practice = data?.practice;
 	localValue = data?.practice;
 }
 
@@ -75,15 +71,14 @@ onMount(() => {
 		});
 
 		if (response) {
-			for (const key in data.practices) {
-				if ($practices[key].id === response.id) {
-					practices.update((practices) =>
-						practices.map((practice) =>
-							practice.id === response.id ? response : practice,
-						),
-					);
-				}
-			}
+			data.practice = response;
+			localValue = response;
+
+			practices.update((practices) =>
+				practices.map((practice) =>
+					practice.id === response.id ? response : practice,
+				),
+			);
 
 			canNavigate.set(true);
 			needSave.set(false);
@@ -154,14 +149,14 @@ onMount(() => {
 
 <svelte:head>
 	{#if $authorized && $isEditingState}
-		<title>Editing practice: {practice.title[$locale]}</title>
+		<title>Editing practice: {localValue.title[$locale]}</title>
 	{:else}
-		<title>{practice.title[$locale]}</title>
+		<title>{localValue.title[$locale]}</title>
 	{/if}
 
 	<meta
 		name="description"
-		content={practice.subtitle[$locale]} />
+		content={localValue.subtitle[$locale]} />
 </svelte:head>
 
 {#if $authorized && $isEditingState}
@@ -170,32 +165,32 @@ onMount(() => {
 	{#if isNotLocalized}
 		<div class="wrapper">
 			<h1>{autoTranslatedTitle}</h1>
-			<h2>{practice.subtitle[$locale] || practice.subtitle[anotherLocale]}</h2>
+			<h2>{localValue.subtitle[$locale] || localValue.subtitle[anotherLocale]}</h2>
 			<div class="alert">
 				<AlertMessage message={$_('messages.anotherLanguageOnly')} />
 			</div>
 		</div>
 	{:else}
-		<h1>{practice.title[$locale]}</h1>
-		<h2>{practice.subtitle[$locale]}</h2>
+		<h1>{localValue.title[$locale]}</h1>
+		<h2>{localValue.subtitle[$locale]}</h2>
 	{/if}
 
-	{#if practice.bannerMode === BannerModes.IMAGE && practice.banner.link}
+	{#if localValue.bannerMode === BannerModes.IMAGE && localValue.banner.link}
 		<div class="image-wrapper">
 			<img
-				alt={practice.banner.alt}
+				alt={localValue.banner.alt}
 				height="317"
-				src={practice.banner.link} />
+				src={localValue.banner.link} />
 		</div>
-	{:else if practice.bannerMode === BannerModes.VIDEO && practice.iframe}
-		<YouTube markup={practice.iframe} />
+	{:else if localValue.bannerMode === BannerModes.VIDEO && localValue.iframe}
+		<YouTube markup={localValue.iframe} />
 	{/if}
 
 	<article class="main-article">
 		{#if isNotLocalized}
-			{@html practice.description[anotherLocale]}
+			{@html localValue.description[anotherLocale]}
 		{:else}
-			{@html practice.description[$locale]}
+			{@html localValue.description[$locale]}
 		{/if}
 	</article>
 {/if}
