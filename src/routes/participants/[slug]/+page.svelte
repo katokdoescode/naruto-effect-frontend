@@ -60,11 +60,11 @@ onMount(() => {
 			data.participant = response;
 			localValue = response;
 
-			participants.update((participants) =>
-				participants.map((participant) =>
-					participant.slug === response.slug ? response : participant,
-				),
-			);
+			participants.update((participants) => {
+				return participants.map((participant) => {
+					return participant.id === response.id ? response : participant;
+				});
+			});
 
 			canNavigate.set(true);
 			needSave.set(false);
