@@ -31,7 +31,6 @@ export let data;
 $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 
 /** @type {Participant} */
-let participant = data?.participant;
 let localValue = data?.participant;
 
 $: entityVisibility?.set(localValue.isVisible);
@@ -40,17 +39,12 @@ $: localValue.slug = Object.values(localValue.name).find(Boolean)
 	? slugger.getSlug(Object.values(localValue.name).find(Boolean))
 	: '';
 
-$: isNotLocalized = !participant.name[$locale];
+$: isNotLocalized = !localValue.name[$locale];
 
 $: autoTranslatedName =
 	isNotLocalized && $locale === 'en'
-		? autoTranslate($locale, participant.name[anotherLocale])
-		: participant.name[anotherLocale];
-
-function updateLocalData() {
-	participant = data?.participant;
-	localValue = data?.participant;
-}
+		? autoTranslate($locale, localValue.name[anotherLocale])
+		: localValue.name[anotherLocale];
 
 onMount(() => {
 	const unsubscribe = needSave.subscribe(async (save) => {
@@ -67,7 +61,7 @@ onMount(() => {
 
 			participants.update((participants) =>
 				participants.map((participant) =>
-					participant.id === response.id ? response : participant,
+					participant.slug === response.slug ? response : participant,
 				),
 			);
 
@@ -135,14 +129,14 @@ onMount(() => {
 
 <svelte:head>
 	{#if $authorized && $isEditingState}
-		<title>Editing participant: {participant.name[$locale]}</title>
+		<title>Editing participant: {localValue.name[$locale]}</title>
 	{:else}
-		<title>{participant.name[$locale]}</title>
+		<title>{localValue.name[$locale]}</title>
 	{/if}
 
 	<meta
 		name="description"
-		content={participant.title[$locale]} />
+		content={localValue.title[$locale]} />
 </svelte:head>
 
 {#if $authorized && $isEditingState}
@@ -150,7 +144,7 @@ onMount(() => {
 {:else if isNotLocalized}
 	<div class="wrapper">
 		<h1>{autoTranslatedName}</h1>
-		<h2>{participant.title[$locale] || participant.title[anotherLocale]}</h2>
+		<h2>{localValue.title[$locale] || localValue.title[anotherLocale]}</h2>
 		<div class="alert">
 			<AlertMessage
 				message={$_('messages.anotherLanguageOnly')}
@@ -158,13 +152,13 @@ onMount(() => {
 		</div>
 	</div>
 	<article class="main-article">
-		{@html participant.description[anotherLocale]}
+		{@html localValue.description[anotherLocale]}
 	</article>
 {:else}
-	<h1>{participant.name[$locale]}</h1>
-	<h2>{participant.title[$locale]}</h2>
+	<h1>{localValue.name[$locale]}</h1>
+	<h2>{localValue.title[$locale]}</h2>
 	<article class="main-article">
-		{@html participant.description[$locale]}
+		{@html localValue.description[$locale]}
 	</article>
 {/if}
 

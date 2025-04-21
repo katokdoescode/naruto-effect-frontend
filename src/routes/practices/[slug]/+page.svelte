@@ -71,8 +71,15 @@ onMount(() => {
 		});
 
 		if (response) {
-			data.practice = response;
-			localValue = response;
+			data.practice = {
+				...response,
+				originalSlug: structuredClone(response.slug),
+			};
+
+			localValue = {
+				...response,
+				originalSlug: structuredClone(response.slug),
+			};
 
 			practices.update((practices) =>
 				practices.map((practice) =>
