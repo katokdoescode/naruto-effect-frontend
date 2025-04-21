@@ -1,15 +1,27 @@
 <script>
+import { goto } from '$app/navigation';
 import AlertMessage from '$lib/modules/AlertMessage.svelte';
 import ProjectEditor from '$lib/modules/hokage/ProjectEditor.svelte';
+import {
+	canNavigate,
+	needCancel,
+	needDelete,
+	needSave,
+} from '$lib/stores/appStore';
+import { authorized } from '$lib/stores/authStore';
+import {
+	deleteModalDecision,
+	isShowDeleteModal,
+} from '$lib/stores/modalsStore';
+import { projects } from '$lib/stores/projectsStore';
 import autoTranslate from '$lib/utils/autoTranslate';
 import { clean } from '$lib/utils/objectsTools';
-import { getContext } from 'svelte';
+import { deletePage, savePage } from '$lib/utils/pagesActions';
+import { getContext, onMount } from 'svelte';
 import { _, locale, locales } from 'svelte-i18n';
 export let data;
 
 const isEditingState = getContext('isEditingState');
-const authorized = getContext('authorized');
-const projectData = getContext('projectData');
 
 $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 
@@ -17,9 +29,7 @@ $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 $: project = data?.project;
 
 /** @type {Project} */
-$: localValue = project;
-
-$: projectData.set(clean(localValue));
+$: localValue = data?.project;
 
 $: isNotLocalized = !project.name[$locale];
 
@@ -27,6 +37,79 @@ $: autoTranslatedName =
 	isNotLocalized && $locale === 'en'
 		? autoTranslate($locale, project.name[anotherLocale])
 		: project.name[anotherLocale];
+
+onMount(() => {
+	const unsubscribe = needSave.subscribe(async (save) => {
+		if (!save) return;
+
+		const response = await savePage(clean(localValue), {
+			route: '/api/projects',
+			method: 'PATCH',
+		});
+
+		if (response) {
+			projects.update((projects) =>
+				projects.map((project) =>
+					project.id === response.id ? response : project,
+				),
+			);
+
+			canNavigate.set(true);
+			needSave.set(false);
+			isEditingState.set(false);
+			goto(`/projects/${response.slug[$locale]}`);
+		}
+	});
+
+	const unsubscribeCancel = needCancel.subscribe(async (cancel) => {
+		if (!cancel) return;
+		localValue = structuredClone(data?.project);
+		needCancel.set(false);
+		isEditingState.set(false);
+		canNavigate.set(true);
+	});
+
+	const unsubscribeDelete = needDelete.subscribe(async (doDelete) => {
+		if (!doDelete) return;
+		isShowDeleteModal.set(true);
+		let unsubscribeDeleteModal = () => null;
+
+		await (() =>
+			new Promise(() => {
+				unsubscribeDeleteModal = deleteModalDecision.subscribe(async (d) => {
+					const decision = await d;
+
+					if (decision) {
+						const response = await deletePage(project.id, {
+							route: '/api/projects',
+							method: 'DELETE',
+						});
+
+						if (response) {
+							projects.update((projects) =>
+								projects.filter(({ id }) => id !== project.id),
+							);
+							needDelete.set(false);
+							isEditingState.set(false);
+							canNavigate.set(true);
+							goto('/projects');
+						}
+					}
+				});
+			}))();
+
+		unsubscribeDeleteModal();
+	});
+
+	canNavigate.set(false);
+	return () => {
+		unsubscribe();
+		unsubscribeCancel();
+		unsubscribeDelete();
+		isEditingState.set(false);
+		canNavigate.set(false);
+	};
+});
 </script>
 
 <svelte:head>

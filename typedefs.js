@@ -133,7 +133,7 @@
  * @property {LocaleObject} copyright
  * @property {LocaleObject} description
  * @property {string|number} year
- * @property {string|undefined?} iframe
+ * @property {string|undefined?} [iframe]
  * @property {BannerItem} banner
  * @property {BannerModes} bannerMode
  */
@@ -257,4 +257,13 @@
  * @property {Participant[]} participants
  * @property {MainPageData} pageData,
  * @property {string} loginPhrase
+ */
+
+/**
+ * @exports PageStatuses
+ * @typedef PageStatuses
+ * @type {object}
+ * @property {'loading'} LOADING
+ * @property {'success'} SUCCESS
+ * @property {'error'} ERROR
  */

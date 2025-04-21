@@ -1,20 +1,25 @@
 <script>
+import { goto } from '$app/navigation';
 import ParticipantEditor from '$lib/modules/hokage/ParticipantEditor.svelte';
+import {
+	canNavigate,
+	editingPageStatus,
+	isEditingState,
+} from '$lib/stores/appStore';
+import { needCancel, needSave } from '$lib/stores/appStore';
+import { participants } from '$lib/stores/participantsPageStore';
 import { clean } from '$lib/utils/objectsTools';
+import { savePage } from '$lib/utils/pagesActions';
 import { CarSlugger } from '@katokdoescode/car-slugger';
-import { getContext } from 'svelte';
-
-const isEditingState = getContext('isEditingState');
-const editingPageStatus = getContext('editingPageStatus');
+import { getContext, onDestroy, onMount } from 'svelte';
 const authorized = getContext('authorized');
-const participantData = getContext('participantData');
 
 const slugger = new CarSlugger();
 
 isEditingState.set(true);
 editingPageStatus.set(null);
 
-/** @type{Participant} */
+/** @type {Participant} */
 let localValue = {
 	id: null,
 	slug: '',
@@ -24,11 +29,43 @@ let localValue = {
 	isVisible: false,
 };
 
+const initialValue = structuredClone(localValue);
+
 $: localValue.slug = Object.values(localValue.name).find(Boolean)
 	? slugger.getSlug(Object.values(localValue.name).find(Boolean))
 	: '';
 
-$: participantData.set(clean(localValue));
+onMount(() => {
+	canNavigate.set(false);
+
+	const unsubscribe = needSave.subscribe(async (save) => {
+		if (!save) return;
+
+		const response = await savePage(clean(localValue), {
+			route: '/api/participants',
+			method: 'POST',
+		});
+
+		if (response) {
+			participants.set([...$participants, response]);
+			canNavigate.set(true);
+			localValue = structuredClone(initialValue);
+			goto(`/participants/${response.slug}`);
+		}
+	});
+
+	const unsubscribeCancel = needCancel.subscribe(async (cancel) => {
+		if (!cancel) return;
+		needCancel.set(false);
+	});
+
+	return () => {
+		unsubscribe();
+		unsubscribeCancel();
+		canNavigate.set(false);
+		isEditingState.set(false);
+	};
+});
 </script>
 
 {#if $authorized}
