@@ -1,7 +1,8 @@
 <script>
+import { footerEditorState, isFooterEditorOpen } from '$lib/stores/appStore';
 import { authorized } from '$lib/stores/authStore';
 import Button from '$lib/ui/Button.svelte';
-import { createEventDispatcher, getContext } from 'svelte';
+import { createEventDispatcher } from 'svelte';
 import { _, locale } from 'svelte-i18n';
 
 const dispatch = createEventDispatcher();
@@ -11,9 +12,6 @@ export let copyright = null;
 
 /**@type{string|number}*/
 export let year = new Date().getFullYear();
-
-const isFooterEditorOpen = getContext('isFooterEditorOpen');
-const footerEditorState = getContext('footerEditorState');
 
 function showFooterEditor() {
 	isFooterEditorOpen.set(true);

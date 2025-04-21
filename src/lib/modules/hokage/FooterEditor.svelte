@@ -1,11 +1,11 @@
 <script>
+import { footerEditorState, isFooterEditorOpen } from '$lib/stores/appStore';
 import Button from '$lib/ui/Button.svelte';
 import Input from '$lib/ui/Input.svelte';
 import Textarea from '$lib/ui/Textarea.svelte';
-import { createEventDispatcher, getContext } from 'svelte';
+import { createEventDispatcher } from 'svelte';
 import { _, locale } from 'svelte-i18n';
-const isFooterEditorOpen = getContext('isFooterEditorOpen');
-const footerEditorState = getContext('footerEditorState');
+
 const dispatch = createEventDispatcher();
 
 export let nativeClasses = '';
