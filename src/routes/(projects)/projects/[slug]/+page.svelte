@@ -9,6 +9,7 @@ import {
 	needSave,
 } from '$lib/stores/appStore';
 import { authorized } from '$lib/stores/authStore';
+import { entityVisibility } from '$lib/stores/entityVisibilityStore';
 import {
 	deleteModalDecision,
 	isShowDeleteModal,
@@ -31,6 +32,7 @@ $: project = data?.project;
 /** @type {Project} */
 $: localValue = data?.project;
 
+$: entityVisibility?.set(localValue.isVisible);
 $: isNotLocalized = !project.name[$locale];
 
 $: autoTranslatedName =
@@ -101,11 +103,18 @@ onMount(() => {
 		unsubscribeDeleteModal();
 	});
 
+	const unsubscribeEntityVisibility = entityVisibility.subscribe(
+		(visibility) => {
+			localValue.isVisible = visibility;
+		},
+	);
+
 	canNavigate.set(false);
 	return () => {
 		unsubscribe();
 		unsubscribeCancel();
 		unsubscribeDelete();
+		unsubscribeEntityVisibility();
 		isEditingState.set(false);
 		canNavigate.set(false);
 	};

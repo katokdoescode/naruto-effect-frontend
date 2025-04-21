@@ -11,6 +11,7 @@ import {
 	needSave,
 } from '$lib/stores/appStore';
 import { authorized } from '$lib/stores/authStore';
+import { entityVisibility } from '$lib/stores/entityVisibilityStore';
 import {
 	deleteModalDecision,
 	isShowDeleteModal,
@@ -20,7 +21,7 @@ import autoTranslate from '$lib/utils/autoTranslate.js';
 import { clean } from '$lib/utils/objectsTools.js';
 import { deletePage, savePage } from '$lib/utils/pagesActions';
 import { CarSlugger } from '@katokdoescode/car-slugger';
-import { onDestroy, onMount } from 'svelte';
+import { onMount } from 'svelte';
 import { _, locale, locales } from 'svelte-i18n';
 
 const slugger = new CarSlugger();
@@ -32,6 +33,8 @@ $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 /** @type {Participant} */
 let participant = data?.participant;
 let localValue = structuredClone(participant);
+
+$: entityVisibility?.set(localValue.isVisible);
 
 $: localValue.slug = Object.values(localValue.name).find(Boolean)
 	? slugger.getSlug(Object.values(localValue.name).find(Boolean))
@@ -116,10 +119,17 @@ onMount(() => {
 		unsubscribeDeleteModal();
 	});
 
+	const unsubscribeEntityVisibility = entityVisibility.subscribe(
+		(visibility) => {
+			localValue.isVisible = visibility;
+		},
+	);
+
 	return () => {
 		unsubscribe();
 		unsubscribeCancel();
 		unsubscribeDelete();
+		unsubscribeEntityVisibility();
 	};
 });
 

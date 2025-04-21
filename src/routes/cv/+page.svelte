@@ -1,11 +1,10 @@
 <script>
-import { goto } from '$app/navigation';
 /* eslint-disable svelte/no-at-html-tags */
 import CvPageEditor from '$lib/modules/hokage/CvPageEditor.svelte';
 import { canNavigate, needCancel, needSave } from '$lib/stores/appStore';
 import { isEditingState } from '$lib/stores/appStore';
 import { savePage } from '$lib/utils/pagesActions';
-import { onDestroy, onMount } from 'svelte';
+import { onMount } from 'svelte';
 import { locale } from 'svelte-i18n';
 
 /** @type {import('./$types').PageData} */

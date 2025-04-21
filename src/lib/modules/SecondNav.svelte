@@ -4,18 +4,15 @@ import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
 import Switch from '$lib/modules/Switch.svelte';
 import { isEditingState } from '$lib/stores/appStore';
 import { authorized } from '$lib/stores/authStore';
+import { entityVisibility } from '$lib/stores/entityVisibilityStore';
 import Button from '$lib/ui/Button.svelte';
 import autoTranslate from '$lib/utils/autoTranslate';
 import isLinkActive from '$lib/utils/isLinkActive';
-import { getContext } from 'svelte';
+import { onMount } from 'svelte';
 import { _, locale, locales } from 'svelte-i18n';
 
 /** @type {Participants} */
 export let participants = [];
-
-const participantData = getContext('participantData');
-const practiceData = getContext('practiceData');
-const projectData = getContext('projectData');
 
 let checked = false;
 
@@ -33,9 +30,6 @@ function translateName(name) {
 }
 
 $: route = $page.route.id || '';
-$: isPracticePage = route?.includes('practices') || '';
-$: isParticipantsPage = route?.includes('participants') || '';
-$: isProjectsPage = route?.includes('projects') || '';
 $: isMainPage = route === '/' || '';
 $: isCVPage = route === '/cv';
 
@@ -55,48 +49,19 @@ $: disabledParticipants = participants
 			})
 	: [];
 
-$: {
-	if (isParticipantsPage) {
-		checked = $participantData?.isVisible;
-	}
-
-	if (isPracticePage) {
-		checked = $practiceData?.isVisible;
-	}
-
-	if (isProjectsPage) {
-		checked = $projectData?.isVisible;
-	}
-}
-
-/**
- * @param {{ detail: unknown }} event
- */
-function check(event) {
-	const { detail } = event;
-	if (isPracticePage) {
-		practiceData.set({
-			...$practiceData,
-			isVisible: detail,
-		});
-	}
-
-	if (isParticipantsPage) {
-		participantData.set({
-			...$participantData,
-			isVisible: detail,
-		});
-	}
-
-	if (isProjectsPage) {
-		projectData.set({
-			...$projectData,
-			isVisible: detail,
-		});
-	}
-}
+$: entityVisibility.set(checked);
 
 $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
+
+onMount(() => {
+	const unsubscribe = entityVisibility.subscribe((visibility) => {
+		checked = visibility;
+	});
+
+	return () => {
+		unsubscribe();
+	};
+});
 </script>
 
 <nav
@@ -111,7 +76,7 @@ $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 				<label class="checkbox">
 					<Switch
 						bind:checked
-						on:change={check} />
+					/>
 					<span>{$_('mainMenu.settings.publicity')}</span>
 				</label>
 			</div>
