@@ -10,6 +10,7 @@ import {
 	needDelete,
 	needSave,
 } from '$lib/stores/appStore';
+import { authorized } from '$lib/stores/authStore';
 import {
 	deleteModalDecision,
 	isShowDeleteModal,
@@ -19,10 +20,8 @@ import autoTranslate from '$lib/utils/autoTranslate.js';
 import { clean } from '$lib/utils/objectsTools.js';
 import { deletePage, savePage } from '$lib/utils/pagesActions';
 import { CarSlugger } from '@katokdoescode/car-slugger';
-import { getContext, onDestroy, onMount } from 'svelte';
+import { onDestroy, onMount } from 'svelte';
 import { _, locale, locales } from 'svelte-i18n';
-
-const authorized = getContext('authorized');
 
 const slugger = new CarSlugger();
 

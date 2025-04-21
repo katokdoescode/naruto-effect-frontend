@@ -2,23 +2,20 @@
 import { goto } from '$app/navigation';
 import PracticeEditor from '$lib/modules/hokage/PracticeEditor.svelte';
 import { canNavigate, needCancel, needSave } from '$lib/stores/appStore';
+import { isEditingState } from '$lib/stores/appStore';
+import { authorized } from '$lib/stores/authStore';
 import { practices } from '$lib/stores/practicesPageStore';
 import { clean } from '$lib/utils/objectsTools';
 import { savePage } from '$lib/utils/pagesActions';
 import { CarSlugger } from '@katokdoescode/car-slugger';
-import { getContext, onMount } from 'svelte';
+import { onMount } from 'svelte';
 import { locale } from 'svelte-i18n';
-const isEditingState = getContext('isEditingState');
-const editingPageStatus = getContext('editingPageStatus');
-const authorized = getContext('authorized');
-const practiceData = getContext('practiceData');
 
 const slugger = new CarSlugger();
 
 isEditingState.set(true);
-editingPageStatus.set(null);
 
-/** @type{Practice} */
+/** @type {Practice} */
 let localValue = {
 	id: null,
 	slug: { en: '', ru: '' },

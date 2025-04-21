@@ -2,6 +2,8 @@
 import { page } from '$app/stores';
 import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
 import Switch from '$lib/modules/Switch.svelte';
+import { isEditingState } from '$lib/stores/appStore';
+import { authorized } from '$lib/stores/authStore';
 import Button from '$lib/ui/Button.svelte';
 import autoTranslate from '$lib/utils/autoTranslate';
 import isLinkActive from '$lib/utils/isLinkActive';
@@ -11,8 +13,6 @@ import { _, locale, locales } from 'svelte-i18n';
 /** @type {Participants} */
 export let participants = [];
 
-const authorized = getContext('authorized');
-const isEditingState = getContext('isEditingState');
 const participantData = getContext('participantData');
 const practiceData = getContext('practiceData');
 const projectData = getContext('projectData');

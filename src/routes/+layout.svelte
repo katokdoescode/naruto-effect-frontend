@@ -14,6 +14,7 @@ import FooterEditor from '$lib/modules/hokage/FooterEditor.svelte';
 import ConfirmDelete from '$lib/modules/hokage/modals/ConfirmDelete.svelte';
 import ConfirmExit from '$lib/modules/hokage/modals/ConfirmExit.svelte';
 import { canNavigate, isEditingState } from '$lib/stores/appStore';
+import { authorized } from '$lib/stores/authStore';
 import {
 	confirmExitModalDecision,
 	isShowConfirmExitModal,
@@ -34,7 +35,6 @@ let open = false;
 
 const needSave = writable(false);
 const combo = writable();
-const authorized = writable();
 const editingPageStatus = writable();
 const isFooterEditorOpen = writable(false);
 const footerEditorState = writable('save');
@@ -182,7 +182,6 @@ onMount(() => {
 });
 
 setContext('needSave', needSave);
-setContext('authorized', authorized);
 setContext('combo', combo);
 setContext('isEditingState', isEditingState);
 setContext('editingPageStatus', editingPageStatus);

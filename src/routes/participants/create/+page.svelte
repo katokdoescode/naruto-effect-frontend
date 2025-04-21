@@ -7,12 +7,12 @@ import {
 	isEditingState,
 } from '$lib/stores/appStore';
 import { needCancel, needSave } from '$lib/stores/appStore';
+import { authorized } from '$lib/stores/authStore';
 import { participants } from '$lib/stores/participantsPageStore';
 import { clean } from '$lib/utils/objectsTools';
 import { savePage } from '$lib/utils/pagesActions';
 import { CarSlugger } from '@katokdoescode/car-slugger';
-import { getContext, onDestroy, onMount } from 'svelte';
-const authorized = getContext('authorized');
+import { onMount } from 'svelte';
 
 const slugger = new CarSlugger();
 

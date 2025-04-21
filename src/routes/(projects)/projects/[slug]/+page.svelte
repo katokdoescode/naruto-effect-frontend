@@ -123,7 +123,7 @@ onMount(() => {
     {/if}
   {/if}
 </svelte:head>
-{#if data.project}
+{#if project}
   {#if $isEditingState && $authorized}
     <ProjectEditor bind:localValue />
   {:else if isNotLocalized}
@@ -141,11 +141,11 @@ onMount(() => {
 	</article>
   {:else}
   <a href="/projects">← {$_('projects.projects')}</a>
-  <h1>{data.project.name[$locale]}</h1>
-  <h2>{data.project.title[$locale]}</h2>
+  <h1>{project.name[$locale]}</h1>
+  <h2>{project.title[$locale]}</h2>
 
   <article>
-    {@html data.project.description[$locale]}
+    {@html project.description[$locale]}
   </article>
   {/if}
 {/if}

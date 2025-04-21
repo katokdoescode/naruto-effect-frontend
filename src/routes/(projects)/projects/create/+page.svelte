@@ -1,13 +1,13 @@
 <script>
 import ParticipantEditor from '$lib/modules/hokage/ParticipantEditor.svelte';
 import ProjectEditor from '$lib/modules/hokage/ProjectEditor.svelte';
+import { isEditingState } from '$lib/stores/appStore';
+import { authorized } from '$lib/stores/authStore';
 import { clean } from '$lib/utils/objectsTools';
 import { CarSlugger } from '@katokdoescode/car-slugger';
 import { getContext } from 'svelte';
 
-const isEditingState = getContext('isEditingState');
 const editingPageStatus = getContext('editingPageStatus');
-const authorized = getContext('authorized');
 const projectData = getContext('projectData');
 
 const slugger = new CarSlugger();
