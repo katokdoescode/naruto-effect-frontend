@@ -49,8 +49,7 @@ $: if (localValue) {
 
 $: localizedSlug = practice?.originalSlug[$locale] || undefined;
 $: route = $page.params.slug;
-$: if (isMounted && route !== localizedSlug) {
-	console.log(practice?.originalSlug, route, localizedSlug);
+$: if (isMounted && localizedSlug && route !== localizedSlug) {
 	goto(`/practices/${localizedSlug}`, { replaceState: false });
 }
 
