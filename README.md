@@ -2,7 +2,7 @@
 
 A networked community of cultural practitioners developing and practicing various forms of living virtual collaborations.
 
-№№ Code checks and tests
+## Code checks and tests
 
 [![Code checks](https://github.com/katokdoescode/naruto-effect-frontend/actions/workflows/check.yml/badge.svg)](https://github.com/katokdoescode/naruto-effect-frontend/actions/workflows/check.yml)
 
