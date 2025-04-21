@@ -109,3 +109,12 @@ values
     NULL,
     'video'
 );
+
+insert into public.projects ("isVisible", slug, name, title, description)
+values (
+    true,
+    'project-1',
+    '{"en": "Project 1", "ru": "Проект 1"}',
+    '{"en": "English", "ru": "Русский"}',
+    '{"en": "Some description", "ru": "Описание"}'
+);
