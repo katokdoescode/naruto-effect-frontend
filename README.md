@@ -2,6 +2,10 @@
 
 A networked community of cultural practitioners developing and practicing various forms of living virtual collaborations.
 
+№№ Code checks and tests
+
+[![Code checks](https://github.com/katokdoescode/naruto-effect-frontend/actions/workflows/check.yml/badge.svg)](https://github.com/katokdoescode/naruto-effect-frontend/actions/workflows/check.yml)
+
 ## Project Overview
 
 This is a SvelteKit application deployed on Vercel. It serves as the website for the "Effect Naruto" art community, providing a platform for collaboration and cultural practice in virtual environments.
