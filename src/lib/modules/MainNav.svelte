@@ -2,7 +2,12 @@
 import { goto } from '$app/navigation';
 import { page } from '$app/stores';
 import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
-import { canNavigate, needCancel, needSave } from '$lib/stores/appStore';
+import {
+	canNavigate,
+	isEditingState,
+	needCancel,
+	needSave,
+} from '$lib/stores/appStore';
 import { authorized } from '$lib/stores/authStore';
 import {
 	confirmExitModalDecision,
@@ -11,14 +16,12 @@ import {
 import Button from '$lib/ui/Button.svelte';
 import autoTranslate from '$lib/utils/autoTranslate';
 import isLinkActive from '$lib/utils/isLinkActive';
-import { getContext } from 'svelte';
 import { _, locale, locales } from 'svelte-i18n';
 
 /** @type {Practices} */
 export let practices = [];
 /** @type {PageLinkLocale[]}*/
 export let pageLinks = [];
-const isEditingState = getContext('isEditingState');
 
 $: route = $page.url.pathname.split('/')[1];
 $: pageName = route === '' ? 'main' : route;
