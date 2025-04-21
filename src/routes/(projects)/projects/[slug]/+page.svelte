@@ -4,6 +4,7 @@ import AlertMessage from '$lib/modules/AlertMessage.svelte';
 import ProjectEditor from '$lib/modules/hokage/ProjectEditor.svelte';
 import {
 	canNavigate,
+	isEditingState,
 	needCancel,
 	needDelete,
 	needSave,
@@ -18,11 +19,9 @@ import { projects } from '$lib/stores/projectsStore';
 import autoTranslate from '$lib/utils/autoTranslate';
 import { clean } from '$lib/utils/objectsTools';
 import { deletePage, savePage } from '$lib/utils/pagesActions';
-import { getContext, onMount } from 'svelte';
+import { onMount } from 'svelte';
 import { _, locale, locales } from 'svelte-i18n';
 export let data;
-
-const isEditingState = getContext('isEditingState');
 
 $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 
@@ -110,6 +109,7 @@ onMount(() => {
 	);
 
 	canNavigate.set(false);
+
 	return () => {
 		unsubscribe();
 		unsubscribeCancel();
