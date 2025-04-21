@@ -1,6 +1,6 @@
 <script>
 /* eslint-disable svelte/no-at-html-tags */
-import { goto } from '$app/navigation';
+import { beforeNavigate, goto } from '$app/navigation';
 import { page } from '$app/stores';
 import { BannerModes } from '$lib/constants';
 import AlertMessage from '$lib/modules/AlertMessage.svelte';
@@ -30,6 +30,7 @@ const slugger = new CarSlugger();
 
 export let data;
 let isMounted = false;
+let navigatingTo;
 
 $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 
@@ -90,7 +91,7 @@ onMount(() => {
 			canNavigate.set(true);
 			needSave.set(false);
 			isEditingState.set(false);
-			goto(`/practices/${response.slug[$locale]}`);
+			goto(navigatingTo ?? `/practices/${response.slug[$locale]}`);
 		}
 	});
 
@@ -151,6 +152,10 @@ onMount(() => {
 		isEditingState.set(false);
 		canNavigate.set(false);
 	};
+});
+
+beforeNavigate((event) => {
+	navigatingTo = event.to;
 });
 </script>
 

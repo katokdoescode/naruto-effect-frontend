@@ -1,5 +1,5 @@
 <script>
-import { afterNavigate, goto } from '$app/navigation';
+import { afterNavigate, beforeNavigate, goto } from '$app/navigation';
 /* eslint-disable svelte/no-at-html-tags */
 import AlertMessage from '$lib/modules/AlertMessage.svelte';
 import ParticipantEditor from '$lib/modules/hokage/ParticipantEditor.svelte';
@@ -31,7 +31,8 @@ export let data;
 $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 
 /** @type {Participant} */
-let localValue = data?.participant;
+$: localValue = data?.participant;
+let navigatingTo;
 
 $: entityVisibility?.set(localValue.isVisible);
 
@@ -68,7 +69,7 @@ onMount(() => {
 			canNavigate.set(true);
 			needSave.set(false);
 			isEditingState.set(false);
-			goto(`/participants/${localValue.slug}`);
+			goto(navigatingTo ?? `/participants/${localValue.slug}`);
 		}
 	});
 
@@ -124,6 +125,10 @@ onMount(() => {
 		isEditingState.set(false);
 		canNavigate.set(false);
 	};
+});
+
+beforeNavigate((event) => {
+	navigatingTo = event.to;
 });
 </script>
 

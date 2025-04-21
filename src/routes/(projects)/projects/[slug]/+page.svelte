@@ -1,5 +1,5 @@
 <script>
-import { goto } from '$app/navigation';
+import { beforeNavigate, goto } from '$app/navigation';
 import AlertMessage from '$lib/modules/AlertMessage.svelte';
 import ProjectEditor from '$lib/modules/hokage/ProjectEditor.svelte';
 import {
@@ -22,9 +22,9 @@ import { deletePage, savePage } from '$lib/utils/pagesActions';
 import { onMount } from 'svelte';
 import { _, locale, locales } from 'svelte-i18n';
 export let data;
+let navigatingTo;
 
 $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
-
 /** @type {Project} */
 $: localValue = data?.project;
 
@@ -58,7 +58,7 @@ onMount(() => {
 			canNavigate.set(true);
 			needSave.set(false);
 			isEditingState.set(false);
-			goto(`/projects/${response.slug}`);
+			goto(navigatingTo ?? `/projects/${response.slug}`);
 		}
 	});
 
@@ -118,6 +118,10 @@ onMount(() => {
 		isEditingState.set(false);
 		canNavigate.set(false);
 	};
+});
+
+beforeNavigate((event) => {
+	navigatingTo = event.to;
 });
 </script>
 
