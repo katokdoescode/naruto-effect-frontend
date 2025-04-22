@@ -8,6 +8,7 @@ import YouTube from '$lib/modules/YouTube.svelte';
 import PracticeEditor from '$lib/modules/hokage/PracticeEditor.svelte';
 import {
 	canNavigate,
+	isDataValid,
 	isEditingState,
 	needCancel,
 	needDelete,
@@ -23,6 +24,7 @@ import { practices } from '$lib/stores/practicesPageStore';
 import autoTranslate from '$lib/utils/autoTranslate.js';
 import { clean } from '$lib/utils/objectsTools.js';
 import { deletePage, savePage } from '$lib/utils/pagesActions';
+import { validatePractice } from '$lib/utils/validation/validatePractice.js';
 import { CarSlugger } from '@katokdoescode/car-slugger';
 import { onMount } from 'svelte';
 import { _, locale, locales } from 'svelte-i18n';
@@ -61,6 +63,8 @@ $: autoTranslatedTitle =
 function updateLocalData() {
 	localValue = data?.practice;
 }
+
+$: isDataValid?.set(validatePractice(localValue, $locale));
 
 onMount(() => {
 	const unsubscribe = needSave.subscribe(async (save) => {

@@ -4,6 +4,7 @@ import AlertMessage from '$lib/modules/AlertMessage.svelte';
 import ProjectEditor from '$lib/modules/hokage/ProjectEditor.svelte';
 import {
 	canNavigate,
+	isDataValid,
 	isEditingState,
 	needCancel,
 	needDelete,
@@ -19,6 +20,7 @@ import { projects } from '$lib/stores/projectsStore';
 import autoTranslate from '$lib/utils/autoTranslate';
 import { clean } from '$lib/utils/objectsTools';
 import { deletePage, savePage } from '$lib/utils/pagesActions';
+import { validateProject } from '$lib/utils/validation/validateProject';
 import { onMount } from 'svelte';
 import { _, locale, locales } from 'svelte-i18n';
 export let data;
@@ -34,6 +36,8 @@ $: autoTranslatedName =
 	isNotLocalized && $locale === 'en'
 		? autoTranslate($locale, localValue.name[anotherLocale])
 		: localValue.name[anotherLocale];
+
+$: isDataValid?.set(validateProject(localValue, $locale));
 
 onMount(() => {
 	const unsubscribe = needSave.subscribe(async (save) => {

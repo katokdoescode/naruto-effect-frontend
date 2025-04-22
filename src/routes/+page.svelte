@@ -5,17 +5,22 @@ import YouTube from '$lib/modules/YouTube.svelte';
 import MainPageEditor from '$lib/modules/hokage/MainPageEditor.svelte';
 import {
 	canNavigate,
+	isDataValid,
 	isEditingState,
 	needCancel,
 	needSave,
 } from '$lib/stores/appStore';
 import { clean } from '$lib/utils/objectsTools';
 import { savePage } from '$lib/utils/pagesActions';
+import { validateMainPage } from '$lib/utils/validation/validateMainPage';
 import { onMount } from 'svelte';
 import { locale } from 'svelte-i18n';
+
 export let data;
 
 let localValue = data?.pageData;
+
+$: isDataValid?.set(validateMainPage(localValue, $locale));
 
 onMount(() => {
 	const unsubscribe = needSave.subscribe(async (save) => {

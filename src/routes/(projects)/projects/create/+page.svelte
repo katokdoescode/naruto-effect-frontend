@@ -3,6 +3,7 @@ import { goto } from '$app/navigation';
 import ProjectEditor from '$lib/modules/hokage/ProjectEditor.svelte';
 import {
 	canNavigate,
+	isDataValid,
 	isEditingState,
 	needCancel,
 	needSave,
@@ -11,8 +12,10 @@ import { authorized } from '$lib/stores/authStore';
 import { projects } from '$lib/stores/projectsStore';
 import { clean } from '$lib/utils/objectsTools';
 import { savePage } from '$lib/utils/pagesActions';
+import { validateProject } from '$lib/utils/validation/validateProject';
 import { CarSlugger } from '@katokdoescode/car-slugger';
 import { onMount } from 'svelte';
+import { locale } from 'svelte-i18n';
 
 const slugger = new CarSlugger();
 
@@ -31,6 +34,8 @@ const initialValue = structuredClone(localValue);
 $: localValue.slug = Object.values(localValue.name).find(Boolean)
 	? slugger.getSlug(Object.values(localValue.name).find(Boolean))
 	: '';
+
+$: isDataValid?.set(validateProject(localValue, $locale));
 
 onMount(() => {
 	const unsubscribe = needSave.subscribe(async (save) => {

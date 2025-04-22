@@ -4,6 +4,7 @@ import ParticipantEditor from '$lib/modules/hokage/ParticipantEditor.svelte';
 import {
 	canNavigate,
 	editingPageStatus,
+	isDataValid,
 	isEditingState,
 } from '$lib/stores/appStore';
 import { needCancel, needSave } from '$lib/stores/appStore';
@@ -11,9 +12,10 @@ import { authorized } from '$lib/stores/authStore';
 import { participants } from '$lib/stores/participantsPageStore';
 import { clean } from '$lib/utils/objectsTools';
 import { savePage } from '$lib/utils/pagesActions';
+import { validateParticipant } from '$lib/utils/validation/validateParticipant';
 import { CarSlugger } from '@katokdoescode/car-slugger';
 import { onMount } from 'svelte';
-
+import { locale } from 'svelte-i18n';
 const slugger = new CarSlugger();
 
 isEditingState.set(true);
@@ -34,6 +36,8 @@ const initialValue = structuredClone(localValue);
 $: localValue.slug = Object.values(localValue.name).find(Boolean)
 	? slugger.getSlug(Object.values(localValue.name).find(Boolean))
 	: '';
+
+$: isDataValid?.set(validateParticipant(localValue, $locale));
 
 onMount(() => {
 	canNavigate.set(false);

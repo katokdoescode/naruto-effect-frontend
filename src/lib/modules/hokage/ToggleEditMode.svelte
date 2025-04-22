@@ -2,6 +2,7 @@
 import { page } from '$app/stores';
 import {
 	editingPageStatus,
+	isDataValid,
 	isEditingState,
 	needDelete,
 	needSave,
@@ -50,7 +51,8 @@ $: btnColor = (() => {
 			<Button
 				color={btnColor}
 				value={btnStatus}
-				on:click={() => isEditingState.set(!$isEditingState)}>
+				on:click={() => isEditingState.set(!$isEditingState)}
+			>
 				{$_(`button.${btnStatus}`)}
 			</Button>
 		{/if}
@@ -58,7 +60,9 @@ $: btnColor = (() => {
 		<Button
 			color={btnColor}
 			value={btnStatus}
-			on:click={() => needSave.set(true)}>
+			disabled={!$isDataValid}
+			on:click={() => needSave.set(true)}
+		>
 			{$_(`button.${btnStatus}`)}
 		</Button>
 	{/if}

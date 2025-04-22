@@ -5,6 +5,7 @@ import AlertMessage from '$lib/modules/AlertMessage.svelte';
 import ParticipantEditor from '$lib/modules/hokage/ParticipantEditor.svelte';
 import {
 	canNavigate,
+	isDataValid,
 	isEditingState,
 	needCancel,
 	needDelete,
@@ -20,6 +21,7 @@ import { participants } from '$lib/stores/participantsPageStore';
 import autoTranslate from '$lib/utils/autoTranslate.js';
 import { clean } from '$lib/utils/objectsTools.js';
 import { deletePage, savePage } from '$lib/utils/pagesActions';
+import { validateParticipant } from '$lib/utils/validation/validateParticipant';
 import { CarSlugger } from '@katokdoescode/car-slugger';
 import { onMount } from 'svelte';
 import { _, locale, locales } from 'svelte-i18n';
@@ -46,6 +48,8 @@ $: autoTranslatedName =
 	isNotLocalized && $locale === 'en'
 		? autoTranslate($locale, localValue.name[anotherLocale])
 		: localValue.name[anotherLocale];
+
+$: isDataValid?.set(validateParticipant(localValue, $locale));
 
 onMount(() => {
 	const unsubscribe = needSave.subscribe(async (save) => {

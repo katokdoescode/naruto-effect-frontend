@@ -1,10 +1,16 @@
 <script>
 /* eslint-disable svelte/no-at-html-tags */
 import CvPageEditor from '$lib/modules/hokage/CvPageEditor.svelte';
-import { canNavigate, needCancel, needSave } from '$lib/stores/appStore';
+import {
+	canNavigate,
+	isDataValid,
+	needCancel,
+	needSave,
+} from '$lib/stores/appStore';
 import { isEditingState } from '$lib/stores/appStore';
 import { clean } from '$lib/utils/objectsTools';
 import { savePage } from '$lib/utils/pagesActions';
+import { validateCv } from '$lib/utils/validation/validateCv';
 import { onMount } from 'svelte';
 import { locale } from 'svelte-i18n';
 
@@ -12,6 +18,8 @@ import { locale } from 'svelte-i18n';
 export let data;
 
 let localValue = data?.cvData;
+
+$: isDataValid?.set(validateCv(localValue, $locale));
 
 onMount(() => {
 	const unsubscribe = needSave.subscribe(async (save) => {

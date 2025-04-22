@@ -4,6 +4,7 @@ export const isEditingState = writable(false);
 export const needSave = writable(false);
 export const needDelete = writable(false);
 export const needCancel = writable(false);
+export const isDataValid = writable(true);
 export const editingPageStatus = writable(null);
 export const canNavigate = writable(false);
 

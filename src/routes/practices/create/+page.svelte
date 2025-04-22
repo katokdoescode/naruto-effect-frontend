@@ -1,12 +1,18 @@
 <script>
 import { goto } from '$app/navigation';
 import PracticeEditor from '$lib/modules/hokage/PracticeEditor.svelte';
-import { canNavigate, needCancel, needSave } from '$lib/stores/appStore';
+import {
+	canNavigate,
+	isDataValid,
+	needCancel,
+	needSave,
+} from '$lib/stores/appStore';
 import { isEditingState } from '$lib/stores/appStore';
 import { authorized } from '$lib/stores/authStore';
 import { practices } from '$lib/stores/practicesPageStore';
 import { clean } from '$lib/utils/objectsTools';
 import { savePage } from '$lib/utils/pagesActions';
+import { validatePractice } from '$lib/utils/validation/validatePractice';
 import { CarSlugger } from '@katokdoescode/car-slugger';
 import { onMount } from 'svelte';
 import { locale } from 'svelte-i18n';
@@ -34,6 +40,7 @@ const initialValue = structuredClone(localValue);
 $: Object.entries(localValue.title).forEach(([key, value]) => {
 	if (value) localValue.slug[key] = slugger.getSlug(localValue.title[key]);
 });
+$: isDataValid?.set(validatePractice(localValue, $locale));
 
 onMount(() => {
 	const unsubscribe = needSave.subscribe(async (save) => {
