@@ -155,7 +155,7 @@ onMount(() => {
 });
 
 beforeNavigate((event) => {
-	navigatingTo = event.to;
+	navigatingTo = event.to.url.href;
 });
 </script>
 

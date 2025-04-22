@@ -124,6 +124,11 @@
 				"delete": "Are you sure you want to delete this?"
 			}
 		},
+		"leave": {
+			"exitCreating": "Leave creation page?",
+			"exit": "Leave editing page?",
+			"info": "Changes are not saved"
+		},
 		"prompt": {
 			"hat": {
 				"password": "This hat has password, type it 🧙‍♂️"

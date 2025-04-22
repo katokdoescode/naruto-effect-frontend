@@ -13,16 +13,12 @@ import SecondaryPanel from '$lib/modules/SecondaryPanel.svelte';
 import FooterEditor from '$lib/modules/hokage/FooterEditor.svelte';
 import ConfirmDelete from '$lib/modules/hokage/modals/ConfirmDelete.svelte';
 import ConfirmExit from '$lib/modules/hokage/modals/ConfirmExit.svelte';
-import {
-	canNavigate,
-	combo,
-	isEditingState,
-	needSave,
-} from '$lib/stores/appStore';
+import ConfirmLeave from '$lib/modules/hokage/modals/ConfirmLeave.svelte';
+import { canNavigate, combo, isEditingState } from '$lib/stores/appStore';
 import { authorized } from '$lib/stores/authStore';
 import {
-	confirmExitModalDecision,
-	isShowConfirmExitModal,
+	confirmLeaveModalDecision,
+	isShowConfirmLeaveModal,
 } from '$lib/stores/modalsStore';
 import { participants } from '$lib/stores/participantsPageStore';
 import { practices } from '$lib/stores/practicesPageStore';
@@ -167,7 +163,7 @@ beforeNavigate(async (event) => {
 	if (!$canNavigate && $isEditingState) {
 		event.cancel();
 		whereToGo = event.to.url?.href;
-		isShowConfirmExitModal.set(true);
+		isShowConfirmLeaveModal.set(true);
 	} else {
 		canNavigate.set(false);
 		isEditingState.set(false);
@@ -185,14 +181,13 @@ onMount(() => {
 		document.cookie = `lang=${lang}; path=/`;
 	});
 
-	const unsubscribeConfirmExitModalDecision =
-		confirmExitModalDecision.subscribe(async (d) => {
+	const unsubscribeConfirmLeaveModalDecision =
+		confirmLeaveModalDecision.subscribe(async (d) => {
 			const decision = await d;
 
 			if (decision === undefined) return;
 
-			if (whereToGo) {
-				needSave.set(decision);
+			if (decision && whereToGo) {
 				canNavigate.set(true);
 				goto(whereToGo);
 			}
@@ -208,8 +203,8 @@ onMount(() => {
 
 	return () => {
 		unsubscribeLocale();
-		unsubscribeConfirmExitModalDecision();
 		unsubscribeCombo();
+		unsubscribeConfirmLeaveModalDecision();
 		if (cleanup) cleanup();
 	};
 });
@@ -261,6 +256,7 @@ onMount(() => {
 
 <ConfirmExit />
 <ConfirmDelete />
+<ConfirmLeave />
 <CookieModal />
 
 <FooterEditor

@@ -1,5 +1,5 @@
 <script>
-import { afterNavigate, beforeNavigate, goto } from '$app/navigation';
+import { goto } from '$app/navigation';
 /* eslint-disable svelte/no-at-html-tags */
 import AlertMessage from '$lib/modules/AlertMessage.svelte';
 import ParticipantEditor from '$lib/modules/hokage/ParticipantEditor.svelte';
@@ -69,7 +69,7 @@ onMount(() => {
 			canNavigate.set(true);
 			needSave.set(false);
 			isEditingState.set(false);
-			goto(navigatingTo ?? `/participants/${localValue.slug}`);
+			goto(`/participants/${localValue.slug}`);
 		}
 	});
 
@@ -125,10 +125,6 @@ onMount(() => {
 		isEditingState.set(false);
 		canNavigate.set(false);
 	};
-});
-
-beforeNavigate((event) => {
-	navigatingTo = event.to;
 });
 </script>
 
