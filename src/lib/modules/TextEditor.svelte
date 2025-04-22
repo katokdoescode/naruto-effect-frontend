@@ -1,27 +1,27 @@
 <script>
+import { appColorScheme } from '$lib/stores/themeStore';
 /* eslint-disable svelte/no-at-html-tags */
 import Editor from '@tinymce/tinymce-svelte';
-import { createEventDispatcher, getContext, onDestroy } from 'svelte';
+import { createEventDispatcher, onDestroy } from 'svelte';
 
-/** @type{object} */
+/** @type {object} */
 export let addConf = {};
 
-/** @type{boolean | undefined} */
+/** @type {boolean | undefined} */
 export let inline = false;
 
-/** @type{boolean} */
+/** @type {boolean} */
 export let disabled = false;
 
-/** @type{string} */
+/** @type {string} */
 export let id;
 
-/** @type{string} */
+/** @type {string} */
 export let value;
 
-/** @type{string|boolean} */
+/** @type {string|boolean} */
 export let placeholder = 'Type here...';
 
-const appColorScheme = getContext('appColorScheme');
 let skinUrl = `/styles/tinymce/Naruto/${$appColorScheme}`;
 
 const apiKey = import.meta.env.VITE_TINYMCE_API_KEY;

@@ -1,12 +1,12 @@
 <script>
 import { page } from '$app/stores';
+import {
+	confirmExitModalDecision,
+	isShowConfirmExitModal,
+} from '$lib/stores/modalsStore';
 import Button from '$lib/ui/Button.svelte';
-import { getContext } from 'svelte';
 import { _ } from 'svelte-i18n';
 import Modal from './Modal.svelte';
-
-const isShowConfirmExitModal = getContext('isShowConfirmExitModal');
-const confirmModalDecision = getContext('confirmModalDecision');
 
 let open = false;
 let message = '';
@@ -18,16 +18,16 @@ $: message = isCreatingMode
 $: open = $isShowConfirmExitModal;
 
 $: if (!open)
-	confirmModalDecision.set(new Promise((resolve) => resolve(undefined)));
+	confirmExitModalDecision.set(new Promise((resolve) => resolve(undefined)));
 
 async function cancel() {
-	confirmModalDecision.set(new Promise((resolve) => resolve(false)));
+	confirmExitModalDecision.set(new Promise((resolve) => resolve(false)));
 
 	isShowConfirmExitModal.set(false);
 }
 
 function confirm() {
-	confirmModalDecision.set(new Promise((resolve) => resolve(true)));
+	confirmExitModalDecision.set(new Promise((resolve) => resolve(true)));
 
 	isShowConfirmExitModal.set(false);
 }
@@ -40,12 +40,12 @@ function confirm() {
 		{#if isCreatingMode}
 			<Button
 				color="gray"
-				on:click={confirm}>
+				on:click={cancel}>
 				{$_('button.dont')}
 			</Button>
 			<Button
 				color="gray"
-				on:click={cancel}>
+				on:click={confirm}>
 				{$_('button.yes')}
 			</Button>
 		{:else}

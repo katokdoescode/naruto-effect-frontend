@@ -25,6 +25,10 @@
 			"complexity": {
 			  "noForEach": "off"
 			}
+			// TODO: Add this rule back when we have a way to handle the unused imports
+			// "correctness": {
+			// 	"noUnusedImports": "error"
+			// }
 		}
 	},
 	"formatter": {

@@ -15,13 +15,14 @@
     "test:unit": "vitest run",
     "supabase:start": "supabase start",
     "supabase:stop": "supabase stop",
-    "supabase:status": "supabase status",
-    "supabase:db:reset": "supabase db reset",
-    "supabase:db:push": "supabase db push",
-    "supabase:db:pull": "supabase db pull"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.8.3",
+		"supabase:status": "supabase status",
+		"supabase:db:reset": "supabase db reset && bun supabase/create-admin.js",
+		"supabase:db:push": "supabase db push",
+		"supabase:db:pull": "supabase db pull",
+		"supabase:db:create:admin": "bun supabase/create-admin.js"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.8.3",
     "@playwright/test": "^1.52.0",
     "@sveltejs/adapter-vercel": "^4.0.5",
     "@sveltejs/kit": "^2.20.7",

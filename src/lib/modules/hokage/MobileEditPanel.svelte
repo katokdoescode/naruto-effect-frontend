@@ -1,119 +1,37 @@
 <script>
 import { page } from '$app/stores';
+import { isEditingState, needCancel, needDelete } from '$lib/stores/appStore';
+import { entityVisibility } from '$lib/stores/entityVisibilityStore';
 import Button from '$lib/ui/Button.svelte';
-import { getContext } from 'svelte';
+import { onMount } from 'svelte';
 import { _ } from 'svelte-i18n';
 import ToggleEditMode from './ToggleEditMode.svelte';
-
-const participantData = getContext('participantData');
-const practiceData = getContext('practiceData');
-const isEditingState = getContext('isEditingState');
-const editingPageStatus = getContext('editingPageStatus');
-const projectData = getContext('projectData');
 
 let checked = false;
 
 $: route = $page.route.id || '';
-$: isPracticePage = route?.includes('practices') || '';
-$: isParticipantsPage = route?.includes('participants') || '';
-$: isProjectsPage = route?.includes('projects') || '';
 $: isMainPage = route === '/' || '';
 $: isCvPage = route?.includes('cv') || '';
 $: isCreating = route?.includes('create') || '';
-
-$: {
-	if (isParticipantsPage) {
-		checked = $participantData?.isVisible;
-	}
-
-	if (isPracticePage) {
-		checked = $practiceData?.isVisible;
-	}
-
-	if (isProjectsPage) {
-		checked = $projectData?.isVisible;
-	}
-}
-
-async function deletePractice(id) {
-	await fetch('/api/practices', {
-		method: 'DELETE',
-		body: JSON.stringify({ id }),
-	})
-		.then((res) => res.json())
-		.then((data) => {
-			if (!data.success) {
-				// eslint-disable-next-line no-console
-				console.debug(data.errorMessage);
-			} else {
-				cancelEditing();
-				window.location.replace('/');
-			}
-		});
-}
-
-async function deleteParticipant(id) {
-	await fetch('/api/participants', {
-		method: 'DELETE',
-		body: JSON.stringify({ id }),
-	})
-		.then((res) => res.json())
-		.then((data) => {
-			if (!data.success) {
-				// eslint-disable-next-line no-console
-				console.debug(data.errorMessage);
-			} else {
-				cancelEditing();
-				window.location.replace('/');
-			}
-		});
-}
+$: entityVisibility.set(checked);
 
 function cancelEditing() {
-	isEditingState.set(false);
-	editingPageStatus.set(null);
-	if (isCreating) window.location.replace('/');
+	needCancel.set(true);
 }
 
 function deleteEntity() {
-	if (
-		isPracticePage &&
-		window.confirm($_('messages.confirm.practice.delete'))
-	) {
-		deletePractice($page.data.practice.id);
-	}
-
-	if (
-		isParticipantsPage &&
-		window.confirm($_('messages.confirm.participant.delete'))
-	) {
-		deleteParticipant($page.data.participant.id);
-	}
+	needDelete.set(true);
 }
 
-function check({ target }) {
-	const { checked } = target;
-	if (isPracticePage) {
-		practiceData.set({
-			...$practiceData,
-			isVisible: checked,
-		});
-	}
+onMount(() => {
+	const unsubscribe = entityVisibility.subscribe((visibility) => {
+		checked = visibility;
+	});
 
-	if (isParticipantsPage) {
-		participantData.set({
-			...$participantData,
-			isVisible: checked,
-		});
-	}
-
-	if (isProjectsPage) {
-		projectData.set({
-			...$projectData,
-			isVisible: checked,
-		});
-	}
-}
+	return () => {
+		unsubscribe();
+	};
+});
 </script>
 
 <div class="mobile-edit-panel">
@@ -133,7 +51,7 @@ function check({ target }) {
 				<input
 					type="checkbox"
 					bind:checked
-					on:input={check} />
+				/>
 				<span>{$_('mainMenu.settings.publicity')}</span>
 			{/if}
 		</label>

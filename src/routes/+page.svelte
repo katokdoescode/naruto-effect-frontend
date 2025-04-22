@@ -2,54 +2,90 @@
 /* eslint-disable svelte/no-at-html-tags */
 import { BannerModes } from '$lib/constants';
 import YouTube from '$lib/modules/YouTube.svelte';
-import PageEditor from '$lib/modules/hokage/PageEditor.svelte';
-
-import { getContext } from 'svelte';
+import MainPageEditor from '$lib/modules/hokage/MainPageEditor.svelte';
+import {
+	canNavigate,
+	isDataValid,
+	isEditingState,
+	needCancel,
+	needSave,
+} from '$lib/stores/appStore';
+import { clean } from '$lib/utils/objectsTools';
+import { savePage } from '$lib/utils/pagesActions';
+import { validateMainPage } from '$lib/utils/validation/validateMainPage';
+import { onMount } from 'svelte';
 import { locale } from 'svelte-i18n';
-
-const isEditingState = getContext('isEditingState');
-const contentPage = getContext('contentPage');
 
 export let data;
 
-/** @type {MainPageData} */
-const pageData = data?.pageData;
+let localValue = data?.pageData;
 
-contentPage.set(pageData);
+$: isDataValid?.set(validateMainPage(localValue, $locale));
 
-let localValue = pageData;
+onMount(() => {
+	const unsubscribe = needSave.subscribe(async (save) => {
+		if (!save) return;
 
-$: contentPage.set(localValue);
+		const response = await savePage(clean(localValue), {
+			route: '/api/mainPage',
+			method: 'PATCH',
+		});
+
+		if (response) {
+			data.pageData = response;
+			localValue = response;
+			isEditingState.set(false);
+			needSave.set(false);
+		}
+	});
+
+	const unsubscribeCancel = needCancel.subscribe(async (cancel) => {
+		if (!cancel) return;
+
+		localValue = data.pageData;
+		needCancel.set(false);
+		isEditingState.set(false);
+	});
+
+	canNavigate.set(false);
+
+	return () => {
+		unsubscribe();
+		unsubscribeCancel();
+		canNavigate.set(false);
+		isEditingState.set(false);
+	};
+});
 </script>
 
 <svelte:head>
 	{#if $isEditingState}
-		<title>Main page data: {pageData?.title[$locale] || ''}</title>
+		<title>Main page data: {localValue?.title[$locale] || ''}</title>
 	{:else}
-		<title>{pageData?.title[$locale] || ''}</title>
+		<title>{localValue?.title[$locale] || ''}</title>
 	{/if}
 
 	<meta
 		name="description"
-		content={pageData?.description[$locale] || ''} />
+		content={localValue?.description[$locale] || ''} />
 </svelte:head>
 
 {#if $isEditingState}
-	<PageEditor bind:localValue />
+	<MainPageEditor bind:localValue />
 {:else}
-	<h1>{pageData?.title[$locale] || ''}</h1>
-	{#if pageData.bannerMode === BannerModes.IMAGE && pageData.banner.link}
+	<h1>{localValue?.title[$locale] || ''}</h1>
+	{#if localValue.bannerMode === BannerModes.IMAGE && localValue.banner.link}
 		<div class="image-wrapper">
 			<img
-				alt={pageData.banner.alt}
+				alt={localValue.banner.alt}
 				height="317"
-				src={pageData.banner.link} />
+				src={localValue.banner.link} />
 		</div>
-	{:else if pageData.bannerMode === BannerModes.VIDEO && pageData.iframe}
-		<YouTube markup={pageData.iframe} />
+	{:else if localValue.bannerMode === BannerModes.VIDEO && localValue.iframe}
+		<YouTube markup={localValue.iframe} />
 	{/if}
 	<article class="main-article">
-		{@html pageData?.text[$locale] || ''}
+		{@html localValue?.text[$locale] || ''}
 	</article>
 {/if}
 

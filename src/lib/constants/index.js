@@ -48,3 +48,10 @@ export const BannerModes = {
 	IMAGE: 'image',
 	VIDEO: 'video',
 };
+
+/** @type {PageStatuses} */
+export const PageStatuses = {
+	LOADING: 'loading',
+	SUCCESS: 'success',
+	ERROR: 'error',
+};

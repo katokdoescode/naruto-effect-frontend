@@ -8,6 +8,7 @@ import { _, locale } from 'svelte-i18n';
 
 /** @type {Project} */
 export let localValue;
+export let slugIsReadOnly = false;
 const dispatch = createEventDispatcher();
 $: dispatch('input', localValue);
 </script>
@@ -17,6 +18,7 @@ $: dispatch('input', localValue);
 	nativeClass="h"
 	placeholder={$_('placeholder.project.slug')}
 	bind:value={localValue.slug}
+	readonly={slugIsReadOnly}
 />
 
 <Textarea

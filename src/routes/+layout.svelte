@@ -13,51 +13,35 @@ import SecondaryPanel from '$lib/modules/SecondaryPanel.svelte';
 import FooterEditor from '$lib/modules/hokage/FooterEditor.svelte';
 import ConfirmDelete from '$lib/modules/hokage/modals/ConfirmDelete.svelte';
 import ConfirmExit from '$lib/modules/hokage/modals/ConfirmExit.svelte';
+import ConfirmLeave from '$lib/modules/hokage/modals/ConfirmLeave.svelte';
+import { canNavigate, combo, isEditingState } from '$lib/stores/appStore';
+import { authorized } from '$lib/stores/authStore';
+import {
+	confirmLeaveModalDecision,
+	isShowConfirmLeaveModal,
+} from '$lib/stores/modalsStore';
+import { participants } from '$lib/stores/participantsPageStore';
+import { practices } from '$lib/stores/practicesPageStore';
 import { handleKeydown, handleKeyup } from '$lib/utils/keyboardHandler';
-import { onDestroy, onMount, setContext } from 'svelte';
+import { onMount } from 'svelte';
 import { locale } from 'svelte-i18n';
-import { writable } from 'svelte/store';
 
 /** @type {MainLayoutData} */
 export let data;
-
 /** @type {string}*/
 let whereToGo;
-
 let open = false;
-
-const needSave = writable(false);
-const combo = writable();
-const authorized = writable();
-const isEditingState = writable();
-const editingPageStatus = writable();
-const cvPage = writable();
-const contentPage = writable();
-const projectData = writable();
-const practiceData = writable();
-const participantData = writable();
-const appColorScheme = writable();
-const isShowConfirmExitModal = writable();
-const confirmModalDecision = writable();
-const isShowDeleteModal = writable();
-const deleteModalDecision = writable();
-const isFooterEditorOpen = writable(false);
-const footerEditorState = writable('save');
-
 let footerEditor;
-let practices = data?.practices || [];
 let projects = data?.projects || [];
-let participants = data?.participants || [];
 let pageLinks = data?.pageData?.pageLinks || [];
 let loginPhrase = data?.loginPhrase || undefined;
 let pageDataObject = data?.pageData || null;
-let unsubscribeLocale = () => null;
 
 $: firstTwoLinks = pageLinks?.slice(0, 2);
 $: lastLink = pageLinks?.slice(2, 3)[0];
 
-$: canNavigate = false;
-
+participants.set(data?.participants || []);
+practices.set(data?.practices || []);
 /**
  * Control authorization data
  * @param {boolean} state
@@ -76,7 +60,7 @@ async function authorize(state) {
 				// eslint-disable-next-line no-console
 				console.error(data.errorMessage);
 			} else {
-				practices = data.data;
+				practices.set(data.data);
 			}
 		});
 
@@ -87,7 +71,7 @@ async function authorize(state) {
 				// eslint-disable-next-line no-console
 				console.error(data.errorMessage);
 			} else {
-				participants = data.data;
+				participants.set(data.data);
 			}
 		});
 
@@ -104,14 +88,18 @@ function updateData(update) {
 	const methods = {
 		/** @param {Practice} data */
 		updatePractices: (data) => {
-			practices = practices.map((practice) =>
-				practice.id === data.id ? data : practice,
+			practices.update((practices) =>
+				practices.map((practice) =>
+					practice.id === data.id ? data : practice,
+				),
 			);
 		},
 		/** @param {Participant} data */
 		updateParticipants: (data) => {
-			participants = participants.map((participant) =>
-				participant.id === data.id ? data : participant,
+			participants.update((participants) =>
+				participants.map((participant) =>
+					participant.id === data.id ? data : participant,
+				),
 			);
 		},
 		/** @param {Project} data */
@@ -167,81 +155,58 @@ function submitFooter() {
 	footerEditor.submit();
 }
 
-let cleanup;
+$: open = false;
+$: authorized.set(data?.authorized || false);
+$: readAnchorTag();
+
+beforeNavigate(async (event) => {
+	if (!$canNavigate && $isEditingState) {
+		event.cancel();
+		whereToGo = event.to.url?.href;
+		isShowConfirmLeaveModal.set(true);
+	} else {
+		canNavigate.set(false);
+		isEditingState.set(false);
+		whereToGo = undefined;
+	}
+});
 
 onMount(() => {
 	const settedLocale = localStorage.getItem('userLang');
 	if (settedLocale) locale.set(settedLocale);
 
-	unsubscribeLocale = locale.subscribe((lang) => {
+	const unsubscribeLocale = locale.subscribe((lang) => {
 		document.querySelector('html').lang = lang;
 		localStorage.setItem('userLang', lang);
 		document.cookie = `lang=${lang}; path=/`;
 	});
 
-	initHandlers();
-	logoController();
-	cleanup = setupTokenRefresh();
-});
+	const unsubscribeConfirmLeaveModalDecision =
+		confirmLeaveModalDecision.subscribe(async (d) => {
+			const decision = await d;
 
-setContext('needSave', needSave);
-setContext('authorized', authorized);
-setContext('combo', combo);
-setContext('isEditingState', isEditingState);
-setContext('editingPageStatus', editingPageStatus);
-setContext('cvPage', cvPage);
-setContext('projectData', projectData);
-setContext('contentPage', contentPage);
-setContext('practiceData', practiceData);
-setContext('participantData', participantData);
-setContext('appColorScheme', appColorScheme);
-setContext('isShowConfirmExitModal', isShowConfirmExitModal);
-setContext('confirmModalDecision', confirmModalDecision);
-setContext('isShowDeleteModal', isShowDeleteModal);
-setContext('deleteModalDecision', deleteModalDecision);
-setContext('isFooterEditorOpen', isFooterEditorOpen);
-setContext('footerEditorState', footerEditorState);
+			if (decision === undefined) return;
 
-$: if ($combo) {
-	open = true;
-}
-$: open = false;
-$: authorized.set(data?.authorized || false);
-$: readAnchorTag();
-
-const unsubscribeConfirmModalDecision = confirmModalDecision.subscribe(
-	async (d) => {
-		const decision = await d;
-		if (decision === undefined) return;
-		if (whereToGo) {
-			if (decision) {
-				needSave.set(true);
-				canNavigate = true;
-				goto(whereToGo);
-			} else {
-				needSave.set(false);
-				canNavigate = true;
+			if (decision && whereToGo) {
+				canNavigate.set(true);
 				goto(whereToGo);
 			}
-		}
-	},
-);
+		});
 
-beforeNavigate(async (event) => {
-	if (!canNavigate && $isEditingState) {
-		event.cancel();
-		whereToGo = event.to.url?.href;
-		isShowConfirmExitModal.set(true);
-	} else {
-		canNavigate = false;
-		isEditingState.set(false);
-	}
-});
+	const unsubscribeCombo = combo.subscribe((combo) => {
+		if (combo) open = true;
+	});
 
-onDestroy(() => {
-	unsubscribeLocale();
-	unsubscribeConfirmModalDecision();
-	if (cleanup) cleanup();
+	const cleanup = setupTokenRefresh();
+	initHandlers();
+	logoController();
+
+	return () => {
+		unsubscribeLocale();
+		unsubscribeCombo();
+		unsubscribeConfirmLeaveModalDecision();
+		if (cleanup) cleanup();
+	};
 });
 </script>
 
@@ -259,12 +224,12 @@ onDestroy(() => {
 <div class="screen main-layout">
 	<MainPanel
 		pageLinks={firstTwoLinks}
-		{practices} />
+		practices={$practices} />
 
 	<MobileHeader
 		pageLinks={firstTwoLinks}
-		{participants}
-		{practices}
+		participants={$participants}
+		practices={$practices}
 		on:logout={() => authorize(false)}
 	/>
 
@@ -285,12 +250,13 @@ onDestroy(() => {
 	</Content>
 
 	<SecondaryPanel
-		{participants}
+		participants={$participants}
 		participateLink={lastLink} />
 </div>
 
 <ConfirmExit />
 <ConfirmDelete />
+<ConfirmLeave />
 <CookieModal />
 
 <FooterEditor

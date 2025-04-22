@@ -2,23 +2,29 @@
 import { goto } from '$app/navigation';
 import { page } from '$app/stores';
 import ShadowWrapper from '$lib/modules/ShadowWrapper.svelte';
+import {
+	canNavigate,
+	isEditingState,
+	needCancel,
+	needSave,
+} from '$lib/stores/appStore';
+import { authorized } from '$lib/stores/authStore';
+import {
+	confirmExitModalDecision,
+	isShowConfirmExitModal,
+} from '$lib/stores/modalsStore';
 import Button from '$lib/ui/Button.svelte';
 import autoTranslate from '$lib/utils/autoTranslate';
 import isLinkActive from '$lib/utils/isLinkActive';
-import { getContext } from 'svelte';
 import { _, locale, locales } from 'svelte-i18n';
 
-/** @type{Practices} */
+/** @type {Practices} */
 export let practices = [];
 /** @type {PageLinkLocale[]}*/
 export let pageLinks = [];
-const authorized = getContext('authorized');
-const needSave = getContext('needSave');
-const isEditingState = getContext('isEditingState');
-const isShowConfirmExitModal = getContext('isShowConfirmExitModal');
-const confirmModalDecision = getContext('confirmModalDecision');
 
-$: pageName = $page.url.pathname.split('/')[1];
+$: route = $page.url.pathname.split('/')[1];
+$: pageName = route === '' ? 'main' : route;
 $: isMainPage = pageName === '';
 $: isCreatingMode = $page.url.pathname.includes('/create');
 $: localePostfix = isCreatingMode ? 'new' : 'edit';
@@ -37,27 +43,25 @@ function translateTitle(title) {
 }
 
 async function cancelCreating() {
+	console.debug('cancelCreating', $needCancel);
 	let unsubscribe = () => null;
 	isShowConfirmExitModal.set(true);
 
 	await (() =>
 		new Promise(() => {
-			unsubscribe = confirmModalDecision.subscribe(async (d) => {
+			unsubscribe = confirmExitModalDecision.subscribe(async (d) => {
 				const decision = await d;
-
 				if (decision === undefined) return;
 
-				if (!decision) {
-					if (isCreatingMode) {
-						isEditingState.set(false);
+				if (decision) {
+					if (!isCreatingMode) needSave.set(true);
+					else {
+						canNavigate.set(true);
+						console.log('cancelling creating');
 						goto('/');
 					}
-					isEditingState.set(false);
 				} else {
-					if (!isCreatingMode) {
-						needSave.set(true);
-						isEditingState.set(false);
-					}
+					needCancel.set(true);
 				}
 			});
 		}))();
@@ -90,7 +94,7 @@ $: [anotherLocale] = $locales.filter((loc) => loc !== $locale);
 	class="main-nav"
 	{...$$restProps}>
 	{#if $authorized}
-		{#if $isEditingState && !isMainPage}
+		{#if $isEditingState}
 			<div class="edit-title-wrapper">
 				<h2 class="title">{$_(`mainMenu.${pageName}.${localePostfix}`)}:</h2>
 				<Button

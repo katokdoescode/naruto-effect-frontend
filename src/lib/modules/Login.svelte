@@ -1,15 +1,16 @@
 <script>
 import { enhance } from '$app/forms';
+import { authorized } from '$lib/stores/authStore';
 import Button from '$lib/ui/Button.svelte';
 import Password from '$lib/ui/Password.svelte';
-import { createEventDispatcher, getContext } from 'svelte';
+import { createEventDispatcher } from 'svelte';
 import { _ } from 'svelte-i18n';
+
 const dispatch = createEventDispatcher();
 /**
  * @type {boolean}
  */
 export let open = false;
-const authorized = getContext('authorized');
 let isLoading = false;
 let errorMessage;
 

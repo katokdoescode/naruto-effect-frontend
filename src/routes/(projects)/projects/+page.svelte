@@ -1,8 +1,7 @@
 <script>
+import { authorized } from '$lib/stores/authStore';
 import Button from '$lib/ui/Button.svelte';
-import { getContext } from 'svelte';
 import { _, locale } from 'svelte-i18n';
-const authorized = getContext('authorized');
 
 export let data;
 </script>

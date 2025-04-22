@@ -1,11 +1,11 @@
 <script>
+import {
+	deleteModalDecision,
+	isShowDeleteModal,
+} from '$lib/stores/modalsStore';
 import Button from '$lib/ui/Button.svelte';
-import { getContext } from 'svelte';
 import { _ } from 'svelte-i18n';
 import Modal from './Modal.svelte';
-
-const isShowDeleteModal = getContext('isShowDeleteModal');
-const deleteModalDecision = getContext('deleteModalDecision');
 
 let open = false;
 let message = '';

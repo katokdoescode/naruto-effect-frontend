@@ -1,14 +1,15 @@
 <script>
-import { createEventDispatcher, getContext } from 'svelte';
+import { isEditingState } from '$lib/stores/appStore';
+import { createEventDispatcher } from 'svelte';
 import Footer from './Footer.svelte';
 import Header from './Header.svelte';
 import ShadowWrapper from './ShadowWrapper.svelte';
+
 const dispatch = createEventDispatcher();
 
-/**@type{MainPageData} */
+/** @type {MainPageData} */
 export let pageDataObject = null;
 
-const isEditingState = getContext('isEditingState');
 isEditingState.set(false);
 </script>
 

@@ -1,6 +1,7 @@
 <script>
 export let open = false;
 export let message = '';
+export let info = '';
 
 let element;
 
@@ -15,6 +16,9 @@ $: if (element) {
 	class="modal">
 	<div class="wrapper">
 		<p class="message">{message}</p>
+		{#if info}
+			<p class="info">{info}</p>
+		{/if}
 
 		<div class="buttons">
 			<slot name="buttons" />
@@ -87,6 +91,10 @@ $: if (element) {
 		font-size: var(--font-second-menu-heading-size);
 		font-weight: var(--font-menu-weight);
 		text-align: center;
+	}
+
+	.info {
+		margin: 0;
 	}
 
 	.buttons {

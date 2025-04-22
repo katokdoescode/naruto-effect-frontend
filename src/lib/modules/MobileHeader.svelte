@@ -4,16 +4,15 @@ import { page } from '$app/stores';
 import Logo from '$lib/modules/Logo.svelte';
 import MainNav from '$lib/modules/MainNav.svelte';
 import SecondNav from '$lib/modules/SecondNav.svelte';
+import { authorized } from '$lib/stores/authStore';
 import Burger from '$lib/ui/Burger.svelte';
 import Button from '$lib/ui/Button.svelte';
-import { createEventDispatcher, getContext } from 'svelte';
+import { createEventDispatcher } from 'svelte';
 import { _ } from 'svelte-i18n';
 import BurgerMenu from './BurgerMenu.svelte';
 import MobileEditPanel from './hokage/MobileEditPanel.svelte';
 
 const dispatch = createEventDispatcher();
-
-const authorized = getContext('authorized');
 
 export let practices;
 export let participants;

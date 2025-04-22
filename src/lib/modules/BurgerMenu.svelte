@@ -1,15 +1,14 @@
 <script>
+import { isFooterEditorOpen } from '$lib/stores/appStore';
+import { authorized } from '$lib/stores/authStore';
 import Button from '$lib/ui/Button.svelte';
-import { createEventDispatcher, getContext } from 'svelte';
+import { createEventDispatcher } from 'svelte';
 import { _, locale } from 'svelte-i18n';
 import LangSwitch from './LangSwitch.svelte';
 import ThemeSwitch from './ThemeSwitch.svelte';
 import SignOut from './hokage/SignOut.svelte';
 
 const dispatch = createEventDispatcher();
-
-const authorized = getContext('authorized');
-const isFooterEditorOpen = getContext('isFooterEditorOpen');
 
 /** @type{PageLinkLocale[]} */
 export let pageLinks = null;
