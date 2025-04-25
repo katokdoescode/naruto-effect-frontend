@@ -118,7 +118,7 @@ onMount(() => {
 
 					if (decision) {
 						const response = await deletePage(localValue, {
-							route: '/api/participants',
+							route: '/api/practices',
 							method: 'DELETE',
 						});
 
