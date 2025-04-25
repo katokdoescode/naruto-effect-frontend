@@ -56,4 +56,10 @@ isEditingState.set(false);
 		scrollbar-width: none;
 		width: 100%;
 	}
+
+	:global(.main-page-content img) {
+		max-width: 100%;
+		height: auto;
+		object-fit: contain;
+	}
 </style>
