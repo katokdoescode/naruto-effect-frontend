@@ -257,7 +257,6 @@ onMount(() => {
 <ConfirmExit />
 <ConfirmDelete />
 <ConfirmLeave />
-<CookieModal />
 
 <FooterEditor
 	bind:this={footerEditor}
