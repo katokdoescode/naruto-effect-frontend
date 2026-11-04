@@ -3,7 +3,6 @@ import { beforeNavigate, goto, replaceState } from '$app/navigation';
 import { page } from '$app/stores';
 import AudioPlayer from '$lib/modules/AudioPlayer.svelte';
 import Content from '$lib/modules/Content.svelte';
-import CookieModal from '$lib/modules/CookieModal.svelte';
 import FavIcons from '$lib/modules/FavIcons.svelte';
 import Login from '$lib/modules/Login.svelte';
 import MainPanel from '$lib/modules/MainPanel.svelte';
