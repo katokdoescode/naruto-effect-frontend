@@ -42,7 +42,7 @@ onMount(() => {
 		if (!save) return;
 
 		const response = await savePage(clean(localValue), {
-			route: '/api/projects',
+			table: 'projects',
 			method: 'POST',
 		});
 

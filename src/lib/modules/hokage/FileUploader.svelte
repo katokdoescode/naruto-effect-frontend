@@ -1,6 +1,7 @@
 <script>
 import { page } from '$app/stores';
 import Button from '$lib/ui/Button.svelte';
+import { uploadFile } from '$lib/utils/files';
 import { _ } from 'svelte-i18n';
 import { fade } from 'svelte/transition';
 
@@ -32,19 +33,21 @@ let input;
 let isLoading = false;
 
 /**
- * Uploading file via API
- * @param {object|undefined} body
+ * Uploading file to the storage
+ * @param {File} file
  */
-async function uploadFile(body) {
-	if (!body) return;
+async function upload(file) {
 	isLoading = true;
 
 	try {
-		const { url, error } = await (
-			await fetch('/api/files', { method: 'POST', body })
-		).json();
+		const { url, error } = await uploadFile(file, {
+			type,
+			prefix: $page.params?.slug,
+			replaceUrl: link,
+		});
 
 		if (error) {
+			console.error(error);
 			status = 'error';
 		} else {
 			status = 'success';
@@ -61,7 +64,7 @@ async function uploadFile(body) {
 function onUpload({ target }) {
 	errorText = null;
 	const file = target.files[0];
-	const formData = new FormData();
+	if (!file) return;
 
 	// 4mb
 	if (file.size / 1000000 > 4) {
@@ -76,11 +79,7 @@ function onUpload({ target }) {
 		return;
 	}
 
-	formData.append('file', file, file.name);
-	formData.append('type', type);
-	formData.append('prefix', $page.params?.slug || null);
-	formData.append('link', link);
-	uploadFile(formData);
+	upload(file);
 }
 
 function raiseUploading() {

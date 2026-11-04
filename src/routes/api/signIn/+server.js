@@ -1,11 +1,9 @@
 import { VITE_ADMIN_EMAIL, VITE_NODE_ENV } from '$env/static/private';
-import { setAuthCookies } from '$lib/server/authCookies.js';
-import { createSupabaseClient } from '$lib/supabaseClient.js';
 import { createError } from '$lib/utils/errors.js';
 import { validateUserData } from '$lib/utils/validate.js';
 import { json } from '@sveltejs/kit';
 
-export async function POST({ cookies, request }) {
+export async function POST({ locals, request }) {
 	const formData = await request.formData();
 
 	const userData = {
@@ -21,17 +19,16 @@ export async function POST({ cookies, request }) {
 	}
 
 	const isDev = VITE_NODE_ENV === 'development';
-	const supabase = createSupabaseClient();
+	const { supabase } = locals;
 
 	const {
-		data: { session: authToken },
+		data: { session },
 		error,
 	} = isDev
 		? await supabase.auth.signInAnonymously()
 		: await supabase.auth.signInWithPassword(userData);
 
-	if (!error && authToken) {
-		setAuthCookies(cookies, authToken);
+	if (!error && session) {
 		return json({ success: true });
 	}
 	return json(createError(false, 'Email or password is not correct.'));

@@ -56,7 +56,7 @@ onMount(() => {
 		if (!save) return;
 
 		const response = await savePage(clean(localValue), {
-			route: '/api/participants',
+			table: 'participants',
 			method: 'PATCH',
 		});
 
@@ -96,8 +96,7 @@ onMount(() => {
 
 					if (decision) {
 						const response = await deletePage(localValue, {
-							route: '/api/participants',
-							method: 'DELETE',
+							table: 'participants',
 						});
 
 						if (response) {

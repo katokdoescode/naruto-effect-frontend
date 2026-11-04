@@ -6,7 +6,6 @@ declare global {
 		interface Locals {
 			/** Supabase client of the current request (acts as the signed-in user or anon) */
 			supabase: import('@supabase/supabase-js').SupabaseClient;
-			user: import('@supabase/supabase-js').User | null;
 			isAuthenticated: boolean;
 		}
 		// interface PageData {}

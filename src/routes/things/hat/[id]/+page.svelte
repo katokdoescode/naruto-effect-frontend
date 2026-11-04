@@ -1,6 +1,7 @@
 <script>
 import Fant from '$lib/modules/things/Fant.svelte';
 import Hat from '$lib/modules/things/Hat.svelte';
+import { getSupabase } from '$lib/supabaseClient';
 import Button from '$lib/ui/Button.svelte';
 import Textarea from '$lib/ui/Textarea.svelte';
 import parseLink from '$lib/utils/parseLink';
@@ -18,6 +19,19 @@ let fantInput;
 $: ({ hat } = data);
 $: ({ words } = hat);
 $: wordsCount = words.length;
+
+/**
+ * Updates the hat and returns the saved hat
+ * @param {{ words?: string[], isPutting?: boolean }} changes
+ */
+function updateHat(changes) {
+	return getSupabase()
+		.from('hat')
+		.update(changes)
+		.eq('id', hat.id)
+		.select('id, isPutting, name, words, createdAt')
+		.single();
+}
 async function deleteFant(id = undefined, shouldConfirm = false) {
 	if (
 		id === undefined ||
@@ -29,12 +43,8 @@ async function deleteFant(id = undefined, shouldConfirm = false) {
 	isDeleting = true;
 	try {
 		const newWords = words.filter((_, idx) => idx !== id);
-		const res = await fetch(`/api/things/hat/${hat.id}`, {
-			method: 'PATCH',
-			body: JSON.stringify({ words: newWords }),
-		});
-		const response = await res.json();
-		if (!response.success) throw new Error(response.errorMessage);
+		const response = await updateHat({ words: newWords });
+		if (response.error) throw new Error(response.error.message);
 		words = newWords;
 		wordsCount = words.length;
 	} catch (e) {
@@ -67,14 +77,10 @@ async function putFant() {
 	if (!newFant && !hat?.isPutting) return;
 	isAdding = true;
 	try {
-		const res = await hatIcon.putItem(() => {
-			return fetch(`/api/things/hat/${hat.id}`, {
-				method: 'PATCH',
-				body: JSON.stringify({ words: [...words, newFant] }),
-			});
-		});
-		const response = await res.json();
-		if (!response.success) throw new Error(response.errorMessage);
+		const response = await hatIcon.putItem(() =>
+			updateHat({ words: [...words, newFant] }),
+		);
+		if (response.error) throw new Error(response.error.message);
 
 		words = response.data.words;
 		wordsCount = words.length;
@@ -94,14 +100,8 @@ async function startGame() {
 	if (!confirm($_('messages.confirm.hat.start'))) return;
 
 	try {
-		const res = await fetch(`/api/things/hat/${hat.id}`, {
-			method: 'PATCH',
-			body: JSON.stringify({ isPutting: false }),
-		});
-
-		const response = await res.json();
-
-		if (!response.success) throw new Error(response.errorMessage);
+		const response = await updateHat({ isPutting: false });
+		if (response.error) throw new Error(response.error.message);
 		hat.isPutting = false;
 	} catch (e) {
 		console.error(e);

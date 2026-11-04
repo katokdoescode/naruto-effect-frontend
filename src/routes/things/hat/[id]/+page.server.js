@@ -7,7 +7,7 @@ export async function load({ params, locals }) {
 	/** @type {SupabaseHatData} */
 	const { data: hat, error } = await supabase
 		.from(Routes.HAT)
-		.select('*')
+		.select('id, isPutting, name, words, createdAt')
 		.eq('id', id)
 		.limit(1)
 		.single();
