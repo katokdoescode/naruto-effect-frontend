@@ -36,6 +36,7 @@ export async function load({ locals }) {
 		participants,
 		pageData,
 		loginPhrase: VITE_LOGIN_PHRASE,
+		locale: locals.locale,
 	};
 
 	return data;

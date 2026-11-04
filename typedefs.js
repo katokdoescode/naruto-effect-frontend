@@ -257,6 +257,7 @@
  * @property {Participant[]} participants
  * @property {MainPageData} pageData,
  * @property {string} loginPhrase
+ * @property {string} locale - locale of the page for this request
  */
 
 /**
