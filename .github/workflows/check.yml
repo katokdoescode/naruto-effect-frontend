@@ -76,7 +76,7 @@ jobs:
       - name: Install Supabase
         uses: supabase/setup-cli@v1
         with:
-            version: latest
+            version: 2.122.1 # v3 changed defaults, update deliberately
 
       - name: Start Supabase
         run: |

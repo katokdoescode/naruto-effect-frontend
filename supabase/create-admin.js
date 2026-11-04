@@ -6,7 +6,7 @@
  * -H "Content-Type: application/json" \
  * -d '{
  *   "email": "admin@admin.admin",
- *   "password": "test",
+ *   "password": "test-admin",
  *   "email_confirm": true
  * }'
  * ```
@@ -30,7 +30,7 @@ const supabase = createClient(
 );
 
 const email = 'admin@admin.admin';
-const password = 'test';
+const password = 'test-admin'; // Supabase requires at least 6 characters
 
 async function createAdminUser() {
 	try {

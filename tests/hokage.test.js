@@ -10,7 +10,7 @@ async function login(page) {
 	await page.click('body');
 	await page.keyboard.press('Alt+M+L');
 	await expect(page.locator('.login-dialog')).toBeVisible();
-	await page.locator('input[type=password]').fill('test');
+	await page.locator('input[type=password]').fill('test-admin');
 	await page.keyboard.press('Enter');
 }
 
