@@ -1,4 +1,5 @@
 <script>
+import { browser } from '$app/environment';
 import { beforeNavigate, goto, replaceState } from '$app/navigation';
 import { page } from '$app/stores';
 import AudioPlayer from '$lib/modules/AudioPlayer.svelte';
@@ -27,6 +28,10 @@ import { locale } from 'svelte-i18n';
 
 /** @type {MainLayoutData} */
 export let data;
+
+// On the server the locale store is shared by all requests. Rendering is
+// synchronous, so setting it here gives this page the right locale.
+if (!browser) locale.set(data.locale);
 /** @type {string}*/
 let whereToGo;
 let open = false;

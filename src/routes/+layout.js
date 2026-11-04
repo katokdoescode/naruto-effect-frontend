@@ -1,14 +1,13 @@
 import { browser } from '$app/environment';
 import '$lib/i18n';
-import { appLocales } from '$lib/i18n';
-import matchLocale from '$lib/utils/matchLocale';
 import { locale, waitLocale } from 'svelte-i18n';
 
-/** @type {import('./$types').PageServerLoad} */
-export async function load() {
-	if (browser)
-		locale.set(
-			matchLocale(appLocales, window.navigator.language?.split('-')[0]),
-		);
-	await waitLocale();
+/** @type {import('./$types').LayoutLoad} */
+export async function load({ data }) {
+	if (browser) locale.set(data.locale);
+
+	// Loads the messages before rendering, so the locale can be set synchronously
+	await waitLocale(data.locale);
+
+	return data;
 }

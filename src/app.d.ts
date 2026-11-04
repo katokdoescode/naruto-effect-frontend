@@ -7,6 +7,8 @@ declare global {
 			/** Supabase client of the current request (acts as the signed-in user or anon) */
 			supabase: import('@supabase/supabase-js').SupabaseClient;
 			isAuthenticated: boolean;
+			/** Locale of the page for this request */
+			locale: string;
 		}
 		// interface PageData {}
 		// interface Platform {}

@@ -1,13 +1,19 @@
+import { appLocales } from '$lib/i18n';
 import { createSupabaseServerClient } from '$lib/supabaseClient.js';
-import { locale } from 'svelte-i18n';
+import { resolveLocale } from '$lib/utils/resolveLocale.js';
 
 /** Cookies of the old hand-made auth, replaced by @supabase/ssr cookies. */
 const LEGACY_AUTH_COOKIES = ['authToken', 'refreshToken'];
 
 /** @type {import('@sveltejs/kit').Handle} */
 export const handle = async ({ event, resolve }) => {
-	const lang = event.request.headers.get('accept-language')?.split(',')[0];
-	if (lang) locale.set(lang);
+	// The locale store of svelte-i18n is shared by all requests on the server,
+	// so it is set right before rendering (+layout.svelte), not here
+	event.locals.locale = resolveLocale(
+		appLocales,
+		event.cookies.get('lang'),
+		event.request.headers.get('accept-language'),
+	);
 
 	for (const name of LEGACY_AUTH_COOKIES) {
 		if (event.cookies.get(name)) event.cookies.delete(name, { path: '/' });
@@ -20,6 +26,8 @@ export const handle = async ({ event, resolve }) => {
 	event.locals.isAuthenticated = Boolean(data?.claims && !error);
 
 	return resolve(event, {
+		transformPageChunk: ({ html }) =>
+			html.replace('%lang%', event.locals.locale),
 		filterSerializedResponseHeaders: (name) =>
 			name === 'content-range' || name === 'x-supabase-api-version',
 	});
