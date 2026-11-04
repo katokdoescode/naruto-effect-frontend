@@ -1,4 +1,5 @@
-import { supabase } from '$lib/supabaseClient';
+import { clearAuthCookies, setAuthCookies } from '$lib/server/authCookies.js';
+import { createSupabaseClient } from '$lib/supabaseClient';
 import { createError } from '$lib/utils/errors';
 import { json } from '@sveltejs/kit';
 
@@ -13,29 +14,17 @@ export async function POST({ cookies }) {
 		const {
 			data: { session },
 			error,
-		} = await supabase.auth.refreshSession({
+		} = await createSupabaseClient().auth.refreshSession({
 			refresh_token: refreshToken,
 		});
 
 		if (error) {
-			cookies.delete('authToken', { path: '/' });
-			cookies.delete('refreshToken', { path: '/' });
+			clearAuthCookies(cookies);
 			return json(createError(false, 'Failed to refresh token'));
 		}
 
 		if (session) {
-			const expiresAt = new Date(new Date().getTime() + session.expires_at);
-
-			cookies.set('authToken', session.access_token, {
-				path: '/',
-				expires: expiresAt,
-			});
-
-			cookies.set('refreshToken', session.refresh_token, {
-				path: '/',
-				expires: expiresAt,
-			});
-
+			setAuthCookies(cookies, session);
 			return json({ success: true });
 		}
 	} catch (error) {

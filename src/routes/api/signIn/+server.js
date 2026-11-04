@@ -1,5 +1,6 @@
 import { VITE_ADMIN_EMAIL, VITE_NODE_ENV } from '$env/static/private';
-import { supabase } from '$lib/supabaseClient.js';
+import { setAuthCookies } from '$lib/server/authCookies.js';
+import { createSupabaseClient } from '$lib/supabaseClient.js';
 import { createError } from '$lib/utils/errors.js';
 import { validateUserData } from '$lib/utils/validate.js';
 import { json } from '@sveltejs/kit';
@@ -20,6 +21,7 @@ export async function POST({ cookies, request }) {
 	}
 
 	const isDev = VITE_NODE_ENV === 'development';
+	const supabase = createSupabaseClient();
 
 	const {
 		data: { session: authToken },
@@ -29,21 +31,7 @@ export async function POST({ cookies, request }) {
 		: await supabase.auth.signInWithPassword(userData);
 
 	if (!error && authToken) {
-		console.debug();
-		cookies.set('authToken', authToken.access_token, {
-			path: '/',
-			expires:
-				new Date(new Date().getTime() + authToken.expires_at) ||
-				new Date(new Date().getTime() + 86500000),
-		});
-
-		cookies.set('refreshToken', authToken.refresh_token, {
-			path: '/',
-			expires:
-				new Date(new Date().getTime() + authToken.expires_at) ||
-				new Date(new Date().getTime() + 86500000),
-		});
-
+		setAuthCookies(cookies, authToken);
 		return json({ success: true });
 	}
 	return json(createError(false, 'Email or password is not correct.'));

@@ -1,10 +1,9 @@
 import { Routes } from '$lib/constants';
-import { supabase } from '$lib/supabaseClient.js';
 import { createError } from '$lib/utils/errors';
 import { json } from '@sveltejs/kit';
 
-export async function GET({ cookies }) {
-	const isAuthenticated = !!cookies.get('authToken');
+export async function GET({ locals }) {
+	const { supabase, isAuthenticated } = locals;
 
 	const { data: projects, error } = await supabase
 		.from(Routes.PROJECTS)
@@ -21,7 +20,8 @@ export async function GET({ cookies }) {
 	return json(createError(false, error.message));
 }
 
-export async function POST({ request }) {
+export async function POST({ request, locals }) {
+	const { supabase } = locals;
 	/** @type {Project} */
 	const data = await request.json();
 
@@ -33,7 +33,8 @@ export async function POST({ request }) {
 	return json(createError(false, error.message));
 }
 
-export async function PATCH({ request }) {
+export async function PATCH({ request, locals }) {
+	const { supabase } = locals;
 	/** @type {Project} */
 	const data = await request.json();
 
@@ -48,7 +49,8 @@ export async function PATCH({ request }) {
 	return json(createError(false, error.message));
 }
 
-export async function DELETE({ request }) {
+export async function DELETE({ request, locals }) {
+	const { supabase } = locals;
 	/** @type {Project} */
 	const data = await request.json();
 

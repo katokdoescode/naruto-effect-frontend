@@ -1,9 +1,9 @@
 import { Routes } from '$lib/constants/index.js';
-import { supabase } from '$lib/supabaseClient.js';
 import { createError } from '$lib/utils/errors.js';
 import { json } from '@sveltejs/kit';
 
-export async function GET({ params }) {
+export async function GET({ params, locals }) {
+	const { supabase } = locals;
 	const { id } = params;
 
 	/** @type {SupabaseHatData} */
@@ -20,7 +20,8 @@ export async function GET({ params }) {
 	return json(createError(false, error.message));
 }
 
-export async function PATCH({ request, params }) {
+export async function PATCH({ request, params, locals }) {
+	const { supabase } = locals;
 	/** @type {HatData} */
 	const data = await request.json();
 	const { id } = params;
@@ -33,7 +34,8 @@ export async function PATCH({ request, params }) {
 	return json(createError(false, error.message));
 }
 
-export async function DELETE({ params }) {
+export async function DELETE({ params, locals }) {
+	const { supabase } = locals;
 	const { id } = params;
 
 	const { error } = await supabase.from(Routes.HAT).delete().eq('id', id);

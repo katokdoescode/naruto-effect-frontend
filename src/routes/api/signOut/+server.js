@@ -1,17 +1,17 @@
-import { supabase } from '$lib/supabaseClient.js';
+import { clearAuthCookies } from '$lib/server/authCookies.js';
+import { createSupabaseClient } from '$lib/supabaseClient.js';
 import { json } from '@sveltejs/kit';
-export async function POST({ cookies }) {
-	const { error } = await supabase.auth.signOut();
 
-	if (error) {
-		return json({
-			success: false,
-			errorMessage: error.message,
-		});
+export async function POST({ cookies }) {
+	const accessToken = cookies.get('authToken');
+
+	if (accessToken) {
+		const { error } =
+			await createSupabaseClient().auth.admin.signOut(accessToken);
+		if (error) console.error('Error signing out:', error.message);
 	}
 
-	cookies.delete('authToken', { path: '/' });
-	cookies.delete('refreshToken', { path: '/' });
+	clearAuthCookies(cookies);
 
 	return json({
 		success: true,

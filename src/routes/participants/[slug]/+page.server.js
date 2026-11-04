@@ -1,10 +1,9 @@
 import { Routes } from '$lib/constants';
-import { supabase } from '$lib/supabaseClient';
 import { error } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageServerLoad} */
-export async function load({ params, cookies }) {
-	const isAuthenticated = !!cookies.get('authToken');
+export async function load({ params, locals }) {
+	const { supabase, isAuthenticated } = locals;
 	const { slug } = params;
 
 	const { data: participant, error: participantError } = await supabase

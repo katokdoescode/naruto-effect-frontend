@@ -1,9 +1,9 @@
 import { Routes } from '$lib/constants';
-import { supabase } from '$lib/supabaseClient.js';
 import { createError } from '$lib/utils/errors';
 import { json } from '@sveltejs/kit';
 
-export async function GET() {
+export async function GET({ locals }) {
+	const { supabase } = locals;
 	const { data: pageData, error } = await supabase
 		.from(Routes.MAIN_PAGE)
 		.select()
@@ -16,7 +16,8 @@ export async function GET() {
 	return json(createError(false, error.message));
 }
 
-export async function PATCH({ request }) {
+export async function PATCH({ request, locals }) {
+	const { supabase } = locals;
 	/** @type {MainPageData} */
 	const data = await request.json();
 

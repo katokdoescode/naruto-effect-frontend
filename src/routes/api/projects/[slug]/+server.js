@@ -1,9 +1,9 @@
 import { Routes } from '$lib/constants/index.js';
-import { supabase } from '$lib/supabaseClient.js';
 import { createError } from '$lib/utils/errors.js';
 import { json } from '@sveltejs/kit';
 
-export async function GET({ params }) {
+export async function GET({ params, locals }) {
+	const { supabase } = locals;
 	const { slug } = params;
 
 	const { data: participant, error } = await supabase

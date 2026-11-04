@@ -1,9 +1,9 @@
 import { Routes } from '$lib/constants';
-import { supabase } from '$lib/supabaseClient.js';
 import { createError } from '$lib/utils/errors';
 import { json } from '@sveltejs/kit';
 
-export async function GET() {
+export async function GET({ locals }) {
+	const { supabase } = locals;
 	const { data: hat, error } = await supabase
 		.from(Routes.HAT)
 		.select('id, isPutting, name, words, createdAt');
@@ -17,7 +17,8 @@ export async function GET() {
 	return json(createError(false, error.message));
 }
 
-export async function POST({ request }) {
+export async function POST({ request, locals }) {
+	const { supabase } = locals;
 	/** @type {HatData} */
 	const data = await request.json();
 

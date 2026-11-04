@@ -1,8 +1,10 @@
 import { VITE_SUPABASE_BUCKET } from '$env/static/private';
-import { supabase } from '$lib/supabaseClient.js';
 import { json } from '@sveltejs/kit';
 
-async function deleteFile(type, prefix, link) {
+/**
+ * @param {import('@supabase/supabase-js').SupabaseClient} supabase
+ */
+async function deleteFile(supabase, type, prefix, link) {
 	if (!link) return;
 	const paths = link.split('/');
 	const imageName = paths[paths.length - 1];
@@ -11,14 +13,35 @@ async function deleteFile(type, prefix, link) {
 }
 
 /**
+ * Makes a unique file name, so uploads with the same name
+ * (iPhone camera photos are all called `image.jpg`) don't overwrite each other.
+ *
+ * @param {string} name
+ */
+function uniqueFileName(name) {
+	const dotIndex = name.lastIndexOf('.');
+	const base = dotIndex > 0 ? name.slice(0, dotIndex) : name;
+	const extension = dotIndex > 0 ? name.slice(dotIndex).toLowerCase() : '';
+	const safeBase =
+		base
+			.normalize('NFKD')
+			.replace(/[^\w-]+/g, '-')
+			.replace(/^-+|-+$/g, '')
+			.slice(0, 60) || 'file';
+	const suffix = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+	return `${safeBase}-${suffix}${extension}`;
+}
+
+/**
+ * @param {import('@supabase/supabase-js').SupabaseClient} supabase
  * @returns {Promise<{ url: string; error: object; }>}
  */
-async function uploadFile(file, type, prefix, link) {
+async function uploadFile(supabase, file, type, prefix, link) {
 	const bucket = VITE_SUPABASE_BUCKET;
-	const fullPath = `${type}/${prefix ? `${prefix}/` : ''}${file.name}`;
+	const fullPath = `${type}/${prefix ? `${prefix}/` : ''}${uniqueFileName(file.name)}`;
 	const { error } = await supabase.storage
 		.from(bucket)
-		.upload(fullPath, file, { upsert: true });
+		.upload(fullPath, file, { contentType: file.type || undefined });
 
 	if (error) {
 		return {
@@ -27,7 +50,7 @@ async function uploadFile(file, type, prefix, link) {
 		};
 	}
 	const { data } = supabase.storage.from(bucket).getPublicUrl(fullPath);
-	if (link && fullPath !== link) deleteFile(type, prefix, link);
+	if (link && fullPath !== link) deleteFile(supabase, type, prefix, link);
 	return {
 		url: data.publicUrl,
 		error: null,
@@ -35,7 +58,7 @@ async function uploadFile(file, type, prefix, link) {
 }
 
 /** @type {import('./$types').RequestHandler} */
-export async function POST({ request }) {
+export async function POST({ request, locals }) {
 	const data = await request.formData();
 
 	const file = data.get('file');
@@ -43,6 +66,6 @@ export async function POST({ request }) {
 	const prefix = data.get('prefix');
 	const link = data.get('link');
 
-	const result = await uploadFile(file, type, prefix, link);
+	const result = await uploadFile(locals.supabase, file, type, prefix, link);
 	return json(result);
 }
