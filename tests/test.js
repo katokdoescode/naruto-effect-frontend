@@ -11,25 +11,6 @@ test.describe
 			await expect(page.locator('h1')).toBeVisible();
 		});
 
-		test('can close cookies modal, and it will not appear then', async ({
-			page,
-		}) => {
-			await expect(page.locator('.cookie')).toBeVisible();
-
-			await page.click('.cookie button');
-			await expect(page.locator('.cookie')).not.toBeVisible();
-
-			await page.reload();
-
-			expect(
-				await page.evaluate(() => {
-					return localStorage.getItem('agree-with-cookies') === 'true';
-				}),
-			).toBeTruthy();
-
-			await expect(page.locator('.cookie')).not.toBeVisible();
-		});
-
 		test('can switch language', async ({ page }) => {
 			await expect(page.locator('html')).toHaveAttribute('lang', 'en');
 			await page.locator('#change-lang-panel-second').click();

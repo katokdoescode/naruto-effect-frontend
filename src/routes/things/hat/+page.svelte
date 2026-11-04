@@ -1,4 +1,5 @@
 <script>
+import { getSupabase } from '$lib/supabaseClient';
 import Button from '$lib/ui/Button.svelte';
 import Input from '$lib/ui/Input.svelte';
 import { getDateFormatter, locale } from 'svelte-i18n';
@@ -27,12 +28,12 @@ async function createNewHat() {
 	if (!newHat.name) return;
 
 	try {
-		const res = await fetch('/api/things/hat', {
-			method: 'POST',
-			body: JSON.stringify(newHat),
-		});
-		const response = await res.json();
-		if (!response.success) throw new Error(response.errorMessage);
+		const response = await getSupabase()
+			.from('hat')
+			.insert(newHat)
+			.select('id, isPutting, name, words, createdAt')
+			.single();
+		if (response.error) throw new Error(response.error.message);
 
 		newHat = {
 			name: '',
@@ -55,9 +56,11 @@ async function removeHat(id) {
 
 	isDeleting = id;
 	try {
-		await fetch(`/api/things/hat/${id}`, {
-			method: 'DELETE',
-		});
+		const { error: deleteError } = await getSupabase()
+			.from('hat')
+			.delete()
+			.eq('id', id);
+		if (deleteError) throw deleteError;
 		data.hats = hats.filter((hat) => hat.id !== id);
 		hats = data.hats;
 	} catch {

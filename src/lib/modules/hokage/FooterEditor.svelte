@@ -3,6 +3,7 @@ import { footerEditorState, isFooterEditorOpen } from '$lib/stores/appStore';
 import Button from '$lib/ui/Button.svelte';
 import Input from '$lib/ui/Input.svelte';
 import Textarea from '$lib/ui/Textarea.svelte';
+import { writeRow } from '$lib/utils/pagesActions';
 import { createEventDispatcher } from 'svelte';
 import { _, locale } from 'svelte-i18n';
 
@@ -48,11 +49,8 @@ export function submit() {
 async function submitForm() {
 	footerEditorState.set('loading');
 
-	/** @type {{success: boolean, data: MainPageData}} */
-	const response = await fetch('/api/mainPage', {
-		method: 'PATCH',
-		body: JSON.stringify(pageData),
-	}).then((res) => res.json());
+	/** @type {{success: boolean, data?: MainPageData}} */
+	const response = await writeRow('common', 'PATCH', pageData);
 
 	if (response.success) {
 		pageData = response.data;

@@ -1,9 +1,8 @@
 import { Routes } from '$lib/constants';
-import { supabase } from '$lib/supabaseClient';
 
 /** @type {import('./$types').PageServerLoad} */
-export async function load({ cookies }) {
-	const isAuthenticated = !!cookies.get('authToken');
+export async function load({ locals }) {
+	const { supabase, isAuthenticated } = locals;
 
 	const { data: projects, error: projectsError } = await supabase
 		.from(Routes.PROJECTS)

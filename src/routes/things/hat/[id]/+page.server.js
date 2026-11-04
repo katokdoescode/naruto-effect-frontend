@@ -1,13 +1,13 @@
 import { Routes } from '$lib/constants';
-import { supabase } from '$lib/supabaseClient';
 
 /** @type {import('./$types').PageServerLoad} */
-export async function load({ params }) {
+export async function load({ params, locals }) {
+	const { supabase } = locals;
 	const { id } = params;
 	/** @type {SupabaseHatData} */
 	const { data: hat, error } = await supabase
 		.from(Routes.HAT)
-		.select('*')
+		.select('id, isPutting, name, words, createdAt')
 		.eq('id', id)
 		.limit(1)
 		.single();

@@ -1,10 +1,8 @@
 <script>
 import { beforeNavigate, goto, replaceState } from '$app/navigation';
 import { page } from '$app/stores';
-import { setupTokenRefresh } from '$lib/auth';
 import AudioPlayer from '$lib/modules/AudioPlayer.svelte';
 import Content from '$lib/modules/Content.svelte';
-import CookieModal from '$lib/modules/CookieModal.svelte';
 import FavIcons from '$lib/modules/FavIcons.svelte';
 import Login from '$lib/modules/Login.svelte';
 import MainPanel from '$lib/modules/MainPanel.svelte';
@@ -22,6 +20,7 @@ import {
 } from '$lib/stores/modalsStore';
 import { participants } from '$lib/stores/participantsPageStore';
 import { practices } from '$lib/stores/practicesPageStore';
+import { getSupabase } from '$lib/supabaseClient';
 import { handleKeydown, handleKeyup } from '$lib/utils/keyboardHandler';
 import { onMount } from 'svelte';
 import { locale } from 'svelte-i18n';
@@ -53,27 +52,28 @@ async function authorize(state) {
 	if (state) closeLoginModal();
 	else isEditingState.set(false);
 
-	await fetch('/api/practices')
-		.then((res) => res.json())
-		.then((data) => {
-			if (!data.success) {
-				// eslint-disable-next-line no-console
-				console.error(data.errorMessage);
-			} else {
-				practices.set(data.data);
-			}
-		});
+	// RLS returns hidden items only to the signed-in admin
+	const supabase = getSupabase();
+	const visibility = [true, ...(state ? [false] : [])];
 
-	await fetch('/api/participants')
-		.then((res) => res.json())
-		.then((data) => {
-			if (!data.success) {
-				// eslint-disable-next-line no-console
-				console.error(data.errorMessage);
-			} else {
-				participants.set(data.data);
-			}
-		});
+	const [practicesResponse, participantsResponse] = await Promise.all([
+		supabase
+			.from('practices')
+			.select('id, isVisible, slug, title')
+			.in('isVisible', visibility),
+		supabase
+			.from('participants')
+			.select('id, isVisible, slug, name')
+			.order('slug')
+			.in('isVisible', visibility),
+	]);
+
+	if (practicesResponse.error) console.error(practicesResponse.error.message);
+	else practices.set(practicesResponse.data);
+
+	if (participantsResponse.error)
+		console.error(participantsResponse.error.message);
+	else participants.set(participantsResponse.data);
 
 	cleanAddressLine();
 }
@@ -197,7 +197,12 @@ onMount(() => {
 		if (combo) open = true;
 	});
 
-	const cleanup = setupTokenRefresh();
+	// The browser client refreshes the session by itself and keeps it in cookies
+	const {
+		data: { subscription: authSubscription },
+	} = getSupabase().auth.onAuthStateChange((event) => {
+		if (event === 'SIGNED_OUT') authorized.set(false);
+	});
 	initHandlers();
 	logoController();
 
@@ -205,7 +210,7 @@ onMount(() => {
 		unsubscribeLocale();
 		unsubscribeCombo();
 		unsubscribeConfirmLeaveModalDecision();
-		if (cleanup) cleanup();
+		authSubscription.unsubscribe();
 	};
 });
 </script>

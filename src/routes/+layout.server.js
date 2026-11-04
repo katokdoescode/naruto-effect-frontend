@@ -1,19 +1,9 @@
 import { VITE_LOGIN_PHRASE } from '$env/static/private';
 import { Routes } from '$lib/constants';
-import { supabase } from '$lib/supabaseClient';
 
 /** @type {import('./$types').LayoutServerLoad} */
-export async function load({ cookies }) {
-	let isAuthenticated = !!cookies.get('authToken');
-
-	const {
-		data: { user },
-	} = await supabase.auth.getUser();
-
-	if (!user) {
-		isAuthenticated = false;
-		cookies.delete('authToken', { path: '/' });
-	}
+export async function load({ locals }) {
+	const { supabase, isAuthenticated } = locals;
 
 	/** @type {SupabasePracticeList} */
 	const { data: practices, error: practicesError } = await supabase

@@ -1,5 +1,6 @@
 <script>
 import { appColorScheme } from '$lib/stores/themeStore';
+import { uploadFile } from '$lib/utils/files';
 /* eslint-disable svelte/no-at-html-tags */
 import Editor from '@tinymce/tinymce-svelte';
 import { createEventDispatcher, onDestroy } from 'svelte';
@@ -35,7 +36,7 @@ function filePickerCallback(callback) {
 	input.addEventListener('change', async (e) => {
 		// @ts-ignore
 		const file = e.target.files[0];
-		const formData = new FormData();
+		if (!file) return;
 
 		// 4mb
 		if (file.size / 1000000 > 4) {
@@ -43,28 +44,21 @@ function filePickerCallback(callback) {
 			return;
 		}
 
-		formData.append('file', file, file.name);
-		formData.append('type', 'images');
-		formData.append('prefix', 'editor');
-
-		await (async () => {
-			try {
-				const res = await fetch('/api/files', {
-					method: 'POST',
-					body: formData,
-				});
-				const { url, error } = await res.json();
-				if (error) {
-					console.error(error);
-					callback('Unexpected error from server');
-					return;
-				}
-				callback(url);
-			} catch (error) {
+		try {
+			const { url, error } = await uploadFile(file, {
+				type: 'images',
+				prefix: 'editor',
+			});
+			if (error) {
 				console.error(error);
-				callback('Unexpected error');
+				callback('Unexpected error from server');
+				return;
 			}
-		})();
+			callback(url);
+		} catch (error) {
+			console.error(error);
+			callback('Unexpected error');
+		}
 	});
 
 	input.click();

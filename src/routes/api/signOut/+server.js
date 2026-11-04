@@ -1,19 +1,9 @@
-import { supabase } from '$lib/supabaseClient.js';
 import { json } from '@sveltejs/kit';
-export async function POST({ cookies }) {
-	const { error } = await supabase.auth.signOut();
 
-	if (error) {
-		return json({
-			success: false,
-			errorMessage: error.message,
-		});
-	}
+export async function POST({ locals }) {
+	// `local` ends only this device's session: editors share one admin account
+	const { error } = await locals.supabase.auth.signOut({ scope: 'local' });
+	if (error) console.error('Error signing out:', error.message);
 
-	cookies.delete('authToken', { path: '/' });
-	cookies.delete('refreshToken', { path: '/' });
-
-	return json({
-		success: true,
-	});
+	return json({ success: true });
 }

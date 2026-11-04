@@ -26,7 +26,8 @@ onMount(() => {
 		if (!save) return;
 
 		const response = await savePage(clean(localValue), {
-			route: '/api/cv',
+			table: 'cv',
+			omit: ['videoLink'],
 			method: 'PATCH',
 		});
 

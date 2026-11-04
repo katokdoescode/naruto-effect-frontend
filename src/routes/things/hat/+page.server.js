@@ -1,8 +1,8 @@
 import { Routes } from '$lib/constants';
-import { supabase } from '$lib/supabaseClient';
 
 /** @type {import('./$types').PageServerLoad} */
-export async function load() {
+export async function load({ locals }) {
+	const { supabase } = locals;
 	/** @type {SupabaseHats} */
 	const { data: hats, error: hatError } = await supabase
 		.from(Routes.HAT)
